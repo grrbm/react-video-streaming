@@ -1,0 +1,13 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.bar-circle::after {
+  content: "";
+  top: -3px;
+  right: -5px;
+  @apply w-2.5 h-2.5 rounded-full bg-white block absolute;
+}
+.bar-circle:hover::after {
+  @apply shadow-outline-white;
+}

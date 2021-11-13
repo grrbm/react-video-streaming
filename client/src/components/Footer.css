@@ -1,0 +1,39 @@
+.footer {
+    height          : 220px;
+    background-color: #121212;
+    box-shadow: 0px -2px 5px rgba(255,255,255,0.2);
+}
+
+.footer-part-one {
+    height       : 125px;
+    border-bottom: 1px solid #242424;
+}
+
+.texts .text {
+    margin-right: 20px;
+    font-family : Oswald;
+    font-weight : bold;
+}
+
+.social-icons {
+    font-size: 24px;
+}
+
+.social-icons span {
+    margin-right: 20px;
+}
+
+.social-icons .email-icon svg {
+    background-color: #FFFFFF;
+    color           : #000000;
+    padding         : 0;
+}
+
+.footer-part-two {
+    text-align : center;
+    padding    : 23px;
+    font-family: Oswald;
+    font-weight: bold;
+    font-size  : 14px;
+    line-height: 21px;
+}

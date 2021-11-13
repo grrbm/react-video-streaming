@@ -1,0 +1,10 @@
+.subscribe {
+    background-color: #000000;
+}
+.subscribe .explaination-image {
+    text-align: center;
+    padding: 60px 0;
+}
+.subscribe .explaination-image .image{
+    width: 50%;
+}
