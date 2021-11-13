@@ -21,8 +21,8 @@ const Videos = ({ fetchVideos, videos }) => {
   }, []);
   return (
     <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-4'>
-      {videos.map(video => (
-        <Video {...video} />
+      {videos.map((video, key) => (
+        <Video {...video} key={key}/>
       ))}
     </div>
   );
