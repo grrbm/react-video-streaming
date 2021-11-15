@@ -23,7 +23,9 @@ app.post('/video', (req, res) => {
   const folder = `${__dirname}/videos/${uuid}`;
   fs.mkdirSync(folder);
   const path = `${folder}/video`;
+  console.log("1" + path)
   file.mv(path, err => {
+    console.log("2" + path)
     if (err) {
       console.error(err);
       return res.status(500);
@@ -66,6 +68,10 @@ app.post('/video', (req, res) => {
       .run();
   });
 });
+app.post('/videoinformation', (req, res) => {
+  console.log(req.body)
+  res.json({ "ss": "ss" })
+})
 app.use('/video', express.static('videos'));
 app.get('/video/all', (req, res) => {
   Video.find()

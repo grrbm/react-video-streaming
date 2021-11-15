@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from './Button';
+import Button from '../Button';
 import { connect } from 'react-redux';
-import { uploadVideo } from '../actions/appActions';
+import { uploadVideo } from '../../actions/appActions';
 
 const UploadForm = ({ uploadVideo, upload }) => {
   const ref = useRef();

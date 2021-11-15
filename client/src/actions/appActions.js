@@ -1,7 +1,7 @@
 import { SET_VIDEOS, SET_UPLOAD } from './types';
-import { setErr} from './msgActions';
+import { setErr } from './msgActions';
 import Axios from 'axios';
-export const uploadVideo = file => (dispatch, getState) => {
+export const uploadVideo = (file, videoInformation) => (dispatch, getState) => {
   const formData = new FormData();
   const {
     app: { videos },
@@ -12,15 +12,18 @@ export const uploadVideo = file => (dispatch, getState) => {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+  }).then(({ data: video }) => {
+    dispatch(setVideos([...videos, video]));
   })
-    .then(({ data: video }) => {
-      dispatch(setVideos([...videos, video]));
-    })
     .catch(({ response = {} }) => {
       dispatch(setUpload(false));
       const status = response.status;
       if (status === 500) setErr('Unknown error occured');
     });
+  Axios.post('/videoinformation', { videoInformation: videoInformation })
+    .then(res => {
+      console.log(res);
+    })
 };
 
 export const fetchVideos = () => dispatch => {

@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FullscreenIcon from '@material-ui/icons/FullscreenRounded';
 import VolumeOn from '@material-ui/icons/VolumeUpRounded';
 import VolumeOff from '@material-ui/icons/VolumeOffRounded';
-import Fab from './Fab';
+import Fab from '../Fab';
 
 const VideoPlayer = ({ events, root, name, match }) => {
   const videoRef = useRef();
