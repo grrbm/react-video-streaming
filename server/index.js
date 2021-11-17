@@ -1,47 +1,48 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const config = require('config');
-const cors = require('cors');
-const fileUpload = require('express-fileupload');
-const extractFrames = require('ffmpeg-extract-frames');
-const { v4: uuidv4 } = require('uuid');
-const ffmpeg = require('fluent-ffmpeg');
+const express = require("express");
+const mongoose = require("mongoose");
+const config = require("config");
+const cors = require("cors");
+const fileUpload = require("express-fileupload");
+const extractFrames = require("ffmpeg-extract-frames");
+const { v4: uuidv4 } = require("uuid");
+const ffmpeg = require("fluent-ffmpeg");
 const app = express();
-const fs = require('fs');
-const db = config.get('mongodbURL');
-const Video = require('./models/Video');
+const fs = require("fs");
+const db = config.get("mongodbURL");
+const Video = require("./models/Video");
+const bodyParser = require("body-parser");
+require("dotenv").config();
 
 app.use(fileUpload());
 app.use(cors());
-app.post('/video', (req, res) => {
+app.post("/video", (req, res) => {
   if (req.files === null) {
-    return res.status(400).json({ msg: 'No file uploaded' });
+    return res.status(400).json({ msg: "No file uploaded" });
   }
-  console.log('Uploading Started...');
+  console.log("Uploading Started...");
   const uuid = uuidv4();
   const file = req.files.file;
   const folder = `${__dirname}/videos/${uuid}`;
   fs.mkdirSync(folder);
   const path = `${folder}/video`;
-  console.log("1" + path)
-  file.mv(path, err => {
-    console.log("2" + path)
+  file.mv(path, (err) => {
+    console.log("2" + path);
     if (err) {
       console.error(err);
       return res.status(500);
     }
     ffmpeg(path, { timeout: 4320 })
       .addOptions([
-        '-profile:v baseline', // baseline profile (level 3.0) for H264 video codec
-        '-level 3.0',
-        '-s 1280x720', // 1280px width, 720px height output video dimensions
-        '-start_number 0', // start the first .ts segment at index 0
-        '-hls_time 10', // 10 second segment duration
-        '-hls_list_size 0', // Maxmimum number of playlist entries (0 means all entries/infinite)
-        '-f hls', // HLS format
+        "-profile:v baseline", // baseline profile (level 3.0) for H264 video codec
+        "-level 3.0",
+        "-s 1280x720", // 1280px width, 720px height output video dimensions
+        "-start_number 0", // start the first .ts segment at index 0
+        "-hls_time 10", // 10 second segment duration
+        "-hls_list_size 0", // Maxmimum number of playlist entries (0 means all entries/infinite)
+        "-f hls", // HLS format
       ])
       .output(`${folder}/video.m3u8`)
-      .on('end', () => {
+      .on("end", () => {
         extractFrames({
           input: `${folder}/video`,
           output: `${folder}/frame.jpg`,
@@ -51,16 +52,16 @@ app.post('/video', (req, res) => {
             const newVideo = new Video({ name: file.name, root: uuid });
             newVideo
               .save()
-              .then(video => {
-                console.log('Uploaded successfully');
+              .then((video) => {
+                console.log("Uploaded successfully");
                 res.json(video);
               })
-              .catch(err => {
+              .catch((err) => {
                 console.log(err);
                 res.status(500).end();
               });
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
             res.status(500).end();
           });
@@ -68,28 +69,43 @@ app.post('/video', (req, res) => {
       .run();
   });
 });
-app.post('/videoinformation', (req, res) => {
-  console.log(req.body)
-  res.json({ "ss": "ss" })
-})
-app.use('/video', express.static('videos'));
-app.get('/video/all', (req, res) => {
+app.use("/video", express.static("videos"));
+app.get("/video/all", (req, res) => {
   Video.find()
-    .then(videos => res.json(videos))
-    .catch(err => {
+    .then((videos) => res.json(videos))
+    .catch((err) => {
       console.log(err);
       res.status(500).end();
     });
 });
+app.use(bodyParser.json());
+app.post("/videoinformation", (req, res) => {
+  Video.findById(req.body.videoId, function (err, video) {
+    if (!video) res.status(400).send("can't find video");
+    else {
+      video.group = req.body.group;
+      video.videoinformation = req.body.videoInformation;
+      console.log(req.body.videoInformation);
+      video
+        .save()
+        .then((video) => {
+          res.json(video);
+        })
+        .catch((err) => {
+          res.status(400).send("Unable To Update video");
+        });
+    }
+  });
+});
 
 mongoose
-  .connect(db, {
+  .connect(process.env.MONGODB_URI || db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
   })
-  .then(() => console.log('Connected to database'))
-  .catch(err => console.log(err));
-
-app.listen(5000, () => console.log('Server Started...'));
+  .then(() => console.log("Connected to database"))
+  .catch((err) => console.log(err));
+const port = process.env.port || 5000;
+app.listen(port, () => console.log("Server Started..."));
