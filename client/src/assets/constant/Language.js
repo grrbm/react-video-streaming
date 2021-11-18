@@ -10,6 +10,10 @@ export const MUSIC = {
   EN: "Music",
   PT: "Música",
 };
+export const SONGS = {
+  EN: "Songs",
+  PT: "Músicas",
+};
 export const COMEDY = {
   EN: "Comedy",
   PT: "Comédia",

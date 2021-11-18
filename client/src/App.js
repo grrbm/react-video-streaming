@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./style/tailwind.css";
-import { VideoPlayer, Videos } from "./components/Video";
+import { VideoPlayer, VideoPlayerAlt, Videos } from "./components/Video";
 import Main from "./Pages/main";
 import "./app.css";
 import NavigationBar from "./components/NavigationBar";
@@ -14,7 +14,7 @@ const App = ({ video }) => {
       <NavigationBar />
       <div className="relative">
         <Switch>
-          <Route path="/watch/:id" component={VideoPlayer} exact />
+          <Route path="/watch/:id" component={VideoPlayerAlt} exact />
           <Route path="/" component={Main} exact />
           {/* <Route path="/main" component={Main} exact /> */}
           <Route path="/upload" component={Videos} exact />

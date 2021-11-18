@@ -70,13 +70,14 @@ app.post("/video", (req, res) => {
   });
 });
 app.use("/video", express.static("videos"));
-app.get("/video/all", (req, res) => {
-  Video.find()
-    .then((videos) => res.json(videos))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).end();
-    });
+app.get("/video/all", async (req, res) => {
+  try {
+    const videos = await Video.find();
+    res.json(videos);
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
 });
 app.use(bodyParser.json());
 app.post("/videoinformation", (req, res) => {
