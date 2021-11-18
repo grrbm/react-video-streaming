@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { fetchVideos } from "../../actions/appActions";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
-import { Video } from "./Videos";
+import Video from "./Video";
 import { useSelector } from "react-redux";
 import Carousel from "nuka-carousel";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -13,7 +13,9 @@ const Videos1 = (props) => {
   const { groupId } = props;
   const videos = useSelector((state) =>
     state.app.videos1.filter((video) => {
-      return video.group === groupId;
+      //return video.group === groupId;
+      //*****DO NOT COMMIT THIS******/
+      return true;
     })
   );
   const theme = useTheme();
