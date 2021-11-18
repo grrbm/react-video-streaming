@@ -5,10 +5,13 @@ import "./style/tailwind.css";
 import { VideoPlayer, Videos } from "./components/Video";
 import Main from "./Pages/main";
 import "./app.css";
+import NavigationBar from "./components/NavigationBar";
+import Footer from "./components/Footer";
 
 const App = ({ video }) => {
   return (
     <Router>
+      <NavigationBar />
       <div className="relative">
         <Switch>
           <Route path="/watch/:id" component={VideoPlayer} exact />
@@ -17,6 +20,7 @@ const App = ({ video }) => {
           <Route path="/upload" component={Videos} exact />
         </Switch>
       </div>
+      <Footer />
     </Router>
   );
 };
