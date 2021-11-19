@@ -6,6 +6,7 @@ import * as Language from "../../assets/constant/Language";
 import { useSelector } from "react-redux";
 import Axios from "axios";
 import { useDispatch } from "react-redux";
+import Share from "../Share";
 import { SET_VIDEOS, SET_UPLOAD, SET_VIDEOS1 } from "../../actions/types";
 
 const VideoPlayerAlt = ({ events, root, name, match }) => {
@@ -77,18 +78,21 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
   }, []);
 
   return (
-    <div className="w-full h-64 sm:h-left relative bg-black">
-      <video
-        ref={videoRef}
-        controls={true}
-        className="w-full h-full"
-        onTimeUpdate={animateBar}
-        onPlaying={() => setStall(false)}
-        onWaiting={() => setStall(true)}
-        onStalled={() => setStall(true)}
-      >
-        {source && <source src={source.src}></source>}
-      </video>
+    <div className="w-full">
+      <div className="w-full bg-black">
+        <video
+          ref={videoRef}
+          controls={true}
+          className="w-full sm:w-3/4 sm:mx-auto h-full"
+          onTimeUpdate={animateBar}
+          onPlaying={() => setStall(false)}
+          onWaiting={() => setStall(true)}
+          onStalled={() => setStall(true)}
+        >
+          {source && <source src={source.src}></source>}
+        </video>
+      </div>
+      <Share />
       <div className="content">
         <div className="video-group-title">{Language.SONGS[language]}</div>
         <Videos1 groupId="1" />
