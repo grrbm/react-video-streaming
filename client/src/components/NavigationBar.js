@@ -7,12 +7,14 @@ import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { SET_LANG } from "../actions/types";
 import * as Language from "../assets/constant/Language";
+import clsx from "clsx";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loginstatus, setLogin] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
-  const [laguageDropdownOpen, setLanguageDropdownOpen] = useState(false);
-  const [laguage, setLanguage] = useState("EN");
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const [language, setLanguage] = useState("EN");
   const dispatch = useDispatch();
   const setLang = (lang) => ({ type: SET_LANG, payload: lang });
 
@@ -37,55 +39,56 @@ const Navbar = () => {
             className={"nav-link " + (categoryDropdownOpen ? "show" : "")}
             onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
           >
-            {Language.CATEGORIES[laguage]}
+            {Language.CATEGORIES[language]}
             <span>
               {categoryDropdownOpen ? <GoChevronUp /> : <GoChevronDown />}
             </span>
           </div>
           <ul
-            className={
-              "category-dropdown " + (categoryDropdownOpen ? "show" : "")
-            }
+            className={clsx(
+              "category-dropdown " + (categoryDropdownOpen ? "show" : ""),
+              "shadow-xl"
+            )}
           >
             <li
-              className="bg-white"
+              className="bg-black hover:bg-white hover:text-black cursor-pointer"
               onClick={() => {
                 setCategoryDropdownOpen(false);
               }}
             >
-              {Language.SPORT[laguage]}
+              {Language.SPORT[language]}
             </li>
             <li
-              className="bg-black"
+              className="bg-black hover:bg-white hover:text-black cursor-pointer"
               onClick={() => {
                 setCategoryDropdownOpen(false);
               }}
             >
-              {Language.MUSIC[laguage]}
+              {Language.MUSIC[language]}
             </li>
             <li
-              className="bg-red"
+              className="bg-red cursor-pointer"
               onClick={() => {
                 setCategoryDropdownOpen(false);
               }}
             >
-              {Language.COMEDY[laguage]}
+              {Language.COMEDY[language]}
             </li>
             <li
-              className="bg-black"
+              className="bg-black hover:bg-white hover:text-black cursor-pointer"
               onClick={() => {
                 setCategoryDropdownOpen(false);
               }}
             >
-              {Language.POADCAST[laguage]}
+              {Language.PODCAST[language]}
             </li>
             <li
-              className="bg-white"
+              className="bg-black hover:bg-white hover:text-black cursor-pointer"
               onClick={() => {
                 setCategoryDropdownOpen(false);
               }}
             >
-              {Language.FITNESS[laguage]}
+              {Language.FITNESS[language]}
             </li>
           </ul>
         </li>
@@ -95,7 +98,7 @@ const Navbar = () => {
           </div>
         </li>
         <li className="nav-item download">
-          <div className="nav-link"> {Language.DOWNLOAD[laguage]} </div>
+          <div className="nav-link"> {Language.DOWNLOAD[language]} </div>
         </li>
         <li className="nav-item">
           <div className="nav-link">
@@ -103,21 +106,21 @@ const Navbar = () => {
           </div>
         </li>
         <li className="nav-item subscribe">
-          <div className="nav-link">{Language.SUBSCRIBE[laguage]}</div>
+          <div className="nav-link">{Language.SUBSCRIBE[language]}</div>
         </li>
         <li className="nav-item language-bar">
           <div
             className="nav-link"
-            onClick={() => setLanguageDropdownOpen(!laguageDropdownOpen)}
+            onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
           >
-            {laguage}
+            {language}
             <span>
-              {laguageDropdownOpen ? <GoChevronUp /> : <GoChevronDown />}
+              {languageDropdownOpen ? <GoChevronUp /> : <GoChevronDown />}
             </span>
           </div>
           <ul
             className={
-              "language-dropdown " + (laguageDropdownOpen ? "show" : "")
+              "language-dropdown " + (languageDropdownOpen ? "show" : "")
             }
           >
             <li

@@ -19,7 +19,7 @@ const Categories = () => {
         <div className="category-image-box">
           <img src={PODCAST_IMG_SRC} alt="podcast" />
           <div className="category-image-title">
-            {Language.POADCAST[language]}
+            {Language.PODCAST[language]}
           </div>
         </div>
         <div className="category-image-box">

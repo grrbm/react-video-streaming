@@ -18,7 +18,7 @@ export const COMEDY = {
   EN: "Comedy",
   PT: "Comédia",
 };
-export const POADCAST = {
+export const PODCAST = {
   EN: "Podcast",
   PT: "Podcast",
 };
