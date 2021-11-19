@@ -8,6 +8,7 @@ import Axios from "axios";
 import { useDispatch } from "react-redux";
 import Share from "../Share";
 import { SET_VIDEOS, SET_UPLOAD, SET_VIDEOS1 } from "../../actions/types";
+import "./VideoPlayerAlt.css";
 
 const VideoPlayerAlt = ({ events, root, name, match }) => {
   const videoRef = useRef();
@@ -78,8 +79,8 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
   }, []);
 
   return (
-    <div className="w-full bg-black">
-      <div className="w-full bg-black">
+    <div className="w-full bg-gray-1000">
+      <div className="w-full bg-gray-1000">
         <video
           ref={videoRef}
           controls={true}
@@ -92,10 +93,10 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
           {source && <source src={source.src}></source>}
         </video>
       </div>
-      <div className="w-full sm:w-3/4 sm:mx-auto h-full bg-black">
+      <div className="w-full sm:w-3/4 mt-8 md:mt-16 sm:mx-auto h-full bg-gray-1000">
         <Share />
       </div>
-      <div className="content">
+      <div className="bg-gray-1000 px-20">
         <div className="video-group-title">{Language.SONGS[language]}</div>
         <Videos1 groupId="1" />
       </div>

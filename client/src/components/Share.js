@@ -4,7 +4,7 @@ import ShareIcon from "../assets/icons/ShareIcon";
 import "./Share.css";
 
 const Share = ({ children, Prop, classes = "", color = "blue" }) => (
-  <div className="bg-black">
+  <div className="bg-gray-1000 text-white">
     <span className="w-auto h-16 border-b-4 border-red-650 text-xl font-semibold">
       Alok | All Musics | Octuber Fast | #22
     </span>
