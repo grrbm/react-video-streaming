@@ -12,7 +12,7 @@ const App = ({ video }) => {
   return (
     <Router>
       <NavigationBar />
-      <div className="relative">
+      <div className="relative bg-gray-1000">
         <Switch>
           <Route path="/watch/:id" component={VideoPlayerAlt} exact />
           <Route path="/" component={Main} exact />
