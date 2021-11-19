@@ -78,7 +78,7 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-black">
       <div className="w-full bg-black">
         <video
           ref={videoRef}
@@ -92,7 +92,9 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
           {source && <source src={source.src}></source>}
         </video>
       </div>
-      <Share />
+      <div className="w-full sm:w-3/4 sm:mx-auto h-full bg-black">
+        <Share />
+      </div>
       <div className="content">
         <div className="video-group-title">{Language.SONGS[language]}</div>
         <Videos1 groupId="1" />

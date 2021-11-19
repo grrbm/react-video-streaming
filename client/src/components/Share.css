@@ -1,0 +1,9 @@
+.bg-red-650 {
+  background-color: red;
+}
+.border-red-650 {
+  border-color: red;
+}
+svg {
+  display: inline;
+}
