@@ -7,7 +7,7 @@
     "install": "run-s install:**",
     "install:server": "cd server && npm install",
     "install:app": "cd client && npm install",
-    "start": "run-s start:**",
+    "start": "run-p start:**",
     "start:server": "cd server && npm run start",
     "start:app": "cd client && npm run start",
     "server": "cd server && npm run dev",
