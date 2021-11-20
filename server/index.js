@@ -11,6 +11,7 @@ const fs = require("fs");
 const db = config.get("mongodbURL");
 const Video = require("./models/Video");
 const bodyParser = require("body-parser");
+const path = require("path");
 require("dotenv").config();
 
 app.use(fileUpload());
