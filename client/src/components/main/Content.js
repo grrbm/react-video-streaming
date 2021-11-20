@@ -13,6 +13,9 @@ const Content = () => {
   useEffect(() => {
     Axios.get("/video/all")
       .then(({ data: videos }) => {
+        videos.forEach((video) => {
+          video.group = "1";
+        });
         dispatch(setVideos1(videos));
       })
       .catch(({ response = {} }) => {
