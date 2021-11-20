@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-.bar-circle::after {
+/* .bar-circle::after {
   content: "";
   top: -3px;
   right: -5px;
@@ -10,4 +10,4 @@
 }
 .bar-circle:hover::after {
   @apply shadow-outline-white;
-}
+} */

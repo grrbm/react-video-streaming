@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./style/tailwind.scss";
+import "./style/tailwind.css";
 import { VideoPlayer, VideoPlayerAlt, Videos } from "./components/Video";
 import Main from "./Pages/main";
 import "./app.css";
