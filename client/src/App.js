@@ -7,12 +7,14 @@ import Main from "./Pages/main";
 import "./app.css";
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = ({ video }) => {
   return (
     <Router>
       <NavigationBar />
       <div className="relative bg-gray-1000">
+        <ScrollToTop />
         <Switch>
           <Route path="/watch/:id" component={VideoPlayerAlt} exact />
           <Route path="/" component={Main} exact />

@@ -29,6 +29,9 @@ const Navbar = () => {
       setIsOpen(false);
     })
   );
+  const navigateToHome = () => {
+    history.push("/");
+  };
   const navigateToUpload = () => {
     history.push("/upload");
   };
@@ -47,7 +50,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <a href="#home" className="nav-logo">
+      <a className="nav-logo cursor-pointer" onClick={navigateToHome}>
         LOUD<span className="logo-text-two">Now</span>
       </a>
       <ul className={"nav-menu " + (isOpen ? "active" : "")}>
