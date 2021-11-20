@@ -28,11 +28,11 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "react-scripts start",
+    "start": "craco start",
     "build": "run-s build:**",
     "build:css": "postcss tailwind.css -o src/style/tailwind.scss",
-    "build:app": "react-scripts build",
-    "test": "react-scripts test",
+    "build:app": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
