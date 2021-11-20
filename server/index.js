@@ -109,4 +109,12 @@ mongoose
   .then(() => console.log("Connected to database"))
   .catch((err) => console.log(err));
 const port = process.env.PORT || 5000;
+
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static(path.join(__dirname, "/../client/build")));
+} else {
+  app.use(express.static(path.join(__dirname, "/../client/src")));
+}
+
 app.listen(port, () => console.log("Server Started..."));
