@@ -15,6 +15,7 @@ const Navbar = () => {
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [language, setLanguage] = useState("EN");
+  const [selectedCategory, setSelectedCategory] = useState();
   const dispatch = useDispatch();
   const setLang = (lang) => ({ type: SET_LANG, payload: lang });
 
@@ -27,6 +28,18 @@ const Navbar = () => {
       setIsOpen(false);
     })
   );
+  useEffect(() => {
+    const handleEscape = (e) => {
+      console.log("handling escape");
+      if (e.key === "Esc" || e.key === "Escape") {
+        setCategoryDropdownOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
 
   return (
     <nav className="navbar">
@@ -35,8 +48,21 @@ const Navbar = () => {
       </a>
       <ul className={"nav-menu " + (isOpen ? "active" : "")}>
         <li className="nav-item category">
+          {categoryDropdownOpen ? (
+            <button
+              tabindex="-1"
+              className="fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full bg-black opacity-50 cursor-default"
+              onClick={() => setCategoryDropdownOpen(false)}
+            ></button>
+          ) : (
+            ""
+          )}
+
           <div
-            className={"nav-link " + (categoryDropdownOpen ? "show" : "")}
+            className={clsx(
+              "nav-link " + (categoryDropdownOpen ? "show" : ""),
+              "relative z-10"
+            )}
             onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
           >
             {Language.CATEGORIES[language]}
