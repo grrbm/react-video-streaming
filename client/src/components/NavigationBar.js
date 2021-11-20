@@ -77,41 +77,61 @@ const Navbar = () => {
             )}
           >
             <li
-              className="bg-black hover:bg-white hover:text-black cursor-pointer"
+              className={
+                selectedCategory === "Sport"
+                  ? "bg-red cursor-pointer"
+                  : "bg-black hover:bg-white hover:text-black cursor-pointer"
+              }
               onClick={() => {
-                setCategoryDropdownOpen(false);
+                setSelectedCategory("Sport");
               }}
             >
               {Language.SPORT[language]}
             </li>
             <li
-              className="bg-black hover:bg-white hover:text-black cursor-pointer"
+              className={
+                selectedCategory === "Music"
+                  ? "bg-red cursor-pointer"
+                  : "bg-black hover:bg-white hover:text-black cursor-pointer"
+              }
               onClick={() => {
-                setCategoryDropdownOpen(false);
+                setSelectedCategory("Music");
               }}
             >
               {Language.MUSIC[language]}
             </li>
             <li
-              className="bg-red cursor-pointer"
+              className={
+                selectedCategory === "Comedy"
+                  ? "bg-red cursor-pointer"
+                  : "bg-black hover:bg-white hover:text-black cursor-pointer"
+              }
               onClick={() => {
-                setCategoryDropdownOpen(false);
+                setSelectedCategory("Comedy");
               }}
             >
               {Language.COMEDY[language]}
             </li>
             <li
-              className="bg-black hover:bg-white hover:text-black cursor-pointer"
+              className={
+                selectedCategory === "Podcast"
+                  ? "bg-red cursor-pointer"
+                  : "bg-black hover:bg-white hover:text-black cursor-pointer"
+              }
               onClick={() => {
-                setCategoryDropdownOpen(false);
+                setSelectedCategory("Podcast");
               }}
             >
               {Language.PODCAST[language]}
             </li>
             <li
-              className="bg-black hover:bg-white hover:text-black cursor-pointer"
+              className={
+                selectedCategory === "Fitness"
+                  ? "bg-red cursor-pointer"
+                  : "bg-black hover:bg-white hover:text-black cursor-pointer"
+              }
               onClick={() => {
-                setCategoryDropdownOpen(false);
+                setSelectedCategory("Fitness");
               }}
             >
               {Language.FITNESS[language]}
