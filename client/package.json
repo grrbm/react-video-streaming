@@ -19,17 +19,16 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
-  },
-  "devDependencies": {
+    "redux-thunk": "^2.3.0",
     "autoprefixer": "^9.7.6",
-    "postcss-cli": "^7.1.0",
+    "postcss-cli": "^7.1.2",
     "tailwindcss": "^1.2.0"
   },
+  "devDependencies": {},
   "scripts": {
     "start": "react-scripts start",
     "build": "run-s build:**",
-    "build:css": "postcss  tailwind.css -o src/style/tailwind.css",
+    "build:css": "postcss tailwind.css -o src/style/tailwind.css",
     "build:app": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
