@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./NabBar.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FaUserAlt } from "react-icons/fa";
 import { ImSearch } from "react-icons/im";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
@@ -10,6 +10,7 @@ import * as Language from "../assets/constant/Language";
 import clsx from "clsx";
 
 const Navbar = () => {
+  const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [loginstatus, setLogin] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
@@ -28,6 +29,9 @@ const Navbar = () => {
       setIsOpen(false);
     })
   );
+  const navigateToUpload = () => {
+    history.push("/upload");
+  };
   useEffect(() => {
     const handleEscape = (e) => {
       console.log("handling escape");
@@ -143,7 +147,7 @@ const Navbar = () => {
             <ImSearch />
           </div>
         </li>
-        <li className="nav-item download">
+        <li className="nav-item download" onClick={navigateToUpload}>
           <div className="nav-link"> {Language.DOWNLOAD[language]} </div>
         </li>
         <li className="nav-item">
