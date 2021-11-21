@@ -102,10 +102,9 @@
 }
 
 .hamburger-dropdown {
-  position: absolute;
   display: none;
-  top: 160%;
-  right: 5%;
+  right: 0;
+  top: 60px;
 }
 .hamburger-dropdown.show {
   display: block;

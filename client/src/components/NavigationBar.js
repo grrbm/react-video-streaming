@@ -231,26 +231,40 @@ const Navbar = () => {
         className={clsx("hamburger " + (isOpen ? "active" : ""), "relative")}
         onClick={toggleHamburger}
       >
-        <span className="bar"></span>
-        <span className="bar"></span>
-        <span className="bar"></span>
+        <div className="relative">
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </div>
         <ul
           className={clsx(
             "hamburger-dropdown " + (hamburgerDropdownOpen ? "show" : ""),
-            "shadow-xl"
+            "shadow-xl w-full fixed"
           )}
         >
           <li
             className={
               selectedCategory === "Sport"
-                ? "bg-red cursor-pointer"
-                : "bg-black hover:bg-white hover:text-black cursor-pointer"
+                ? "w-full bg-red cursor-pointer"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
             }
             onClick={() => {
               setSelectedCategory("Sport");
             }}
           >
             {Language.SPORT[language]}
+          </li>
+          <li
+            className={
+              selectedCategory === "Music"
+                ? "w-full bg-red cursor-pointer"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+            }
+            onClick={() => {
+              setSelectedCategory("Music");
+            }}
+          >
+            {Language.MUSIC[language]}
           </li>
         </ul>
       </div>
