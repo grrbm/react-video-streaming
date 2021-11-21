@@ -12,9 +12,9 @@ import ScrollToTop from "./components/ScrollToTop";
 const App = ({ video }) => {
   return (
     <Router>
+      <ScrollToTop />
       <NavigationBar />
       <div className="relative bg-gray-1000">
-        <ScrollToTop />
         <Switch>
           <Route path="/watch/:id" component={VideoPlayerAlt} exact />
           <Route path="/" component={Main} exact />
