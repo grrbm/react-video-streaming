@@ -242,29 +242,53 @@ const Navbar = () => {
             "shadow-xl w-full fixed"
           )}
         >
-          <li
+          <div
             className={
-              selectedCategory === "Sport"
+              selectedCategory === "Categories"
                 ? "w-full bg-red cursor-pointer"
                 : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
             }
             onClick={() => {
-              setSelectedCategory("Sport");
+              setSelectedCategory("Categories");
             }}
           >
-            {Language.SPORT[language]}
-          </li>
+            {Language.CATEGORIES[language]}
+          </div>
+          {selectedCategory === "Categories" ||
+          [
+            Language.SPORT["EN"],
+            Language.MUSIC["EN"],
+            Language.COMEDY["EN"],
+            Language.PODCAST["EN"],
+            Language.FITNESS["EN"],
+          ].includes(selectedCategory) ? (
+            <div
+              className={
+                selectedCategory === "Sport"
+                  ? "w-full bg-red cursor-pointer pl-4"
+                  : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+              }
+              onClick={() => {
+                setSelectedCategory("Sport");
+              }}
+            >
+              {Language.SPORT[language]}
+            </div>
+          ) : (
+            ""
+          )}
+
           <li
             className={
-              selectedCategory === "Music"
+              selectedCategory === "Subscribe"
                 ? "w-full bg-red cursor-pointer"
                 : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
             }
             onClick={() => {
-              setSelectedCategory("Music");
+              setSelectedCategory("Subscribe");
             }}
           >
-            {Language.MUSIC[language]}
+            {Language.SUBSCRIBE[language]}
           </li>
         </ul>
       </div>
