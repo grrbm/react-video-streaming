@@ -49,8 +49,10 @@ app.post("/video", (req, res) => {
           output: `${folder}/frame.jpg`,
           offsets: [1000],
         })
-          .then(() => {
-            const newVideo = new Video({ name: file.name, root: uuid });
+          .then((result) => {
+            let newVideo = new Video({ name: file.name, root: uuid });
+            var imageData = fs.readFileSync(result);
+            newVideo.videoThumbnail = imageData;
             newVideo
               .save()
               .then((video) => {
@@ -80,6 +82,17 @@ app.get("/video/all", async (req, res) => {
     res.status(500).end();
   }
 });
+//Find video by ROOT name
+app.get("/video/:root", async (req, res) => {
+  try {
+    const video = await Video.findOne({ root: req.params.root });
+    res.json(video);
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
+
 app.use(bodyParser.json());
 app.post("/videoinformation", (req, res) => {
   Video.findById(req.body.videoId, function (err, video) {

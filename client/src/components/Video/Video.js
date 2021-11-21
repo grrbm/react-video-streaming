@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GoTriangleRight } from "react-icons/go";
 import { FaCircle } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
+import Axios from "axios";
 
 const Video = ({ root, name }) => {
   const history = useHistory();
+  const [videoThumb, setVideoThumb] = useState();
   const navigateToWatch = () => {
     history.push(`/watch/${root}`);
   };
+  useEffect(() => {
+    Axios.get(`/video/${root}`)
+      .then(({ data: video }) => {
+        let videoThumbnail = Buffer.from(video.videoThumbnail.data);
+        let bufferString = videoThumbnail.toString("base64");
+        setVideoThumb(bufferString);
+      })
+      .catch(({ response = {} }) => {
+        const status = response.status;
+        if (status === 500) console.log("error");
+      });
+  }, []);
   return (
     <div className="rounded-md shadow-xs  hover:shadow-lg ">
       <a className="h-full" onClick={navigateToWatch}>
-        <img className="rounded-t-md" src={`/video/${root}/frame.jpg`} />
+        <img src={`data:image/jpg;base64,${videoThumb}`} />
         {/* <p
             className="p-2  overflow-hidden"
             style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}

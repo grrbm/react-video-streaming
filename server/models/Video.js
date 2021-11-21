@@ -7,6 +7,7 @@ const video = new Schema(
     root: { type: String, unique: true },
     group: { type: String },
     videoinformation: { type: String },
+    videoThumbnail: { type: Buffer },
   },
   { timestamps: true }
 );
