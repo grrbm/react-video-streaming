@@ -172,12 +172,17 @@ const Navbar = () => {
             </span>
           </div>
           <ul
-            className={
-              "language-dropdown " + (languageDropdownOpen ? "show" : "")
-            }
+            className={clsx(
+              "language-dropdown " + (languageDropdownOpen ? "show" : ""),
+              "relative z-10"
+            )}
           >
             <li
-              className="bg-white"
+              className={
+                language === "EN"
+                  ? "bg-red cursor-pointer"
+                  : "bg-black hover:bg-white hover:text-black cursor-pointer"
+              }
               onClick={() => {
                 setLanguage("EN");
                 setLanguageDropdownOpen(false);
@@ -187,7 +192,11 @@ const Navbar = () => {
               EN
             </li>
             <li
-              className="bg-black"
+              className={
+                language === "PT"
+                  ? "bg-red cursor-pointer"
+                  : "bg-black hover:bg-white hover:text-black cursor-pointer"
+              }
               onClick={() => {
                 setLanguage("PT");
                 setLanguageDropdownOpen(false);
