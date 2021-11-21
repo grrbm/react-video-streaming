@@ -162,8 +162,17 @@ const Navbar = () => {
           <div className="nav-link">{Language.SUBSCRIBE[language]}</div>
         </li>
         <li className="nav-item language-bar">
+          {languageDropdownOpen ? (
+            <button
+              tabIndex="-1"
+              className="fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full bg-black opacity-50 cursor-default"
+              onClick={() => setLanguageDropdownOpen(false)}
+            ></button>
+          ) : (
+            ""
+          )}
           <div
-            className="nav-link"
+            className={clsx("nav-link", "relative z-10")}
             onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
           >
             {language}
@@ -174,7 +183,7 @@ const Navbar = () => {
           <ul
             className={clsx(
               "language-dropdown " + (languageDropdownOpen ? "show" : ""),
-              "relative z-10"
+              "shadow-xl relative"
             )}
           >
             <li

@@ -61,6 +61,7 @@
 
 .language-dropdown.show {
   display: block;
+  z-index: 10;
 }
 
 .nav-link.show {
