@@ -13,6 +13,7 @@ const Navbar = () => {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [loginstatus, setLogin] = useState(false);
+  const [hamburgerDropdownOpen, setHamburgerDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [language, setLanguage] = useState("EN");
@@ -22,6 +23,15 @@ const Navbar = () => {
 
   const toggleVisible = () => {
     isOpen ? setIsOpen(false) : setIsOpen(true);
+  };
+  const toggleHamburger = () => {
+    if (hamburgerDropdownOpen) {
+      setIsOpen(false);
+      setHamburgerDropdownOpen(false);
+    } else {
+      setIsOpen(true);
+      setHamburgerDropdownOpen(true);
+    }
   };
   const navLink = document.querySelectorAll(".nav-link");
   navLink.forEach((n) =>
@@ -218,12 +228,31 @@ const Navbar = () => {
         </li>
       </ul>
       <div
-        className={"hamburger " + (isOpen ? "active" : "")}
-        onClick={toggleVisible}
+        className={clsx("hamburger " + (isOpen ? "active" : ""), "relative")}
+        onClick={toggleHamburger}
       >
         <span className="bar"></span>
         <span className="bar"></span>
         <span className="bar"></span>
+        <ul
+          className={clsx(
+            "hamburger-dropdown " + (hamburgerDropdownOpen ? "show" : ""),
+            "shadow-xl"
+          )}
+        >
+          <li
+            className={
+              selectedCategory === "Sport"
+                ? "bg-red cursor-pointer"
+                : "bg-black hover:bg-white hover:text-black cursor-pointer"
+            }
+            onClick={() => {
+              setSelectedCategory("Sport");
+            }}
+          >
+            {Language.SPORT[language]}
+          </li>
+        </ul>
       </div>
     </nav>
   );

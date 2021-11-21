@@ -101,6 +101,16 @@
   display: none;
 }
 
+.hamburger-dropdown {
+  position: absolute;
+  display: none;
+  top: 160%;
+  right: 5%;
+}
+.hamburger-dropdown.show {
+  display: block;
+  z-index: 10;
+}
 .bar {
   display: block;
   width: 25px;
