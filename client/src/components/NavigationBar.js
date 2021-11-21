@@ -57,7 +57,7 @@ const Navbar = () => {
         <li className="nav-item category">
           {categoryDropdownOpen ? (
             <button
-              tabindex="-1"
+              tabIndex="-1"
               className="fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full bg-black opacity-50 cursor-default"
               onClick={() => setCategoryDropdownOpen(false)}
             ></button>

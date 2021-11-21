@@ -25,7 +25,8 @@ const Video = ({ root, name }) => {
   return (
     <div className="rounded-md shadow-xs  hover:shadow-lg ">
       <a className="h-full" onClick={navigateToWatch}>
-        <img src={`data:image/jpg;base64,${videoThumb}`} />
+        {videoThumb ? <img src={`data:image/jpg;base64,${videoThumb}`} /> : ""}
+
         {/* <p
             className="p-2  overflow-hidden"
             style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}
