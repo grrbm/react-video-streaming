@@ -119,6 +119,15 @@ ul.hamburger-dropdown li,
 ul.hamburger-dropdown div {
   padding-top: 10px;
   padding-bottom: 10px;
+  font-weight: bold;
+  font-family: Archivo Black;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  display: flex;
+  cursor: pointer;
 }
 
 .bar {
