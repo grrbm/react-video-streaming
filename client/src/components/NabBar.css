@@ -110,6 +110,12 @@
   display: block;
   z-index: 10;
 }
+ul.hamburger-dropdown li,
+ul.hamburger-dropdown div {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .bar {
   display: block;
   width: 25px;

@@ -262,8 +262,8 @@ const Navbar = () => {
           <div
             className={
               selectedCategory === "Categories"
-                ? "w-full bg-red cursor-pointer"
-                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+                ? "w-full bg-red cursor-pointer pl-4"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
             }
             onClick={() => {
               setSelectedCategory("Categories");
@@ -283,8 +283,8 @@ const Navbar = () => {
               <div
                 className={
                   selectedCategory === "Sport"
-                    ? "w-full bg-red cursor-pointer pl-4"
-                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                    ? "w-full bg-red cursor-pointer pl-10"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-10"
                 }
                 onClick={() => {
                   setSelectedCategory("Sport");
@@ -295,8 +295,8 @@ const Navbar = () => {
               <div
                 className={
                   selectedCategory === "Music"
-                    ? "w-full bg-red cursor-pointer pl-4"
-                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                    ? "w-full bg-red cursor-pointer pl-10"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-10"
                 }
                 onClick={() => {
                   setSelectedCategory("Music");
@@ -307,8 +307,8 @@ const Navbar = () => {
               <div
                 className={
                   selectedCategory === "Comedy"
-                    ? "w-full bg-red cursor-pointer pl-4"
-                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                    ? "w-full bg-red cursor-pointer pl-10"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-10"
                 }
                 onClick={() => {
                   setSelectedCategory("Comedy");
@@ -319,8 +319,8 @@ const Navbar = () => {
               <div
                 className={
                   selectedCategory === "Podcast"
-                    ? "w-full bg-red cursor-pointer pl-4"
-                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                    ? "w-full bg-red cursor-pointer pl-10"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-10"
                 }
                 onClick={() => {
                   setSelectedCategory("Podcast");
@@ -331,8 +331,8 @@ const Navbar = () => {
               <div
                 className={
                   selectedCategory === "Fitness"
-                    ? "w-full bg-red cursor-pointer pl-4"
-                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                    ? "w-full bg-red cursor-pointer pl-10"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-10"
                 }
                 onClick={() => {
                   setSelectedCategory("Fitness");
@@ -348,8 +348,8 @@ const Navbar = () => {
           <li
             className={
               selectedCategory === "Subscribe"
-                ? "w-full bg-red cursor-pointer"
-                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+                ? "w-full bg-red cursor-pointer pl-4"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
             }
             onClick={() => {
               setSelectedCategory("Subscribe");
@@ -360,8 +360,8 @@ const Navbar = () => {
           <li
             className={
               selectedCategory === "Search"
-                ? "w-full bg-red cursor-pointer"
-                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+                ? "w-full bg-red cursor-pointer pl-4"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
             }
             onClick={() => {
               setSelectedCategory("Search");
@@ -372,8 +372,8 @@ const Navbar = () => {
           <li
             className={
               selectedCategory === "Download"
-                ? "w-full bg-red cursor-pointer"
-                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+                ? "w-full bg-red cursor-pointer pl-4"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
             }
             onClick={() => {
               setSelectedCategory("Download");
@@ -384,8 +384,8 @@ const Navbar = () => {
           <li
             className={
               selectedCategory === "Profile"
-                ? "w-full bg-red cursor-pointer"
-                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+                ? "w-full bg-red cursor-pointer pl-4"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
             }
             onClick={() => {
               setSelectedCategory("Profile");
@@ -396,8 +396,8 @@ const Navbar = () => {
           <div
             className={
               selectedCategory === "Language"
-                ? "w-full bg-red cursor-pointer"
-                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+                ? "w-full bg-red cursor-pointer pl-4"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
             }
             onClick={() => {
               setSelectedCategory("Language");
@@ -411,8 +411,8 @@ const Navbar = () => {
               <div
                 className={
                   selectedCategory === "EN"
-                    ? "w-full bg-red cursor-pointer pl-4"
-                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                    ? "w-full bg-red cursor-pointer pl-10"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-10"
                 }
                 onClick={() => {
                   setSelectedCategory("EN");
@@ -423,8 +423,8 @@ const Navbar = () => {
               <div
                 className={
                   selectedCategory === "PT"
-                    ? "w-full bg-red cursor-pointer pl-4"
-                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                    ? "w-full bg-red cursor-pointer pl-10"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-10"
                 }
                 onClick={() => {
                   setSelectedCategory("PT");
