@@ -416,6 +416,9 @@ const Navbar = () => {
                 }
                 onClick={() => {
                   setSelectedCategory("EN");
+                  setLanguage("EN");
+                  //setLanguageDropdownOpen(false);
+                  dispatch(setLang("EN"));
                 }}
               >
                 EN
@@ -428,6 +431,9 @@ const Navbar = () => {
                 }
                 onClick={() => {
                   setSelectedCategory("PT");
+                  setLanguage("PT");
+                  //setLanguageDropdownOpen(false);
+                  dispatch(setLang("PT"));
                 }}
               >
                 PT
