@@ -235,7 +235,7 @@ const Navbar = () => {
       </ul>
       <div
         id="hamburger-icon"
-        className={clsx("hamburger " + (isOpen ? "active" : ""), "relative")}
+        className={clsx("hamburger " + (isOpen ? "active" : ""), "")}
         onClick={toggleHamburger}
       >
         {hamburgerDropdownOpen ? (
@@ -255,7 +255,7 @@ const Navbar = () => {
         <ul
           className={clsx(
             "hamburger-dropdown " + (hamburgerDropdownOpen ? "show" : ""),
-            "shadow-xl w-full fixed"
+            "shadow-xl w-full absolute"
           )}
           onClick={(e) => e.stopPropagation()}
         >
