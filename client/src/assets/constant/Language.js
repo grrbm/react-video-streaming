@@ -155,6 +155,10 @@ export const LANGUAGES = {
   EN: "languages",
   PT: "linguagens",
 };
+export const LANGUAGE_UPPERCASE = {
+  EN: "LANGUAGE",
+  PT: "IDIOMA",
+};
 export const BLOCKCHAIN = {
   EN: "Blockchain",
   PT: "Blockchain",

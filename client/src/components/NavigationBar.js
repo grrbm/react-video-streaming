@@ -357,6 +357,49 @@ const Navbar = () => {
           >
             {Language.SUBSCRIBE[language]}
           </li>
+          <div
+            className={
+              selectedCategory === "Language"
+                ? "w-full bg-red cursor-pointer"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+            }
+            onClick={() => {
+              setSelectedCategory("Language");
+            }}
+          >
+            {Language.LANGUAGE_UPPERCASE[language]}
+          </div>
+          {selectedCategory === "Language" ||
+          ["EN", "PT"].includes(selectedCategory) ? (
+            <>
+              <div
+                className={
+                  selectedCategory === "EN"
+                    ? "w-full bg-red cursor-pointer pl-4"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                }
+                onClick={() => {
+                  setSelectedCategory("EN");
+                }}
+              >
+                EN
+              </div>
+              <div
+                className={
+                  selectedCategory === "PT"
+                    ? "w-full bg-red cursor-pointer pl-4"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                }
+                onClick={() => {
+                  setSelectedCategory("PT");
+                }}
+              >
+                PT
+              </div>
+            </>
+          ) : (
+            ""
+          )}
         </ul>
       </div>
     </nav>
