@@ -45,6 +45,10 @@ const Navbar = () => {
       setIsOpen(false);
     })
   );
+  const handleCloseHamburgerDropdown = () => {
+    setSelectedCategory(null);
+    setHamburgerDropdownOpen(false);
+  };
   const navigateToHome = () => {
     history.push("/");
   };
@@ -242,7 +246,7 @@ const Navbar = () => {
           <button
             tabIndex="-1"
             className="fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full bg-black opacity-50 cursor-default"
-            onClick={() => setHamburgerDropdownOpen(false)}
+            onClick={() => handleCloseHamburgerDropdown()}
           ></button>
         ) : (
           ""
