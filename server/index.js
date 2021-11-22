@@ -12,6 +12,12 @@ const db = config.get("mongodbURL");
 const Video = require("./models/Video");
 const bodyParser = require("body-parser");
 const path = require("path");
+const crypto = require("crypto");
+const multer = require("multer");
+const Grid = require("gridfs-stream");
+const { GridFsStorage } = require("multer-gridfs-storage");
+const FormData = require("form-data");
+const axios = require("axios");
 require("dotenv").config();
 
 app.use(fileUpload());
@@ -49,10 +55,32 @@ app.post("/video", (req, res) => {
           output: `${folder}/frame.jpg`,
           offsets: [1000],
         })
-          .then((result) => {
+          .then(async (result) => {
             let newVideo = new Video({ name: file.name, root: uuid });
             var imageData = fs.readFileSync(result);
             newVideo.videoThumbnail = imageData;
+            const videoM3u8 = fs.readFileSync(`${folder}/video.m3u8`);
+            const formData = new FormData();
+            formData.append("id", 1);
+            formData.append("string", "Text we want to add to the submit");
+            formData.append(
+              "video.m3u8",
+              fs.createReadStream(`${folder}/video.m3u8`)
+            );
+            const res = await axios({
+              method: "POST",
+              url: `http://localhost:${port}/upload`,
+              data: formData,
+              options: {
+                headers: formData.getHeaders(),
+              },
+            });
+            console.log("got response");
+
+            // const video1Ts = fs.readFileSync(`${folder}/video1.ts`);
+            // const video2Ts = fs.readFileSync(`${folder}/video2.ts`);
+            // const video3Ts = fs.readFileSync(`${folder}/video3.ts`);
+
             newVideo
               .save()
               .then((video) => {
@@ -113,6 +141,7 @@ app.post("/videoinformation", (req, res) => {
   });
 });
 
+/*  Connecting via Mongoose   */
 mongoose
   .connect(process.env.MONGODB_URI || db, {
     useNewUrlParser: true,
@@ -122,6 +151,44 @@ mongoose
   })
   .then(() => console.log("Connected to database"))
   .catch((err) => console.log(err));
+
+/*   GridFS Stream Configuration */
+let gfs;
+mongoose.connection.once("open", () => {
+  //Init stream
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  gfs.collection("uploads");
+});
+
+/*   Create Storage Engine    */
+const storage = new GridFsStorage({
+  url: process.env.MONGODB_URI || db,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString("hex") + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: "uploads",
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+const upload = multer({ storage });
+
+/*    Route to upload a File   */
+app.post("/upload", upload.single("file"), (req, res) => {
+  console.log("got here");
+  const response = { file: req.file };
+  res.json(response);
+});
+
+/*   Setting Port  */
 const port = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV === "production") {
