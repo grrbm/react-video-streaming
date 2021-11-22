@@ -279,18 +279,68 @@ const Navbar = () => {
             Language.PODCAST["EN"],
             Language.FITNESS["EN"],
           ].includes(selectedCategory) ? (
-            <div
-              className={
-                selectedCategory === "Sport"
-                  ? "w-full bg-red cursor-pointer pl-4"
-                  : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
-              }
-              onClick={() => {
-                setSelectedCategory("Sport");
-              }}
-            >
-              {Language.SPORT[language]}
-            </div>
+            <>
+              <div
+                className={
+                  selectedCategory === "Sport"
+                    ? "w-full bg-red cursor-pointer pl-4"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                }
+                onClick={() => {
+                  setSelectedCategory("Sport");
+                }}
+              >
+                {Language.SPORT[language]}
+              </div>
+              <div
+                className={
+                  selectedCategory === "Music"
+                    ? "w-full bg-red cursor-pointer pl-4"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                }
+                onClick={() => {
+                  setSelectedCategory("Music");
+                }}
+              >
+                {Language.MUSIC[language]}
+              </div>
+              <div
+                className={
+                  selectedCategory === "Comedy"
+                    ? "w-full bg-red cursor-pointer pl-4"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                }
+                onClick={() => {
+                  setSelectedCategory("Comedy");
+                }}
+              >
+                {Language.COMEDY[language]}
+              </div>
+              <div
+                className={
+                  selectedCategory === "Podcast"
+                    ? "w-full bg-red cursor-pointer pl-4"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                }
+                onClick={() => {
+                  setSelectedCategory("Podcast");
+                }}
+              >
+                {Language.PODCAST[language]}
+              </div>
+              <div
+                className={
+                  selectedCategory === "Fitness"
+                    ? "w-full bg-red cursor-pointer pl-4"
+                    : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+                }
+                onClick={() => {
+                  setSelectedCategory("Fitness");
+                }}
+              >
+                {Language.FITNESS[language]}
+              </div>
+            </>
           ) : (
             ""
           )}
