@@ -357,6 +357,42 @@ const Navbar = () => {
           >
             {Language.SUBSCRIBE[language]}
           </li>
+          <li
+            className={
+              selectedCategory === "Search"
+                ? "w-full bg-red cursor-pointer"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+            }
+            onClick={() => {
+              setSelectedCategory("Search");
+            }}
+          >
+            {Language.SEARCH[language]}
+          </li>
+          <li
+            className={
+              selectedCategory === "Download"
+                ? "w-full bg-red cursor-pointer"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+            }
+            onClick={() => {
+              setSelectedCategory("Download");
+            }}
+          >
+            {Language.DOWNLOAD[language]}
+          </li>
+          <li
+            className={
+              selectedCategory === "Profile"
+                ? "w-full bg-red cursor-pointer"
+                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer"
+            }
+            onClick={() => {
+              setSelectedCategory("Profile");
+            }}
+          >
+            {Language.PROFILE[language]}
+          </li>
           <div
             className={
               selectedCategory === "Language"

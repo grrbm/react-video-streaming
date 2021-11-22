@@ -30,6 +30,14 @@ export const DOWNLOAD = {
   EN: "DOWNLOAD",
   PT: "DOWNLOAD",
 };
+export const SEARCH = {
+  EN: "SEARCH",
+  PT: "BUSCA",
+};
+export const PROFILE = {
+  EN: "PROFILE",
+  PT: "PERFIL",
+};
 export const SUBSCRIBE = {
   EN: "SUBSCRIBE",
   PT: "SE INSCREVER",
