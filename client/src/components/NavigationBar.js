@@ -177,7 +177,7 @@ const Navbar = () => {
         <li className="nav-item subscribe">
           <div className="nav-link">{Language.SUBSCRIBE[language]}</div>
         </li>
-        <li className="nav-item language-bar">
+        <li className={"nav-item language-bar " + (isOpen ? "hide" : "")}>
           {languageDropdownOpen ? (
             <button
               tabIndex="-1"

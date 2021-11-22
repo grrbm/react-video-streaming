@@ -51,6 +51,11 @@
 
 .language-bar {
   position: relative;
+  display: inline-flex;
+}
+.language-bar.hide {
+  position: relative;
+  display: none;
 }
 
 .language-dropdown {
