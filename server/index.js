@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const config = require("config");
 const cors = require("cors");
-const fileUpload = require("express-fileupload");
 const extractFrames = require("ffmpeg-extract-frames");
 const { v4: uuidv4 } = require("uuid");
 const ffmpeg = require("fluent-ffmpeg");
@@ -20,7 +19,6 @@ const FormData = require("form-data");
 const axios = require("axios");
 require("dotenv").config();
 
-app.use(fileUpload());
 app.use(cors());
 app.post("/video", (req, res) => {
   if (req.files === null) {
@@ -182,11 +180,15 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 /*    Route to upload a File   */
-app.post("/upload", upload.single("file"), (req, res) => {
-  console.log("got here");
-  const response = { file: req.file };
-  res.json(response);
-});
+app.post(
+  "/profile-upload-single",
+  upload.single("profile-file"),
+  (req, res) => {
+    console.log("got here");
+    const response = { file: req.file };
+    res.json(response);
+  }
+);
 
 /*   Setting Port  */
 const port = process.env.PORT || 5000;
@@ -197,5 +199,7 @@ if (process.env.NODE_ENV === "production") {
 } else {
   app.use(express.static(path.join(__dirname, "/../client/src")));
 }
+//Always serve "public" folder (for testing purposes)
+app.use(express.static(__dirname + "/public"));
 
 app.listen(port, () => console.log("Server Started..."));
