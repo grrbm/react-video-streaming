@@ -24,7 +24,13 @@ const Navbar = () => {
   const toggleVisible = () => {
     isOpen ? setIsOpen(false) : setIsOpen(true);
   };
-  const toggleHamburger = () => {
+  const toggleHamburger = (event) => {
+    console.log("click happened in " + event.target);
+    console.log("click happened ID: " + event.target.id);
+    console.log("click happened VALUE: " + event.target.value);
+    console.log("click happened className: " + event.target.className);
+    console.log("click happened innerText: " + event.target.innerText);
+    console.log("click happened tagName: " + event.target.tagName);
     if (hamburgerDropdownOpen) {
       setIsOpen(false);
       setHamburgerDropdownOpen(false);
@@ -228,9 +234,19 @@ const Navbar = () => {
         </li>
       </ul>
       <div
+        id="hamburger-icon"
         className={clsx("hamburger " + (isOpen ? "active" : ""), "relative")}
         onClick={toggleHamburger}
       >
+        {hamburgerDropdownOpen ? (
+          <button
+            tabIndex="-1"
+            className="fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full bg-black opacity-50 cursor-default"
+            onClick={() => setHamburgerDropdownOpen(false)}
+          ></button>
+        ) : (
+          ""
+        )}
         <div className="relative">
           <span className="bar"></span>
           <span className="bar"></span>
@@ -241,6 +257,7 @@ const Navbar = () => {
             "hamburger-dropdown " + (hamburgerDropdownOpen ? "show" : ""),
             "shadow-xl w-full fixed"
           )}
+          onClick={(e) => e.stopPropagation()}
         >
           <div
             className={
