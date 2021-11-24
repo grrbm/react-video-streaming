@@ -31,10 +31,10 @@ app.get("/video/all", async (req, res) => {
     res.status(500).end();
   }
 });
-//Find video by ROOT name
-app.get("/video/:root", async (req, res) => {
+//Find video by file name
+app.get("/video/:name", async (req, res) => {
   try {
-    const video = await Video.findOne({ root: req.params.root });
+    const video = await Video.findOne({ name: req.params.name });
     res.json(video);
   } catch (error) {
     console.log(error);
@@ -78,7 +78,8 @@ let gfs;
 mongoose.connection.once("open", () => {
   //Init stream
   gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  gfs.collection("media.files");
+  //name of the bucket where media is going to be retrieved
+  gfs.collection("media");
 });
 
 /*   Create Storage Engine    */
@@ -116,11 +117,28 @@ app.post(
   }
 );
 
+app.get("/files", async (req, res) => {
+  try {
+    const files = await gfs.files.find().toArray();
+
+    res.json(files);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
 app.post("/video", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
   console.log("Uploading Started...");
+  gfs.exist(
+    { filename: "37ce67576e4646cfbbee429a2a150670.mp4" },
+    function (err, found) {
+      if (err) return handleError(err);
+      found ? console.log("File exists") : console.log("File does not exist");
+      res.send(found);
+    }
+  );
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || db,
@@ -139,18 +157,20 @@ app.post("/video", upload.single("file"), (req, res) => {
             return;
           }
           //--------------------------------------------------------------------
-          // // streaming from gridfs
-          // var readstream = gfs.createReadStream({
-          //   filename: req.file.filename,
-          // });
+          // streaming from gridfs
+          var readstream = gfs.createReadStream({
+            filename: req.file.filename,
+          });
 
-          // //error handling, e.g. file does not exist
-          // readstream.on("error", function (err) {
-          //   console.log("An error occurred!", err);
-          //   throw err;
-          // });
+          //error handling, e.g. file does not exist
+          readstream.on("error", function (err) {
+            console.log("An error occurred!", err);
+            throw err;
+          });
           try {
-            const conv = new ffmpeg({ source: "bigbuck.mp4" }).addOptions([
+            const conv = new ffmpeg({
+              source: readstream,
+            }).addOptions([
               "-profile:v baseline",
               "-level 3.0",
               "-s 1280x720",
