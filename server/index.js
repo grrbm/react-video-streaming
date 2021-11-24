@@ -139,30 +139,55 @@ app.post("/video", upload.single("file"), (req, res) => {
             return;
           }
           //--------------------------------------------------------------------
-          var proc = new ffmpeg(req.file.filename, video);
-          proc.takeScreenshots(
-            {
-              count: 1,
-              timemarks: ["1"], // number of seconds
-            },
-            "/thumbnails",
-            function (err) {
-              console.log("screenshots were saved");
-              let newVideo = new Video({ name: req.file.filename });
-              var imageData = fs.readFileSync(result);
-              newVideo.videoThumbnail = imageData;
-              newVideo
-                .save()
-                .then((video) => {
-                  console.log("Uploaded successfully");
-                  res.json(video);
-                })
-                .catch((err) => {
-                  console.log(err);
-                  res.status(500).end();
-                });
-            }
-          );
+          // // streaming from gridfs
+          // var readstream = gfs.createReadStream({
+          //   filename: req.file.filename,
+          // });
+
+          // //error handling, e.g. file does not exist
+          // readstream.on("error", function (err) {
+          //   console.log("An error occurred!", err);
+          //   throw err;
+          // });
+          try {
+            const conv = new ffmpeg({ source: "bigbuck.mp4" });
+            conv
+              .setStartTime(2) //Can be in "HH:MM:SS" format also
+              .setDuration(10)
+              .on("start", function (commandLine) {
+                console.log("Spawned FFmpeg with command: " + commandLine);
+              })
+              .on("error", function (err) {
+                console.log("error: ", +err);
+              })
+              .on("end", function (err) {
+                if (!err) {
+                  console.log("conversion Done");
+                  extractFrames({
+                    input: "video",
+                    output: "thumbnails/frame.jpg",
+                  }).then(async (result) => {
+                    let newVideo = new Video({ name: req.file.filename });
+                    var imageData = fs.readFileSync(result);
+                    newVideo.videoThumbnail = imageData;
+                    newVideo
+                      .save()
+                      .then((video) => {
+                        console.log("Uploaded successfully");
+                        res.json(video);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        res.status(500).end();
+                      });
+                  });
+                }
+              })
+              .output("video.m3u8")
+              .run();
+          } catch (error) {
+            console.log("Error with ffmpeg. " + error);
+          }
         }
       );
     }
