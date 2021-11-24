@@ -1,12 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const config = require("config");
 const cors = require("cors");
 const extractFrames = require("ffmpeg-extract-frames");
 const { v4: uuidv4 } = require("uuid");
 const ffmpeg = require("fluent-ffmpeg");
 const app = express();
 const fs = require("fs");
+const config = require("config");
 const db = config.get("mongodbURL");
 const Video = require("./models/Video");
 const bodyParser = require("body-parser");
@@ -17,88 +17,11 @@ const Grid = require("gridfs-stream");
 const { GridFsStorage } = require("multer-gridfs-storage");
 const FormData = require("form-data");
 const axios = require("axios");
+const mongodb = require("mongodb");
 require("dotenv").config();
 
 app.use(cors());
-app.post("/video", (req, res) => {
-  if (req.files === null) {
-    return res.status(400).json({ msg: "No file uploaded" });
-  }
-  console.log("Uploading Started...");
-  const uuid = uuidv4();
-  const file = req.files.file;
-  const folder = `${__dirname}/videos/${uuid}`;
-  fs.mkdirSync(folder);
-  const path = `${folder}/video`;
-  file.mv(path, (err) => {
-    console.log("2" + path);
-    if (err) {
-      console.error(err);
-      return res.status(500);
-    }
-    ffmpeg(path, { timeout: 4320 })
-      .addOptions([
-        "-profile:v baseline", // baseline profile (level 3.0) for H264 video codec
-        "-level 3.0",
-        "-s 1280x720", // 1280px width, 720px height output video dimensions
-        "-start_number 0", // start the first .ts segment at index 0
-        "-hls_time 10", // 10 second segment duration
-        "-hls_list_size 0", // Maxmimum number of playlist entries (0 means all entries/infinite)
-        "-f hls", // HLS format
-      ])
-      .output(`${folder}/video.m3u8`)
-      .on("end", () => {
-        extractFrames({
-          input: `${folder}/video`,
-          output: `${folder}/frame.jpg`,
-          offsets: [1000],
-        })
-          .then(async (result) => {
-            let newVideo = new Video({ name: file.name, root: uuid });
-            var imageData = fs.readFileSync(result);
-            newVideo.videoThumbnail = imageData;
-            const videoM3u8 = fs.readFileSync(`${folder}/video.m3u8`);
-            const formData = new FormData();
-            formData.append("id", 1);
-            formData.append("string", "Text we want to add to the submit");
-            formData.append(
-              "video.m3u8",
-              fs.createReadStream(`${folder}/video.m3u8`)
-            );
-            const res = await axios({
-              method: "POST",
-              url: `http://localhost:${port}/upload`,
-              data: formData,
-              options: {
-                headers: formData.getHeaders(),
-              },
-            });
-            console.log("got response");
 
-            // const video1Ts = fs.readFileSync(`${folder}/video1.ts`);
-            // const video2Ts = fs.readFileSync(`${folder}/video2.ts`);
-            // const video3Ts = fs.readFileSync(`${folder}/video3.ts`);
-
-            newVideo
-              .save()
-              .then((video) => {
-                console.log("Uploaded successfully");
-                res.json(video);
-              })
-              .catch((err) => {
-                console.log(err);
-                res.status(500).end();
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(500).end();
-          });
-      })
-      .run();
-  });
-});
-app.use("/video", express.static("videos"));
 app.get("/video/all", async (req, res) => {
   try {
     const videos = await Video.find();
@@ -155,7 +78,7 @@ let gfs;
 mongoose.connection.once("open", () => {
   //Init stream
   gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  gfs.collection("uploads");
+  gfs.collection("media.files");
 });
 
 /*   Create Storage Engine    */
@@ -170,25 +93,81 @@ const storage = new GridFsStorage({
         const filename = buf.toString("hex") + path.extname(file.originalname);
         const fileInfo = {
           filename: filename,
-          bucketName: "uploads",
+          bucketName: "media",
         };
         resolve(fileInfo);
       });
     });
   },
 });
-const upload = multer({ storage });
+const upload = multer({ storage: storage, preservePath: true });
 
 /*    Route to upload a File   */
 app.post(
   "/profile-upload-single",
   upload.single("profile-file"),
   (req, res) => {
+    if (!req.file) {
+      res.status(500).send("Must upload a file !");
+    }
     console.log("got here");
     const response = { file: req.file };
     res.json(response);
   }
 );
+
+app.post("/video", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ msg: "No file uploaded" });
+  }
+  console.log("Uploading Started...");
+
+  mongodb.MongoClient.connect(
+    process.env.MONGODB_URI || db,
+    function (error, client) {
+      if (error) {
+        res.status(500).json(error);
+        return;
+      }
+      const db = client.db("ReactVideoStreaming");
+      // GridFS Collection
+      db.collection("media.files").findOne(
+        { filename: req.file.filename },
+        (err, video) => {
+          if (!video) {
+            res.status(404).send(`No video with name ${filename} exists !`);
+            return;
+          }
+          //--------------------------------------------------------------------
+          var proc = new ffmpeg(req.file.filename, video);
+          proc.takeScreenshots(
+            {
+              count: 1,
+              timemarks: ["1"], // number of seconds
+            },
+            "/thumbnails",
+            function (err) {
+              console.log("screenshots were saved");
+              let newVideo = new Video({ name: req.file.filename });
+              var imageData = fs.readFileSync(result);
+              newVideo.videoThumbnail = imageData;
+              newVideo
+                .save()
+                .then((video) => {
+                  console.log("Uploaded successfully");
+                  res.json(video);
+                })
+                .catch((err) => {
+                  console.log(err);
+                  res.status(500).end();
+                });
+            }
+          );
+        }
+      );
+    }
+  );
+});
 
 /*   Setting Port  */
 const port = process.env.PORT || 5000;
@@ -201,5 +180,7 @@ if (process.env.NODE_ENV === "production") {
 }
 //Always serve "public" folder (for testing purposes)
 app.use(express.static(__dirname + "/public"));
+//Serve "videos" folder
+app.use("/video", express.static("videos"));
 
 app.listen(port, () => console.log("Server Started..."));
