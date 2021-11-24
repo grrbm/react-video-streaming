@@ -42,18 +42,8 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
     const video = videoRef.current;
     if (!(video.src || source)) {
       const id = match.params.id;
-      const HlsURL = `/video/${id}/video.m3u8`;
-      const normalURL = `/video/${id}/video`;
-      if (Hls.isSupported()) {
-        var hls = new Hls();
-        hls.loadSource(HlsURL);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          play && video.play();
-        });
-      } else {
-        setSource({ src: normalURL });
-      }
+      const normalURL = `/mongo-video`;
+      setSource({ src: normalURL });
     }
     play ? video.play() : video.pause();
     video.volume = volume ? 1 : 0;
@@ -85,12 +75,8 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
           ref={videoRef}
           controls={true}
           className="w-full sm:w-3/4 sm:mx-auto h-full"
-          onTimeUpdate={animateBar}
-          onPlaying={() => setStall(false)}
-          onWaiting={() => setStall(true)}
-          onStalled={() => setStall(true)}
         >
-          {source && <source src={source.src}></source>}
+          {source && <source src={source.src} type="video/mp4"></source>}
         </video>
       </div>
       <div className="w-full sm:w-3/4 mt-8 md:mt-16 sm:mx-auto h-full bg-gray-1000">
