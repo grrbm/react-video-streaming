@@ -222,6 +222,67 @@ app.post("/video", upload.single("file"), (req, res) => {
   );
 });
 
+app.get("/mongo-video", function (req, res) {
+  mongodb.MongoClient.connect(
+    process.env.MONGODB_URI || db,
+    function (error, client) {
+      if (error) {
+        res.status(500).json(error);
+        return;
+      }
+
+      const range = req.headers.range;
+      if (!range) {
+        res.status(400).send("Requires Range header");
+      }
+
+      const db = client.db("ReactVideoStreaming");
+      db.collection("media.files")
+        .find({})
+        .toArray(function (err, results) {
+          console.log("got the results;");
+        });
+      // GridFS Collection
+      db.collection("media.files").findOne(
+        { filename: "9e4352e1ee4f35654a3e75c75faed4b8.mp4" },
+        (err, video) => {
+          if (!video) {
+            res.status(404).send("No video uploaded!");
+            return;
+          }
+
+          // Create response headers
+          const videoSize = video.length;
+          const start = Number(range.replace(/\D/g, ""));
+          const end = videoSize - 1;
+
+          const contentLength = end - start + 1;
+          const headers = {
+            "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": contentLength,
+            "Content-Type": "video/mp4",
+          };
+
+          // HTTP Status 206 for Partial Content
+          res.writeHead(206, headers);
+
+          const bucket = new mongodb.GridFSBucket(db, { bucketName: "media" });
+          const downloadStream = bucket.openDownloadStreamByName(
+            "9e4352e1ee4f35654a3e75c75faed4b8.mp4",
+            {
+              start,
+            }
+          );
+
+          // Finally pipe video to response
+          downloadStream.pipe(res);
+        }
+      );
+    }
+  );
+});
+
 /*   Setting Port  */
 const port = process.env.PORT || 5000;
 
