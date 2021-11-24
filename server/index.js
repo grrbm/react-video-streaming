@@ -150,7 +150,14 @@ app.post("/video", upload.single("file"), (req, res) => {
           //   throw err;
           // });
           try {
-            const conv = new ffmpeg({ source: "bigbuck.mp4" });
+            const conv = new ffmpeg({ source: "bigbuck.mp4" }).addOptions([
+              "-profile:v baseline",
+              "-level 3.0",
+              "-s 1280x720",
+              "-hls_time 10",
+              "-hls_list_size 0",
+              "-f hls",
+            ]);
             conv
               .setStartTime(2) //Can be in "HH:MM:SS" format also
               .setDuration(10)
@@ -158,14 +165,16 @@ app.post("/video", upload.single("file"), (req, res) => {
                 console.log("Spawned FFmpeg with command: " + commandLine);
               })
               .on("error", function (err) {
-                console.log("error: ", +err);
+                console.log("error: ", err);
               })
+              .output("video")
               .on("end", function (err) {
                 if (!err) {
                   console.log("conversion Done");
                   extractFrames({
                     input: "video",
                     output: "thumbnails/frame.jpg",
+                    offsets: [1000],
                   }).then(async (result) => {
                     let newVideo = new Video({ name: req.file.filename });
                     var imageData = fs.readFileSync(result);
@@ -177,13 +186,12 @@ app.post("/video", upload.single("file"), (req, res) => {
                         res.json(video);
                       })
                       .catch((err) => {
-                        console.log(err);
+                        console.log("There was an error here: " + err);
                         res.status(500).end();
                       });
                   });
                 }
               })
-              .output("video.m3u8")
               .run();
           } catch (error) {
             console.log("Error with ffmpeg. " + error);
