@@ -29,7 +29,7 @@ app.get("/video/all", async (req, res) => {
     const videos = await Video.find();
     res.json(videos);
   } catch (error) {
-    console.log(error);
+    console.log("error fetching all videos: " + error);
     res.status(500).end();
   }
 });
@@ -39,7 +39,7 @@ app.get("/video/:name", async (req, res) => {
     const video = await Video.findOne({ name: req.params.name });
     res.json(video);
   } catch (error) {
-    console.log(error);
+    console.log("Error finding video by name: " + error);
     res.status(500).end();
   }
 });
