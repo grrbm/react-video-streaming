@@ -51,7 +51,7 @@ app.post("/videoinformation", (req, res) => {
     else {
       video.group = req.body.group;
       video.videoinformation = req.body.videoInformation;
-      console.log(req.body.videoInformation);
+      console.log("Posting video information: " + req.body.videoInformation);
       video
         .save()
         .then((video) => {

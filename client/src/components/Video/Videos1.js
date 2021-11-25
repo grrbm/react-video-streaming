@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { fetchVideos } from "../../actions/appActions";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
@@ -11,6 +11,8 @@ import { useTheme } from "@material-ui/core";
 
 const Videos1 = (props) => {
   const { groupId } = props;
+  const carouselRef = useRef();
+
   const videos = useSelector((state) =>
     state.app.videos1.filter((video) => {
       //return video.group === groupId;
@@ -43,6 +45,9 @@ const Videos1 = (props) => {
       slideToScroll={1}
       cellSpacing={40}
       disableEdgeSwiping={true}
+      initialSlideHeight={338}
+      frameOverflow={"visible"}
+      innerRef={carouselRef}
       renderCenterLeftControls={({ previousSlide, currentSlide }) =>
         currentSlide !== 0 ? (
           <button onClick={previousSlide} className="nuka-carousel-button">

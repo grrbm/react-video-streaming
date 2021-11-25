@@ -91,6 +91,9 @@ rgba(164, 164, 164, 0.44);  rgba(18, 18, 18, 0.47);*/
   margin-top: 45px;
 }
 
+.slider-list {
+  min-height: 338px;
+}
 .content {
   padding: 40px 40px;
   background: linear-gradient(180deg, #1d1c1c 0%, #121212 100%);
