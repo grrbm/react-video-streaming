@@ -153,7 +153,9 @@ app.post("/video", upload.single("file"), (req, res) => {
         { filename: req.file.filename },
         (err, video) => {
           if (!video) {
-            res.status(404).send(`No video with name ${filename} exists !`);
+            res
+              .status(404)
+              .send(`No video with name ${req.file.filename} exists !`);
             return;
           }
           //--------------------------------------------------------------------
