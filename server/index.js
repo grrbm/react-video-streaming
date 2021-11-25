@@ -1,78 +1,27 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const config = require("config");
 const cors = require("cors");
-const fileUpload = require("express-fileupload");
 const extractFrames = require("ffmpeg-extract-frames");
 const { v4: uuidv4 } = require("uuid");
 const ffmpeg = require("fluent-ffmpeg");
 const app = express();
 const fs = require("fs");
+const config = require("config");
 const db = config.get("mongodbURL");
 const Video = require("./models/Video");
 const bodyParser = require("body-parser");
 const path = require("path");
+const crypto = require("crypto");
+const multer = require("multer");
+const Grid = require("gridfs-stream");
+const { GridFsStorage } = require("multer-gridfs-storage");
+const FormData = require("form-data");
+const axios = require("axios");
+const mongodb = require("mongodb");
 require("dotenv").config();
 
-app.use(fileUpload());
 app.use(cors());
-app.post("/video", (req, res) => {
-  if (req.files === null) {
-    return res.status(400).json({ msg: "No file uploaded" });
-  }
-  console.log("Uploading Started...");
-  const uuid = uuidv4();
-  const file = req.files.file;
-  const folder = `${__dirname}/videos/${uuid}`;
-  fs.mkdirSync(folder);
-  const path = `${folder}/video`;
-  file.mv(path, (err) => {
-    console.log("2" + path);
-    if (err) {
-      console.error(err);
-      return res.status(500);
-    }
-    ffmpeg(path, { timeout: 4320 })
-      .addOptions([
-        "-profile:v baseline", // baseline profile (level 3.0) for H264 video codec
-        "-level 3.0",
-        "-s 1280x720", // 1280px width, 720px height output video dimensions
-        "-start_number 0", // start the first .ts segment at index 0
-        "-hls_time 10", // 10 second segment duration
-        "-hls_list_size 0", // Maxmimum number of playlist entries (0 means all entries/infinite)
-        "-f hls", // HLS format
-      ])
-      .output(`${folder}/video.m3u8`)
-      .on("end", () => {
-        extractFrames({
-          input: `${folder}/video`,
-          output: `${folder}/frame.jpg`,
-          offsets: [1000],
-        })
-          .then((result) => {
-            let newVideo = new Video({ name: file.name, root: uuid });
-            var imageData = fs.readFileSync(result);
-            newVideo.videoThumbnail = imageData;
-            newVideo
-              .save()
-              .then((video) => {
-                console.log("Uploaded successfully");
-                res.json(video);
-              })
-              .catch((err) => {
-                console.log(err);
-                res.status(500).end();
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(500).end();
-          });
-      })
-      .run();
-  });
-});
-app.use("/video", express.static("videos"));
+
 app.get("/video/all", async (req, res) => {
   try {
     const videos = await Video.find();
@@ -82,10 +31,10 @@ app.get("/video/all", async (req, res) => {
     res.status(500).end();
   }
 });
-//Find video by ROOT name
-app.get("/video/:root", async (req, res) => {
+//Find video by file name
+app.get("/video/:name", async (req, res) => {
   try {
-    const video = await Video.findOne({ root: req.params.root });
+    const video = await Video.findOne({ name: req.params.name });
     res.json(video);
   } catch (error) {
     console.log(error);
@@ -113,6 +62,7 @@ app.post("/videoinformation", (req, res) => {
   });
 });
 
+/*  Connecting via Mongoose   */
 mongoose
   .connect(process.env.MONGODB_URI || db, {
     useNewUrlParser: true,
@@ -122,6 +72,218 @@ mongoose
   })
   .then(() => console.log("Connected to database"))
   .catch((err) => console.log(err));
+
+/*   GridFS Stream Configuration */
+let gfs;
+mongoose.connection.once("open", () => {
+  //Init stream
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  //name of the bucket where media is going to be retrieved
+  gfs.collection("media");
+});
+
+/*   Create Storage Engine    */
+const storage = new GridFsStorage({
+  url: process.env.MONGODB_URI || db,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString("hex") + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: "media",
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+const upload = multer({ storage: storage, preservePath: true });
+
+/*    Route to upload a File   */
+app.post(
+  "/profile-upload-single",
+  upload.single("profile-file"),
+  (req, res) => {
+    if (!req.file) {
+      res.status(500).send("Must upload a file !");
+    }
+    console.log("got here");
+    const response = { file: req.file };
+    res.json(response);
+  }
+);
+
+app.get("/files", async (req, res) => {
+  try {
+    const files = await gfs.files.find().toArray();
+
+    res.json(files);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+app.post("/video", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ msg: "No file uploaded" });
+  }
+  console.log("Uploading Started...");
+  gfs.exist(
+    { filename: "37ce67576e4646cfbbee429a2a150670.mp4" },
+    function (err, found) {
+      if (err) return handleError(err);
+      found ? console.log("File exists") : console.log("File does not exist");
+      res.send(found);
+    }
+  );
+
+  mongodb.MongoClient.connect(
+    process.env.MONGODB_URI || db,
+    function (error, client) {
+      if (error) {
+        res.status(500).json(error);
+        return;
+      }
+      const db = client.db("ReactVideoStreaming");
+      // GridFS Collection
+      db.collection("media.files").findOne(
+        { filename: req.file.filename },
+        (err, video) => {
+          if (!video) {
+            res.status(404).send(`No video with name ${filename} exists !`);
+            return;
+          }
+          //--------------------------------------------------------------------
+          // streaming from gridfs
+          var readstream = gfs.createReadStream({
+            filename: req.file.filename,
+          });
+
+          //error handling, e.g. file does not exist
+          readstream.on("error", function (err) {
+            console.log("An error occurred!", err);
+            throw err;
+          });
+          try {
+            const conv = new ffmpeg({
+              source: readstream,
+            }).addOptions([
+              "-profile:v baseline",
+              "-level 3.0",
+              "-s 1280x720",
+              "-hls_time 10",
+              "-hls_list_size 0",
+              "-f hls",
+            ]);
+            conv
+              .setStartTime(2) //Can be in "HH:MM:SS" format also
+              .setDuration(10)
+              .on("start", function (commandLine) {
+                console.log("Spawned FFmpeg with command: " + commandLine);
+              })
+              .on("error", function (err) {
+                console.log("error: ", err);
+              })
+              .output("video")
+              .on("end", function (err) {
+                if (!err) {
+                  console.log("conversion Done");
+                  extractFrames({
+                    input: "video",
+                    output: "thumbnails/frame.jpg",
+                    offsets: [1000],
+                  }).then(async (result) => {
+                    let newVideo = new Video({ name: req.file.filename });
+                    var imageData = fs.readFileSync(result);
+                    newVideo.videoThumbnail = imageData;
+                    newVideo
+                      .save()
+                      .then((video) => {
+                        console.log("Uploaded successfully");
+                        res.json(video);
+                      })
+                      .catch((err) => {
+                        console.log("There was an error here: " + err);
+                        res.status(500).end();
+                      });
+                  });
+                }
+              })
+              .run();
+          } catch (error) {
+            console.log("Error with ffmpeg. " + error);
+          }
+        }
+      );
+    }
+  );
+});
+
+app.get("/mongo-video/:filename", function (req, res) {
+  mongodb.MongoClient.connect(
+    process.env.MONGODB_URI || db,
+    function (error, client) {
+      if (error) {
+        res.status(500).json(error);
+        return;
+      }
+
+      const range = req.headers.range;
+      if (!range) {
+        res.status(400).send("Requires Range header");
+      }
+
+      const db = client.db("ReactVideoStreaming");
+      db.collection("media.files")
+        .find({})
+        .toArray(function (err, results) {
+          console.log("got the results;");
+        });
+      // GridFS Collection
+      db.collection("media.files").findOne(
+        { filename: req.params.filename },
+        (err, video) => {
+          if (!video) {
+            res.status(404).send("No video uploaded!");
+            return;
+          }
+
+          // Create response headers
+          const videoSize = video.length;
+          const start = Number(range.replace(/\D/g, ""));
+          const end = videoSize - 1;
+
+          const contentLength = end - start + 1;
+          const headers = {
+            "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": contentLength,
+            "Content-Type": "video/mp4",
+          };
+
+          // HTTP Status 206 for Partial Content
+          res.writeHead(206, headers);
+
+          const bucket = new mongodb.GridFSBucket(db, { bucketName: "media" });
+          const downloadStream = bucket.openDownloadStreamByName(
+            req.params.filename,
+            {
+              start,
+            }
+          );
+
+          // Finally pipe video to response
+          downloadStream.pipe(res);
+        }
+      );
+    }
+  );
+});
+
+/*   Setting Port  */
 const port = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV === "production") {
@@ -130,5 +292,9 @@ if (process.env.NODE_ENV === "production") {
 } else {
   app.use(express.static(path.join(__dirname, "/../client/src")));
 }
+//Always serve "public" folder (for testing purposes)
+app.use(express.static(__dirname + "/public"));
+//Serve "videos" folder
+app.use("/video", express.static("videos"));
 
 app.listen(port, () => console.log("Server Started..."));

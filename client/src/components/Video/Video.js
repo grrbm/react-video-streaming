@@ -8,10 +8,10 @@ const Video = ({ root, name }) => {
   const history = useHistory();
   const [videoThumb, setVideoThumb] = useState();
   const navigateToWatch = () => {
-    history.push(`/watch/${root}`);
+    history.push(`/watch/${name}`);
   };
   useEffect(() => {
-    Axios.get(`/video/${root}`)
+    Axios.get(`/video/${name}`)
       .then(({ data: video }) => {
         let videoThumbnail = Buffer.from(video.videoThumbnail.data);
         let bufferString = videoThumbnail.toString("base64");
