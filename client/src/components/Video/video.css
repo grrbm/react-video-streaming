@@ -11,9 +11,10 @@
 
 .slider-control-centerleft .disabled-button,
 .slider-control-centerright .disabled-button {
-  color: rgba(164, 164, 164, 0.44);
+  display: none;
+  /* color: rgba(164, 164, 164, 0.44);
   background: rgba(18, 18, 18, 0.47);
-  padding: 10px 5px;
+  padding: 10px 5px; */
 }
 
 .slider-control-centerright .nuka-carousel-button,
