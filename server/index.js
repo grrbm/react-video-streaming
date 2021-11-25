@@ -18,6 +18,7 @@ const { GridFsStorage } = require("multer-gridfs-storage");
 const FormData = require("form-data");
 const axios = require("axios");
 const mongodb = require("mongodb");
+const node_media_server = require("./media_server");
 require("dotenv").config();
 
 const mongoURI = process.env.MONGODB_URI || db;
@@ -289,3 +290,4 @@ app.use(express.static(__dirname + "/public"));
 app.use("/video", express.static("videos"));
 
 app.listen(port, () => console.log("Server Started..."));
+node_media_server.run();
