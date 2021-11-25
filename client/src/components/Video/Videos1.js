@@ -46,7 +46,7 @@ const Videos1 = (props) => {
       cellSpacing={40}
       disableEdgeSwiping={true}
       initialSlideHeight={338}
-      frameOverflow={"visible"}
+      frameOverflow={"hidden"}
       innerRef={carouselRef}
       renderCenterLeftControls={({ previousSlide, currentSlide }) =>
         currentSlide !== 0 ? (
