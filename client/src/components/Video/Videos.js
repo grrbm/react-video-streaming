@@ -1,13 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchVideos } from "../../actions/appActions";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
+import Axios from "axios";
 
 const ShowVideos = ({ root, name }) => {
+  const [videoThumb, setVideoThumb] = useState();
+  useEffect(() => {
+    Axios.get(`/video/${name}`)
+      .then(({ data: video }) => {
+        let videoThumbnail = Buffer.from(video.videoThumbnail.data);
+        let bufferString = videoThumbnail.toString("base64");
+        setVideoThumb(bufferString);
+      })
+      .catch(({ response = {} }) => {
+        const status = response.status;
+        if (status === 500) console.log("error");
+      });
+  }, []);
   return (
     <div className="rounded-md shadow-xs  hover:shadow-lg ">
       <a className="h-full" href={`/watch/${root}`}>
-        <img className="rounded-t-md" src={`/video/${root}/frame.jpg`} />
+        {videoThumb ? (
+          <img
+            className="rounded-t-md"
+            src={`data:image/jpg;base64,${videoThumb}`}
+          />
+        ) : (
+          ""
+        )}
         <p
           className="p-2  overflow-hidden"
           style={{ textOverflow: "ellipsis", whiteSpace: "nowrap" }}
