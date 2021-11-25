@@ -131,14 +131,14 @@ app.post("/video", upload.single("file"), (req, res) => {
     return res.status(400).json({ msg: "No file uploaded" });
   }
   console.log("Uploading Started...");
-  gfs.exist(
-    { filename: "37ce67576e4646cfbbee429a2a150670.mp4" },
-    function (err, found) {
-      if (err) return handleError(err);
-      found ? console.log("File exists") : console.log("File does not exist");
-      res.send(found);
-    }
-  );
+  // gfs.exist(
+  //   { filename: "37ce67576e4646cfbbee429a2a150670.mp4" },
+  //   function (err, found) {
+  //     if (err) return handleError(err);
+  //     found ? console.log("File exists") : console.log("File does not exist");
+  //     res.send(found);
+  //   }
+  // );
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || db,
