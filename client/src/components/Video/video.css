@@ -25,12 +25,12 @@
 
 .slider-control-centerright {
   top: 20% !important;
-  right: -10px !important;
+  /* right: -10px !important; */
 }
 
 .slider-control-centerleft {
   top: 20% !important;
-  left: -10px !important;
+  /* left: -10px !important; */
 }
 
 .slider {
