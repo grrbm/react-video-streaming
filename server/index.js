@@ -222,7 +222,7 @@ app.post("/video", upload.single("file"), (req, res) => {
   );
 });
 
-app.get("/mongo-video", function (req, res) {
+app.get("/mongo-video/:filename", function (req, res) {
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || db,
     function (error, client) {
@@ -244,7 +244,7 @@ app.get("/mongo-video", function (req, res) {
         });
       // GridFS Collection
       db.collection("media.files").findOne(
-        { filename: "9e4352e1ee4f35654a3e75c75faed4b8.mp4" },
+        { filename: req.params.filename },
         (err, video) => {
           if (!video) {
             res.status(404).send("No video uploaded!");
@@ -269,7 +269,7 @@ app.get("/mongo-video", function (req, res) {
 
           const bucket = new mongodb.GridFSBucket(db, { bucketName: "media" });
           const downloadStream = bucket.openDownloadStreamByName(
-            "9e4352e1ee4f35654a3e75c75faed4b8.mp4",
+            req.params.filename,
             {
               start,
             }

@@ -42,7 +42,7 @@ const VideoPlayerAlt = ({ events, root, name, match }) => {
     const video = videoRef.current;
     if (!(video.src || source)) {
       const id = match.params.id;
-      const normalURL = `/mongo-video`;
+      const normalURL = `/mongo-video/${id}`;
       setSource({ src: normalURL });
     }
     play ? video.play() : video.pause();
