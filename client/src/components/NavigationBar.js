@@ -7,6 +7,7 @@ import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { SET_LANG } from "../actions/types";
 import * as Language from "../assets/constant/Language";
+import Modal from "./Modal";
 import clsx from "clsx";
 
 const Navbar = () => {
@@ -16,6 +17,7 @@ const Navbar = () => {
   const [hamburgerDropdownOpen, setHamburgerDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const [loginModalActive, setLoginModalActive] = useState(false);
   const [language, setLanguage] = useState("EN");
   const [selectedCategory, setSelectedCategory] = useState();
   const dispatch = useDispatch();
@@ -25,12 +27,6 @@ const Navbar = () => {
     isOpen ? setIsOpen(false) : setIsOpen(true);
   };
   const toggleHamburger = (event) => {
-    console.log("click happened in " + event.target);
-    console.log("click happened ID: " + event.target.id);
-    console.log("click happened VALUE: " + event.target.value);
-    console.log("click happened className: " + event.target.className);
-    console.log("click happened innerText: " + event.target.innerText);
-    console.log("click happened tagName: " + event.target.tagName);
     if (hamburgerDropdownOpen) {
       setIsOpen(false);
       setHamburgerDropdownOpen(false);
@@ -54,6 +50,10 @@ const Navbar = () => {
   };
   const navigateToUpload = () => {
     history.push("/upload");
+  };
+  const handleLogin = () => {
+    console.log("handling login");
+    setLoginModalActive(true);
   };
   useEffect(() => {
     const handleEscape = (e) => {
@@ -173,7 +173,8 @@ const Navbar = () => {
         <li className="nav-item download" onClick={navigateToUpload}>
           <div className="nav-link"> {Language.DOWNLOAD[language]} </div>
         </li>
-        <li className="nav-item">
+        <li className="nav-item profile" onClick={handleLogin}>
+          {loginModalActive && <Modal setModalActive={setLoginModalActive} />}
           <div className="nav-link">
             <FaUserAlt />
           </div>
