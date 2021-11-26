@@ -25,6 +25,9 @@ const mongoURI = process.env.MONGODB_URI || db;
 
 app.use(cors());
 
+/** Add imported routes **/
+app.use("/streams", require("./routes/streams"));
+
 app.get("/video/all", async (req, res) => {
   try {
     const videos = await Video.find();
