@@ -24,14 +24,28 @@ const RegisterModal = ({ setModalActive }) => {
           >
             <input
               className="textfield"
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              autocomplete="autocomplete_off_hack_asfjda"
+              required
+            />
+            <input
+              className="textfield"
+              type="email"
+              name="email"
               placeholder="E-mail"
-              autocomplete="autocomplete_off_hack_138r!n"
+              placeholder="Enter email"
+              autocomplete="autocomplete_off_hack_541gds"
+              required
             />
             <input
               className="textfield"
               type="password"
+              name="password"
               placeholder="Password"
-              autocomplete="autocomplete_off_hack_xfr4!k"
+              autocomplete="autocomplete_off_hack_fdsa53s"
+              required
             />
             <br />
             <button type="submit">Register</button>
