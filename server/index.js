@@ -43,6 +43,10 @@ app.get("/video/all", async (req, res) => {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "./views"));
 
+/* Add login/register routes */
+app.use("/login", require("./routes/login"));
+app.use("/register", require("./routes/register"));
+
 /* Passport Initialization */
 
 app.use(passport.initialize());
