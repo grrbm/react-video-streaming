@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { SET_LANG } from "../actions/types";
 import * as Language from "../assets/constant/Language";
 import Modal from "./Modal";
+import RegisterModal from "./RegisterModal";
 import clsx from "clsx";
 
 const Navbar = () => {
@@ -18,6 +19,7 @@ const Navbar = () => {
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [loginModalActive, setLoginModalActive] = useState(false);
+  const [registerModalActive, setRegisterModalActive] = useState(false);
   const [language, setLanguage] = useState("EN");
   const [selectedCategory, setSelectedCategory] = useState();
   const dispatch = useDispatch();
@@ -54,6 +56,10 @@ const Navbar = () => {
   const handleLogin = () => {
     console.log("handling login");
     setLoginModalActive(true);
+  };
+  const handleRegister = () => {
+    console.log("handling register");
+    setRegisterModalActive(true);
   };
   useEffect(() => {
     const handleEscape = (e) => {
@@ -179,7 +185,10 @@ const Navbar = () => {
             <FaUserAlt />
           </div>
         </li>
-        <li className="nav-item subscribe">
+        <li className="nav-item subscribe" onClick={handleRegister}>
+          {registerModalActive && (
+            <RegisterModal setModalActive={setRegisterModalActive} />
+          )}
           <div className="nav-link">{Language.SUBSCRIBE[language]}</div>
         </li>
         <li className={"nav-item language-bar " + (isOpen ? "hide" : "")}>
