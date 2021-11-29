@@ -13,20 +13,34 @@ const Modal = ({ setModalActive }) => {
         <div className="titleCloseBtn">
           <button onClick={handleCloseModal}> X </button>
         </div>
-        <div className="title">
-          <h1>Are you Sure You Want To Continue?</h1>
+        <div className="title w-full">
+          <h1>Login</h1>
         </div>
         <div className="body">
+          <form
+            autocomplete="autocomplete_off_hack_1pijmg"
+            method="post"
+            action=""
+          >
+            <input
+              className="textfield"
+              placeholder="E-mail"
+              autocomplete="autocomplete_off_hack_138r!n"
+            />
+            <input
+              className="textfield"
+              type="password"
+              placeholder="Password"
+              autocomplete="autocomplete_off_hack_xfr4!k"
+            />
+          </form>
           <p>
-            The next page is awesome! You should move forward, you will enjoy
-            it.
+            Not registered yet ?{" "}
+            <span className="highlighted-text">subscribe now</span>
           </p>
         </div>
         <div className="footer">
-          <button id="cancelBtn" onClick={handleCloseModal}>
-            Cancel
-          </button>
-          <button>Continue</button>
+          <button>Login</button>
         </div>
       </div>
     </div>
