@@ -1,26 +1,27 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const extractFrames = require("ffmpeg-extract-frames");
-const { v4: uuidv4 } = require("uuid");
-const ffmpeg = require("fluent-ffmpeg");
-const app = express();
-const fs = require("fs");
-const config = require("config");
-const db = config.get("mongodbURL");
-const Video = require("./models/Video");
-const bodyParser = require("body-parser");
-const path = require("path");
-const crypto = require("crypto");
-const multer = require("multer");
-const Grid = require("gridfs-stream");
-const { GridFsStorage } = require("multer-gridfs-storage");
-const FormData = require("form-data");
-const axios = require("axios");
-const mongodb = require("mongodb");
-const node_media_server = require("./media_server");
-require("dotenv").config();
+const express = require("express"),
+  mongoose = require("mongoose"),
+  cors = require("cors"),
+  extractFrames = require("ffmpeg-extract-frames"),
+  { v4: uuidv4 } = require("uuid"),
+  ffmpeg = require("fluent-ffmpeg"),
+  app = express(),
+  fs = require("fs"),
+  config = require("config"),
+  db = config.get("mongodbURL"),
+  Video = require("./models/Video"),
+  bodyParser = require("body-parser"),
+  path = require("path"),
+  crypto = require("crypto"),
+  multer = require("multer"),
+  Grid = require("gridfs-stream"),
+  { GridFsStorage } = require("multer-gridfs-storage"),
+  FormData = require("form-data"),
+  axios = require("axios"),
+  mongodb = require("mongodb"),
+  node_media_server = require("./media_server"),
+  passport = require("./auth/passport");
 
+require("dotenv").config();
 const mongoURI = process.env.MONGODB_URI || db;
 
 app.use(cors());
@@ -37,6 +38,16 @@ app.get("/video/all", async (req, res) => {
     res.status(500).end();
   }
 });
+
+/* Set EJS */
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "./views"));
+
+/* Passport Initialization */
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Find video by file name
 app.get("/video/:name", async (req, res) => {
   try {
