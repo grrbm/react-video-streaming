@@ -19,12 +19,31 @@ const express = require("express"),
   axios = require("axios"),
   mongodb = require("mongodb"),
   node_media_server = require("./media_server"),
-  passport = require("./auth/passport");
+  passport = require("./auth/passport"),
+  Session = require("express-session"),
+  FileStore = require("session-file-store")(Session),
+  flash = require("connect-flash");
 
 require("dotenv").config();
 const mongoURI = process.env.MONGODB_URI || db;
 
 app.use(cors());
+
+/* Setup flash and cookie-parser */
+
+app.use(flash());
+app.use(require("cookie-parser")());
+app.use(
+  Session({
+    store: new FileStore({
+      path: "sessions",
+    }),
+    secret: config.server.secret,
+    maxAge: Date().now + 60 * 1000 * 30,
+    resave: true,
+    saveUninitialized: false,
+  })
+);
 
 /** Add imported routes **/
 app.use("/streams", require("./routes/streams"));
