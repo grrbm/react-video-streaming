@@ -19,8 +19,8 @@ const RegisterModal = ({ setModalActive }) => {
         <div className="body">
           <form
             autocomplete="autocomplete_off_hack_1pijmg"
+            action="/register"
             method="post"
-            action=""
           >
             <input
               className="textfield"
@@ -33,15 +33,11 @@ const RegisterModal = ({ setModalActive }) => {
               placeholder="Password"
               autocomplete="autocomplete_off_hack_xfr4!k"
             />
+            <br />
+            <button type="submit">Register</button>
           </form>
-          <p>
-            Not registered yet ?{" "}
-            <span className="highlighted-text">subscribe now</span>
-          </p>
         </div>
-        <div className="footer">
-          <button>Login</button>
-        </div>
+        <div className="footer">This is footer</div>
       </div>
     </div>
   );
