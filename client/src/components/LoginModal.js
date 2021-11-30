@@ -3,7 +3,7 @@ import { performLogin } from "../actions/appActions";
 import Axios from "axios";
 import "./LoginModal.css";
 
-const Modal = ({ setModalActive }) => {
+const LoginModal = ({ setModalActive }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const handleLogin = async (e) => {
@@ -60,4 +60,4 @@ const Modal = ({ setModalActive }) => {
   );
 };
 
-export default Modal;
+export default LoginModal;

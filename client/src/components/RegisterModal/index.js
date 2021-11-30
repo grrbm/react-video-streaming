@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
+import Axios from "axios";
 import "./RegisterModal.css";
 
 const RegisterModal = ({ setModalActive }) => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const handleRegister = async (e) => {
+    const res = await Axios.post("/register", {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    });
+  };
   const handleCloseModal = (e) => {
     console.log("handling close modal");
     e.stopPropagation();
@@ -17,39 +26,35 @@ const RegisterModal = ({ setModalActive }) => {
           <h1>Register</h1>
         </div>
         <div className="body">
-          <form
-            autocomplete="autocomplete_off_hack_1pijmg"
-            action="/register"
-            method="post"
-          >
-            <input
-              className="textfield"
-              type="text"
-              name="username"
-              placeholder="Enter username"
-              autocomplete="autocomplete_off_hack_asfjda"
-              required
-            />
-            <input
-              className="textfield"
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              placeholder="Enter email"
-              autocomplete="autocomplete_off_hack_541gds"
-              required
-            />
-            <input
-              className="textfield"
-              type="password"
-              name="password"
-              placeholder="Password"
-              autocomplete="autocomplete_off_hack_fdsa53s"
-              required
-            />
-            <br />
-            <button type="submit">Register</button>
-          </form>
+          <input
+            className="textfield"
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            autocomplete="autocomplete_off_hack_asfjda"
+            required
+          />
+          <input
+            className="textfield"
+            type="email"
+            name="email"
+            ref={emailRef}
+            placeholder="E-mail"
+            placeholder="Enter email"
+            autocomplete="autocomplete_off_hack_541gds"
+            required
+          />
+          <input
+            className="textfield"
+            type="password"
+            name="password"
+            ref={passwordRef}
+            placeholder="Password"
+            autocomplete="autocomplete_off_hack_fdsa53s"
+            required
+          />
+          <br />
+          <button onClick={handleRegister}>Register</button>
         </div>
         <div className="footer">This is footer</div>
       </div>

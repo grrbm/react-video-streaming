@@ -1,6 +1,8 @@
 const express = require("express"),
   router = express.Router(),
-  passport = require("passport");
+  passport = require("passport"),
+  User = require("../database/Schema").User,
+  bcrypt = require("bcryptjs");
 
 router.post("/", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
