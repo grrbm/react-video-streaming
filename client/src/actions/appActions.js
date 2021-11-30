@@ -50,6 +50,24 @@ export const fetchVideos = () => (dispatch) => {
     });
 };
 
+export const performLogin = (email, password) => async (dispatch, getState) => {
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+  await Axios.post("/login", formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      console.log("Received response.");
+    })
+    .catch((error) => {
+      console.log("There was an error. " + error);
+      setErr("There was an error. " + error);
+    });
+};
+
 const setVideos = (videos) => ({ type: SET_VIDEOS, payload: videos });
 const setVideos1 = (videos) => ({ type: SET_VIDEOS1, payload: videos });
 

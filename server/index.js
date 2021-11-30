@@ -33,6 +33,8 @@ app.use(cors());
 
 app.use(flash());
 app.use(require("cookie-parser")());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
 app.use(
   Session({
     store: new FileStore({
@@ -87,7 +89,6 @@ app.get("/video/:name", async (req, res) => {
   }
 });
 
-app.use(bodyParser.json());
 app.post("/videoinformation", (req, res) => {
   Video.findById(req.body.videoId, function (err, video) {
     if (!video) res.status(400).send("can't find video");
@@ -332,4 +333,4 @@ app.use(express.static(__dirname + "/public"));
 app.use("/video", express.static("videos"));
 
 app.listen(port, () => console.log("Server Started..."));
-node_media_server.run();
+//node_media_server.run();
