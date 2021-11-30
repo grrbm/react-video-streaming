@@ -32,8 +32,8 @@ const Modal = ({ setModalActive }) => {
             />
             <input
               className="textfield"
-              type="email"
-              name="email"
+              type="password"
+              name="password"
               type="password"
               placeholder="Password"
               autocomplete="autocomplete_off_hack_xfr4!k"

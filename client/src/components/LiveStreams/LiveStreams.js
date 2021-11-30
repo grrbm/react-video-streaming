@@ -47,10 +47,17 @@ export default class LiveStreams extends React.Component {
   }
 
   render() {
+    if (
+      !this.state ||
+      !this.state.live_streams ||
+      !Array.isArray(this.state.live_streams)
+    ) {
+      return <div className="text-white">Found Nothing</div>;
+    }
     let streams = this.state.live_streams.map((stream, index) => {
       return (
         <div
-          className="stream col-xs-12 col-sm-12 col-md-3 col-lg-4"
+          className="stream col-xs-12 col-sm-12 col-md-3 col-lg-4 text-white"
           key={index}
         >
           <span className="live-label">LIVE</span>
@@ -68,7 +75,7 @@ export default class LiveStreams extends React.Component {
     });
 
     return (
-      <div className="container mt-5">
+      <div className="container mt-5 text-white">
         <h4>Live Streams</h4>
         <hr className="my-4" />
 
