@@ -7,7 +7,7 @@ import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { SET_LANG } from "../actions/types";
 import * as Language from "../assets/constant/Language";
-import Modal from "./Modal";
+import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import clsx from "clsx";
 
@@ -180,7 +180,9 @@ const Navbar = () => {
           <div className="nav-link"> {Language.DOWNLOAD[language]} </div>
         </li>
         <li className="nav-item profile" onClick={handleLogin}>
-          {loginModalActive && <Modal setModalActive={setLoginModalActive} />}
+          {loginModalActive && (
+            <LoginModal setModalActive={setLoginModalActive} />
+          )}
           <div className="nav-link">
             <FaUserAlt />
           </div>

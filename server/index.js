@@ -66,6 +66,11 @@ app.set("views", path.join(__dirname, "./views"));
 app.use("/login", require("./routes/login"));
 app.use("/register", require("./routes/register"));
 
+/* Login route with EJS */
+app.get("/login", function (req, res) {
+  res.render("login", { message: req.flash("message") });
+});
+
 /* Passport Initialization */
 
 app.use(passport.initialize());

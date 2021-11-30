@@ -1,5 +1,5 @@
 import React from "react";
-import "./Modal.css";
+import "./LoginModal.css";
 
 const Modal = ({ setModalActive }) => {
   const handleCloseModal = (e) => {
@@ -24,14 +24,20 @@ const Modal = ({ setModalActive }) => {
           >
             <input
               className="textfield"
+              type="email"
+              name="email"
               placeholder="E-mail"
               autocomplete="autocomplete_off_hack_138r!n"
+              required
             />
             <input
               className="textfield"
+              type="email"
+              name="email"
               type="password"
               placeholder="Password"
               autocomplete="autocomplete_off_hack_xfr4!k"
+              required
             />
             <p>
               Not registered yet ?{" "}
