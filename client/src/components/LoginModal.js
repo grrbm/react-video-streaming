@@ -18,6 +18,7 @@ const LoginModal = ({ setModalActive }) => {
       if (res.status === 200) {
         handleCloseModal();
         history.push("/");
+        window.location.reload(true);
       }
     } catch (error) {
       console.log("Error with login. " + error);
@@ -26,7 +27,9 @@ const LoginModal = ({ setModalActive }) => {
   };
   const handleCloseModal = (e) => {
     console.log("handling close modal");
-    e.stopPropagation();
+    if (e) {
+      e.stopPropagation();
+    }
     setModalActive(false);
   };
   return (

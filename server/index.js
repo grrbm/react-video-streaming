@@ -78,6 +78,11 @@ app.get("/loggedUser", (req, res) => {
   res.send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
 });
 
+app.get("/logout", function (req, res) {
+  req.logout();
+  res.status(200).send("Logout successful");
+});
+
 //Find video by file name
 app.get("/video/:name", async (req, res) => {
   try {
