@@ -70,6 +70,7 @@ app.set("views", path.join(__dirname, "./views"));
 app.use("/login", require("./routes/login"));
 app.use("/register", require("./routes/register"));
 app.use("/settings", require("./routes/settings"));
+app.use("/user", require("./routes/user"));
 
 /* Login route with EJS */
 app.get("/login", function (req, res) {
