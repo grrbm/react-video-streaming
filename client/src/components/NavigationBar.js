@@ -9,10 +9,12 @@ import { SET_LANG } from "../actions/types";
 import * as Language from "../assets/constant/Language";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import Axios from "axios";
 import clsx from "clsx";
 
 const Navbar = () => {
   const history = useHistory();
+  const [loggedUser, setLoggedUser] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [loginstatus, setLogin] = useState(false);
   const [hamburgerDropdownOpen, setHamburgerDropdownOpen] = useState(false);
@@ -53,6 +55,9 @@ const Navbar = () => {
   const navigateToUpload = () => {
     history.push("/upload");
   };
+  const navigateToSettings = () => {
+    history.push("/settings");
+  };
   const handleLogin = () => {
     console.log("handling login");
     setLoginModalActive(true);
@@ -61,6 +66,17 @@ const Navbar = () => {
     console.log("handling register");
     setRegisterModalActive(true);
   };
+  useEffect(() => {
+    const getLoggedUser = async () => {
+      try {
+        const result = await Axios.get("/loggedUser");
+        setLoggedUser(result.data);
+      } catch (error) {
+        console.log("Could not get logged user. " + error);
+      }
+    };
+    getLoggedUser();
+  }, []);
   useEffect(() => {
     const handleEscape = (e) => {
       console.log("handling escape");
@@ -179,14 +195,21 @@ const Navbar = () => {
         <li className="nav-item download" onClick={navigateToUpload}>
           <div className="nav-link"> {Language.DOWNLOAD[language]} </div>
         </li>
-        <li className="nav-item profile" onClick={handleLogin}>
-          {loginModalActive && (
-            <LoginModal setModalActive={setLoginModalActive} />
-          )}
-          <div className="nav-link">
-            <FaUserAlt />
-          </div>
-        </li>
+        {loggedUser ? (
+          <li className="nav-item profile" onClick={navigateToSettings}>
+            <div className="nav-link">
+              <FaUserAlt />
+            </div>
+          </li>
+        ) : (
+          <li className="nav-item profile" onClick={handleLogin}>
+            {loginModalActive && (
+              <LoginModal setModalActive={setLoginModalActive} />
+            )}
+            <div className="nav-link">LOG IN</div>
+          </li>
+        )}
+
         <li className="nav-item subscribe" onClick={handleRegister}>
           {registerModalActive && (
             <RegisterModal setModalActive={setRegisterModalActive} />

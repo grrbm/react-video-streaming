@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./style/tailwind.css";
 import { VideoPlayer, VideoPlayerAlt, Videos } from "./components/Video";
 import Main from "./Pages/main";
+import Settings from "./Pages/Settings";
 import "./app.css";
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
@@ -20,6 +21,7 @@ const App = ({ video }) => {
           <Route path="/" component={Main} exact />
           {/* <Route path="/main" component={Main} exact /> */}
           <Route path="/upload" component={Videos} exact />
+          <Route path="/settings" component={Settings} exact />
         </Switch>
       </div>
       <Footer />

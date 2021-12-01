@@ -74,6 +74,10 @@ app.get("/login", function (req, res) {
   res.render("login", { message: req.flash("message") });
 });
 
+app.get("/loggedUser", (req, res) => {
+  res.send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
+});
+
 //Find video by file name
 app.get("/video/:name", async (req, res) => {
   try {
