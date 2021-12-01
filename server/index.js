@@ -339,4 +339,4 @@ app.use(express.static(__dirname + "/public"));
 app.use("/video", express.static("videos"));
 
 app.listen(port, () => console.log("Server Started..."));
-//node_media_server.run();
+node_media_server.run();

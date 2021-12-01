@@ -1,5 +1,5 @@
 let mongoose = require("mongoose"),
-  bcrypt = require("bcrypt-nodejs"),
+  bcrypt = require("bcryptjs"),
   shortid = require("shortid"),
   Schema = mongoose.Schema;
 
@@ -10,16 +10,8 @@ let UserSchema = new Schema({
   stream_key: String,
 });
 
-UserSchema.methods.generateHash = (password) => {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-UserSchema.methods.validPassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
-};
-
-UserSchema.methods.generateStreamKey = () => {
-  return shortid.generate();
-};
+// UserSchema.methods.generateStreamKey = () => {
+//   return shortid.generate();
+// };
 
 module.exports = UserSchema;
