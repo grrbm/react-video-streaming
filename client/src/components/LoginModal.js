@@ -1,17 +1,27 @@
 import React, { useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { performLogin } from "../actions/appActions";
 import Axios from "axios";
 import "./LoginModal.css";
 
 const LoginModal = ({ setModalActive }) => {
+  const history = useHistory();
   const emailRef = useRef();
   const passwordRef = useRef();
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await Axios.post("/login", {
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    });
+    try {
+      const res = await Axios.post("/login", {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
+      if (res.status === 200) {
+        handleCloseModal();
+        history.push("/");
+      }
+    } catch (error) {
+      console.log("Error with login. " + error);
+    }
     console.log("performed login");
   };
   const handleCloseModal = (e) => {
