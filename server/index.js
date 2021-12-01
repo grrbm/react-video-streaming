@@ -19,6 +19,7 @@ const express = require("express"),
   axios = require("axios"),
   mongodb = require("mongodb"),
   node_media_server = require("./media_server"),
+  thumbnail_generator = require("./cron/thumbnails"),
   passport = require("./auth/passport"),
   session = require("express-session"),
   flash = require("connect-flash"),
@@ -340,3 +341,4 @@ app.use("/video", express.static("videos"));
 
 app.listen(port, () => console.log("Server Started..."));
 node_media_server.run();
+thumbnail_generator.start();
