@@ -46,7 +46,7 @@ export default function LiveStreams(props) {
   let streams = liveStreams.map((stream, index) => {
     return (
       <div
-        className="stream col-xs-12 col-sm-12 col-md-3 col-lg-4 text-white"
+        className="stream xs:grid-cols-12 sm:grid-cols-12 md:grid-cols-3 lg:grid-cols-4 text-white"
         key={index}
       >
         <span className="live-label">LIVE</span>
