@@ -8,8 +8,10 @@ export default function Settings(props) {
   const [streamKey, setStreamKey] = useState("");
 
   useEffect(() => {
-    getStreamKey();
-  }, []);
+    if (loggedUser) {
+      getStreamKey();
+    }
+  }, [loggedUser]);
   useEffect(() => {
     const getLoggedUser = async () => {
       try {
@@ -23,15 +25,25 @@ export default function Settings(props) {
   }, []);
 
   function generateStreamKey(e) {
-    axios.post("/settings/stream_key").then((res) => {
-      setStreamKey(res.data.stream_key);
-    });
+    axios
+      .post("/settings/stream_key")
+      .then((res) => {
+        setStreamKey(res.data.stream_key);
+      })
+      .catch((error) => {
+        console.log("There was an error generating stream key. " + error);
+      });
   }
 
   function getStreamKey() {
-    axios.get("/settings/stream_key").then((res) => {
-      setStreamKey(res.data.stream_key);
-    });
+    axios
+      .get("/settings/stream_key")
+      .then((res) => {
+        setStreamKey(res.data.stream_key);
+      })
+      .catch((error) => {
+        console.log("There was an error getting the stream key. " + error);
+      });
   }
 
   function handleLogout(e) {
@@ -50,7 +62,7 @@ export default function Settings(props) {
 
         <div className="col-xs-12 col-sm-12 col-md-8 col-lg-6">
           <div className="row">
-            <h5>{streamKey}</h5>
+            <h5>{streamKey ? streamKey : "No stream key found."}</h5>
           </div>
           <div className="row">
             {loggedUser ? (
