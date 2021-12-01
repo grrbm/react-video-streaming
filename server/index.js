@@ -339,6 +339,8 @@ if (process.env.NODE_ENV === "production") {
 app.use(express.static(__dirname + "/public"));
 //Serve "videos" folder
 app.use("/video", express.static("videos"));
+//Server "thumbnails" folder
+app.use("/thumbnails", express.static("thumbnails"));
 
 app.listen(port, () => console.log("Server Started..."));
 node_media_server.run();
