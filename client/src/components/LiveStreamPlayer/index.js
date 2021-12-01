@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import videojs from "video.js";
 import axios from "axios";
 import config from "../../config/default";
+import "./LiveStreamPlayer.scss";
 
 export default function LiveStreamPlayer(props) {
   const [stream, setStream] = useState(false);
