@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import videojs from "video.js";
 import axios from "axios";
-import config from "../../server/config/default";
+import config from "../../config/default";
 
 export default function LiveStreamPlayer(props) {
   const [stream, setStream] = useState(false);
@@ -33,27 +33,30 @@ export default function LiveStreamPlayer(props) {
           ],
           fluid: true,
         });
+      })
+      .catch((error) => {
+        console.log("There was an error fetching the user info.");
       });
   }, []);
   useEffect(() => {
-    if (videoNode && videoJsOptions) {
+    if (videoJsOptions) {
       player.current = videojs(
-        videoNode,
+        videoNode.current,
         videoJsOptions,
         function onPlayerReady() {
-          console.log("onPlayerReady", this);
+          console.log("onPlayerReady");
         }
       );
     }
-  }, [videoNode, videoJsOptions]);
+  }, [videoJsOptions]);
 
   useEffect(() => {
     return () => {
-      if (player) {
-        player.dispose();
+      if (player.current) {
+        player.current.dispose();
       }
     };
-  }, [player]);
+  }, []);
 
   return (
     <div className="row">
