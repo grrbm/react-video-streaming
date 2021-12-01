@@ -17,6 +17,9 @@
 # media
 /media
 
+# thumbnails
+/thumbnails
+
 # misc
 .DS_Store
 .env.local
