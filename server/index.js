@@ -1,28 +1,56 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const extractFrames = require("ffmpeg-extract-frames");
-const { v4: uuidv4 } = require("uuid");
-const ffmpeg = require("fluent-ffmpeg");
-const app = express();
-const fs = require("fs");
-const config = require("config");
-const db = config.get("mongodbURL");
-const Video = require("./models/Video");
-const bodyParser = require("body-parser");
-const path = require("path");
-const crypto = require("crypto");
-const multer = require("multer");
-const Grid = require("gridfs-stream");
-const { GridFsStorage } = require("multer-gridfs-storage");
-const FormData = require("form-data");
-const axios = require("axios");
-const mongodb = require("mongodb");
-require("dotenv").config();
+const express = require("express"),
+  mongoose = require("mongoose"),
+  cors = require("cors"),
+  extractFrames = require("ffmpeg-extract-frames"),
+  { v4: uuidv4 } = require("uuid"),
+  ffmpeg = require("fluent-ffmpeg"),
+  app = express(),
+  fs = require("fs"),
+  config = require("config"),
+  db = config.get("mongodbURL"),
+  Video = require("./models/Video"),
+  bodyParser = require("body-parser"),
+  path = require("path"),
+  crypto = require("crypto"),
+  multer = require("multer"),
+  Grid = require("gridfs-stream"),
+  { GridFsStorage } = require("multer-gridfs-storage"),
+  FormData = require("form-data"),
+  axios = require("axios"),
+  mongodb = require("mongodb"),
+  node_media_server = require("./media_server"),
+  thumbnail_generator = require("./cron/thumbnails"),
+  passport = require("./auth/passport"),
+  session = require("express-session"),
+  flash = require("connect-flash"),
+  cookieParser = require("cookie-parser");
 
+require("dotenv").config();
 const mongoURI = process.env.MONGODB_URI || db;
 
 app.use(cors());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
+app.use(cookieParser("secretcode"));
+app.use(
+  session({
+    secret: "secretcode",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+/* Setup flash and cookie-parser */
+app.use(flash({ locals: "flash" }));
+
+/* Passport Initialization 
+ATTENTION: PASSPORT MUST BE INITIALIZED BEFORE ANY ROUTES */
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+/** Add imported routes **/
+app.use("/streams", require("./routes/streams"));
 
 app.get("/video/all", async (req, res) => {
   try {
@@ -33,6 +61,31 @@ app.get("/video/all", async (req, res) => {
     res.status(500).end();
   }
 });
+
+/* Set EJS */
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "./views"));
+
+/* Add login/register routes */
+app.use("/login", require("./routes/login"));
+app.use("/register", require("./routes/register"));
+app.use("/settings", require("./routes/settings"));
+app.use("/user", require("./routes/user"));
+
+/* Login route with EJS */
+app.get("/login", function (req, res) {
+  res.render("login", { message: req.flash("message") });
+});
+
+app.get("/loggedUser", (req, res) => {
+  res.send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
+});
+
+app.get("/logout", function (req, res) {
+  req.logout();
+  res.status(200).send("Logout successful");
+});
+
 //Find video by file name
 app.get("/video/:name", async (req, res) => {
   try {
@@ -44,7 +97,6 @@ app.get("/video/:name", async (req, res) => {
   }
 });
 
-app.use(bodyParser.json());
 app.post("/videoinformation", (req, res) => {
   Video.findById(req.body.videoId, function (err, video) {
     if (!video) res.status(400).send("can't find video");
@@ -287,5 +339,9 @@ if (process.env.NODE_ENV === "production") {
 app.use(express.static(__dirname + "/public"));
 //Serve "videos" folder
 app.use("/video", express.static("videos"));
+//Server "thumbnails" folder
+app.use("/thumbnails", express.static("thumbnails"));
 
 app.listen(port, () => console.log("Server Started..."));
+node_media_server.run();
+thumbnail_generator.start();

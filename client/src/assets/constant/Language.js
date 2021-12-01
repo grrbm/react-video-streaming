@@ -46,6 +46,10 @@ export const EVENTS = {
   EN: "EVENTS",
   PT: "EVENTOS",
 };
+export const LIVESTREAMS = {
+  EN: "LIVE STREAMS",
+  PT: "AO VIVO",
+};
 export const TOP_PICKS = {
   EN: "Top Picks",
   PT: "Escolhas principais",

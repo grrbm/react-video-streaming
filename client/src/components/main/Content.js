@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Videos } from "../Video";
 import Videos1 from "../Video/Videos1";
+import LiveStreams from "../LiveStreams/LiveStreams.js";
 import Axios from "axios";
 import { useDispatch } from "react-redux";
 import { SET_VIDEOS, SET_UPLOAD, SET_VIDEOS1 } from "../../actions/types";
@@ -25,12 +26,14 @@ const Content = () => {
   }, []);
   return (
     <div className="bg-gray-1000">
+      <div className="video-group-title">{Language.LIVESTREAMS[language]}</div>
+      <LiveStreams groupId="1" />
       <div className="video-group-title">{Language.EVENTS[language]}</div>
-      <Videos1 groupId="1" />
-      <div className="video-group-title">{Language.TOP_PICKS[language]}</div>
       <Videos1 groupId="2" />
       <div className="video-group-title">{Language.TOP_PICKS[language]}</div>
       <Videos1 groupId="3" />
+      <div className="video-group-title">{Language.TOP_PICKS[language]}</div>
+      <Videos1 groupId="4" />
     </div>
   );
 };

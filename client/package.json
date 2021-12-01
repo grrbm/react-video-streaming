@@ -24,7 +24,8 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.2.0",
+    "video.js": "^7.17.0"
   },
   "devDependencies": {},
   "scripts": {

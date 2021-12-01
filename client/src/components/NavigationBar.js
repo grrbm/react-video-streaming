@@ -7,15 +7,21 @@ import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { SET_LANG } from "../actions/types";
 import * as Language from "../assets/constant/Language";
+import LoginModal from "./LoginModal";
+import RegisterModal from "./RegisterModal";
+import Axios from "axios";
 import clsx from "clsx";
 
 const Navbar = () => {
   const history = useHistory();
+  const [loggedUser, setLoggedUser] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [loginstatus, setLogin] = useState(false);
   const [hamburgerDropdownOpen, setHamburgerDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const [loginModalActive, setLoginModalActive] = useState(false);
+  const [registerModalActive, setRegisterModalActive] = useState(false);
   const [language, setLanguage] = useState("EN");
   const [selectedCategory, setSelectedCategory] = useState();
   const dispatch = useDispatch();
@@ -25,12 +31,6 @@ const Navbar = () => {
     isOpen ? setIsOpen(false) : setIsOpen(true);
   };
   const toggleHamburger = (event) => {
-    console.log("click happened in " + event.target);
-    console.log("click happened ID: " + event.target.id);
-    console.log("click happened VALUE: " + event.target.value);
-    console.log("click happened className: " + event.target.className);
-    console.log("click happened innerText: " + event.target.innerText);
-    console.log("click happened tagName: " + event.target.tagName);
     if (hamburgerDropdownOpen) {
       setIsOpen(false);
       setHamburgerDropdownOpen(false);
@@ -55,6 +55,28 @@ const Navbar = () => {
   const navigateToUpload = () => {
     history.push("/upload");
   };
+  const navigateToSettings = () => {
+    history.push("/settings");
+  };
+  const handleLogin = () => {
+    console.log("handling login");
+    setLoginModalActive(true);
+  };
+  const handleRegister = () => {
+    console.log("handling register");
+    setRegisterModalActive(true);
+  };
+  useEffect(() => {
+    const getLoggedUser = async () => {
+      try {
+        const result = await Axios.get("/loggedUser");
+        setLoggedUser(result.data);
+      } catch (error) {
+        console.log("Could not get logged user. " + error);
+      }
+    };
+    getLoggedUser();
+  }, []);
   useEffect(() => {
     const handleEscape = (e) => {
       console.log("handling escape");
@@ -173,12 +195,25 @@ const Navbar = () => {
         <li className="nav-item download" onClick={navigateToUpload}>
           <div className="nav-link"> {Language.DOWNLOAD[language]} </div>
         </li>
-        <li className="nav-item">
-          <div className="nav-link">
-            <FaUserAlt />
-          </div>
-        </li>
-        <li className="nav-item subscribe">
+        {loggedUser ? (
+          <li className="nav-item profile" onClick={navigateToSettings}>
+            <div className="nav-link">
+              <FaUserAlt />
+            </div>
+          </li>
+        ) : (
+          <li className="nav-item profile" onClick={handleLogin}>
+            {loginModalActive && (
+              <LoginModal setModalActive={setLoginModalActive} />
+            )}
+            <div className="nav-link">LOG IN</div>
+          </li>
+        )}
+
+        <li className="nav-item subscribe" onClick={handleRegister}>
+          {registerModalActive && (
+            <RegisterModal setModalActive={setRegisterModalActive} />
+          )}
           <div className="nav-link">{Language.SUBSCRIBE[language]}</div>
         </li>
         <li className={"nav-item language-bar " + (isOpen ? "hide" : "")}>
