@@ -42,6 +42,12 @@ app.use(
 /* Setup flash and cookie-parser */
 app.use(flash({ locals: "flash" }));
 
+/* Passport Initialization 
+ATTENTION: PASSPORT MUST BE INITIALIZED BEFORE ANY ROUTES */
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 /** Add imported routes **/
 app.use("/streams", require("./routes/streams"));
 
@@ -67,11 +73,6 @@ app.use("/register", require("./routes/register"));
 app.get("/login", function (req, res) {
   res.render("login", { message: req.flash("message") });
 });
-
-/* Passport Initialization */
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 //Find video by file name
 app.get("/video/:name", async (req, res) => {
