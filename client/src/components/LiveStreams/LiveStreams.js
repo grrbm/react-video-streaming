@@ -16,9 +16,12 @@ export default function LiveStreams(props) {
       .get("http://127.0.0.1:" + config.rtmp_server.http.port + "/api/streams")
       .then((res) => {
         let streams = res.data;
-        if (typeof (streams["live"] !== "undefined")) {
+        if (typeof streams["live"] !== "undefined") {
           getStreamsInfo(streams["live"]);
         }
+      })
+      .catch((error) => {
+        console.log("Error getting live streams");
       });
   }
 
@@ -31,10 +34,13 @@ export default function LiveStreams(props) {
       })
       .then((res) => {
         setLiveStreams(res.data);
+      })
+      .catch((error) => {
+        console.log("Error getting streams info");
       });
   }
 
-  if (!liveStreams || !Array.isArray(liveStreams)) {
+  if (!liveStreams || !Array.isArray(liveStreams) || liveStreams.length === 0) {
     return <div className="text-white">Found Nothing</div>;
   }
   let streams = liveStreams.map((stream, index) => {
