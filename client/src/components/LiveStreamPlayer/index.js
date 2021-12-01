@@ -61,7 +61,7 @@ export default function LiveStreamPlayer(props) {
 
   return (
     <div className="row">
-      <div className="col-xs-12 col-sm-12 col-md-10 col-lg-8 mx-auto mt-5">
+      <div className="xs:grid-cols-12 sm:grid-cols-12 md:grid-cols-10 lg:grid-cols-8 mx-auto mt-5">
         {stream ? (
           <div data-vjs-player>
             <video
