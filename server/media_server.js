@@ -1,6 +1,7 @@
 const NodeMediaServer = require("node-media-server"),
   config = require("./config/default").rtmp_server,
-  User = require("./database/Schema").User;
+  User = require("./database/Schema").User,
+  helpers = require("./helpers/helpers");
 
 nms = new NodeMediaServer(config);
 
