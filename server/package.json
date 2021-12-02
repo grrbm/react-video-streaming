@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --ignore media/ --ignore sessions/",
-    "postinstall": "chmod -R +x ~/vendor/ffmpeg"
+    "start": "nodemon --ignore media/ --ignore sessions/"
   },
   "author": "",
   "license": "ISC",
