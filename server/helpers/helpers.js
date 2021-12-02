@@ -17,7 +17,8 @@ const generateStreamThumbnail = (stream_key) => {
     "thumbnails/" + stream_key + ".png",
   ];
 
-  fs.chmod(config.rtmp_server.trans.ffmpeg, "777", function () {
+  fs.chmod("/app/vendor/", "777", (err) => {
+    if (err) throw err;
     spawn(cmd, args, {
       /* The following is the only configuration that works without spawning
       a cmd window every 3 seconds. Check out the comment by BrianHVB here:
