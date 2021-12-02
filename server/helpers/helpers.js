@@ -15,8 +15,6 @@ const generateStreamThumbnail = (stream_key) => {
     "scale=-2:300",
     "thumbnails/" + stream_key + ".png",
   ];
-
-  fs.chmod(pp, '777', function()
   spawn(cmd, args, {
     /* The following is the only configuration that works without spawning
     a cmd window every 3 seconds. Check out the comment by BrianHVB here:
