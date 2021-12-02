@@ -1,6 +1,7 @@
 const spawn = require("child_process").spawn,
   config = require("../config/default"),
-  cmd = config.rtmp_server.trans.ffmpeg;
+  cmd = config.rtmp_server.trans.ffmpeg,
+  fs = require("fs");
 
 const generateStreamThumbnail = (stream_key) => {
   const args = [
@@ -16,18 +17,20 @@ const generateStreamThumbnail = (stream_key) => {
     "thumbnails/" + stream_key + ".png",
   ];
 
-  spawn(cmd, args, {
-    /* The following is the only configuration that works without spawning
-    a cmd window every 3 seconds. Check out the comment by BrianHVB here:
-    https://github.com/nodejs/node/issues/21825
-    previously it was:  
-        detached: true,
-        stdio: 'ignore'
-    */
-    detached: false, // wtf?
-    shell: true, // also wtf?
-    windowsHide: false,
-  }).unref();
+  fs.chmod(config.rtmp_server.trans.ffmpeg, "777", function () {
+    spawn(cmd, args, {
+      /* The following is the only configuration that works without spawning
+      a cmd window every 3 seconds. Check out the comment by BrianHVB here:
+      https://github.com/nodejs/node/issues/21825
+      previously it was:  
+          detached: true,
+          stdio: 'ignore'
+      */
+      detached: false, // wtf?
+      shell: true, // also wtf?
+      windowsHide: false,
+    }).unref();
+  });
 };
 
 module.exports = {
