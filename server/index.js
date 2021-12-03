@@ -337,6 +337,8 @@ if (process.env.NODE_ENV === "production") {
 }
 //Always serve "public" folder (for testing purposes)
 app.use(express.static(__dirname + "/public"));
+//Serve the "media" folder
+app.use(express.static(__dirname + "/media"));
 //Serve "videos" folder
 app.use("/video", express.static("videos"));
 //Server "thumbnails" folder
