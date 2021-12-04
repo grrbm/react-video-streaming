@@ -25,7 +25,7 @@ export default function LiveStreamPlayer(props) {
           sources: [
             {
               src:
-                `http://${baseUrl}:` +
+                `http://${"165.232.159.222"}:` +
                 config.rtmp_server.http.port +
                 "/live/" +
                 res.data.stream_key +
