@@ -2,7 +2,7 @@ const spawn = require("child_process").spawn,
   config = require("../config/default"),
   cmd = config.rtmp_server.trans.ffmpeg;
 
-const baseUrl = process.env.HOST || "127.0.0.1";
+const baseUrl = process.env.MYVARIABLE || "127.0.0.1";
 const generateStreamThumbnail = (stream_key) => {
   const args = [
     "-y",

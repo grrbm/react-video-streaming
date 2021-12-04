@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./LiveStreams.scss";
 import config from "../../config/default";
 
-const baseUrl = process.env.HOST || "127.0.0.1";
+const baseUrl = process.env.MYVARIABLE || "127.0.0.1";
 export default function LiveStreams(props) {
   const [liveStreams, setLiveStreams] = useState([]);
 

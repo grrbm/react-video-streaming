@@ -4,7 +4,7 @@ import axios from "axios";
 import config from "../../config/default";
 import "./LiveStreamPlayer.scss";
 
-const baseUrl = process.env.HOST || "127.0.0.1";
+const baseUrl = process.env.MYVARIABLE || "127.0.0.1";
 export default function LiveStreamPlayer(props) {
   const [stream, setStream] = useState(false);
   const [videoJsOptions, setVideoJsOptions] = useState(null);
