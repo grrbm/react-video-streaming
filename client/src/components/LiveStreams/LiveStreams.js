@@ -14,7 +14,11 @@ export default function LiveStreams(props) {
 
   function getLiveStreams() {
     axios
-      .get(`http://${baseUrl}:` + config.rtmp_server.http.port + "/api/streams")
+      .get(
+        `http://${"165.232.159.222"}:` +
+          config.rtmp_server.http.port +
+          "/api/streams"
+      )
       .then((res) => {
         let streams = res.data;
         if (typeof streams["live"] !== "undefined") {
