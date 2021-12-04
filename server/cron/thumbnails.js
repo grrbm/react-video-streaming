@@ -4,7 +4,7 @@ const CronJob = require("cron").CronJob,
   config = require("../config/default"),
   port = config.rtmp_server.http.port;
 
-const baseUrl = process.env.MYVARIABLE || "127.0.0.1";
+const baseUrl = process.env.STREAMINGVARIABLE || "127.0.0.1";
 const job = new CronJob(
   "*/5 * * * * *",
   function () {
