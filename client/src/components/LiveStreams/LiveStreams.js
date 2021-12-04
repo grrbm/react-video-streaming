@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./LiveStreams.scss";
 import config from "../../config/default";
 
+const baseUrl = process.env.HOST || "127.0.0.1";
 export default function LiveStreams(props) {
   const [liveStreams, setLiveStreams] = useState([]);
 
@@ -13,7 +14,7 @@ export default function LiveStreams(props) {
 
   function getLiveStreams() {
     axios
-      .get("http://127.0.0.1:" + config.rtmp_server.http.port + "/api/streams")
+      .get(`http://${baseUrl}:` + config.rtmp_server.http.port + "/api/streams")
       .then((res) => {
         let streams = res.data;
         if (typeof streams["live"] !== "undefined") {

@@ -4,6 +4,7 @@ import axios from "axios";
 import config from "../../config/default";
 import "./LiveStreamPlayer.scss";
 
+const baseUrl = process.env.HOST || "127.0.0.1";
 export default function LiveStreamPlayer(props) {
   const [stream, setStream] = useState(false);
   const [videoJsOptions, setVideoJsOptions] = useState(null);
@@ -24,7 +25,7 @@ export default function LiveStreamPlayer(props) {
           sources: [
             {
               src:
-                "http://127.0.0.1:" +
+                `http://${baseUrl}:` +
                 config.rtmp_server.http.port +
                 "/live/" +
                 res.data.stream_key +
