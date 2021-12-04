@@ -4,12 +4,20 @@ import axios from "axios";
 import config from "../../config/default";
 import "./LiveStreamPlayer.scss";
 
-const baseUrl = process.env.MYVARIABLE || "127.0.0.1";
 export default function LiveStreamPlayer(props) {
   const [stream, setStream] = useState(false);
   const [videoJsOptions, setVideoJsOptions] = useState(null);
   const videoNode = useRef();
   const player = useRef();
+
+  const environment = process.env.NODE_ENV;
+  let baseUrl;
+  if (environment === "development") {
+    baseUrl = "127.0.0.1";
+  } else {
+    //if it's in production
+    baseUrl = config.productionUrl;
+  }
   useEffect(() => {
     axios
       .get("/user", {
@@ -25,7 +33,7 @@ export default function LiveStreamPlayer(props) {
           sources: [
             {
               src:
-                `http://${"165.232.159.222"}:` +
+                `http://${baseUrl}:` +
                 config.rtmp_server.http.port +
                 "/live/" +
                 res.data.stream_key +
