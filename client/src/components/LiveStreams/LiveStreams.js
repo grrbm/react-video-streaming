@@ -76,7 +76,7 @@ export default function LiveStreams(props) {
       <h4>Live Streams</h4>
       <hr className="my-4" />
 
-      <div className="streams row">{streams}</div>
+      <div className="streams row flex flex-row">{streams}</div>
     </div>
   );
 }

@@ -1,6 +1,10 @@
 .streams {
+  margin-left: -20px;
+  margin-right: -20px;
   .stream {
     position: relative;
+    margin-left: 20px;
+    margin-right: 20px;
     .live-label {
       position: absolute;
       top: 10px;
@@ -13,6 +17,8 @@
     .stream-thumbnail {
       img {
         width: 100%;
+        max-width: 307.25px;
+        max-height: 338px;
       }
     }
 
