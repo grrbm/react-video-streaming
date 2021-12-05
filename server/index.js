@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express"),
   mongoose = require("mongoose"),
   cors = require("cors"),
@@ -25,7 +26,6 @@ const express = require("express"),
   flash = require("connect-flash"),
   cookieParser = require("cookie-parser");
 
-require("dotenv").config();
 const mongoURI = process.env.MONGODB_URI || db;
 
 app.use(cors());
@@ -337,6 +337,8 @@ if (process.env.NODE_ENV === "production") {
 }
 //Always serve "public" folder (for testing purposes)
 app.use(express.static(__dirname + "/public"));
+//Serve the "media" folder
+app.use(express.static(__dirname + "/media"));
 //Serve "videos" folder
 app.use("/video", express.static("videos"));
 //Server "thumbnails" folder

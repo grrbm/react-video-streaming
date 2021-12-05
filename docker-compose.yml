@@ -1,0 +1,36 @@
+version: '3'
+
+
+services:
+  server:
+          build: ./server
+          expose:
+              - 5000
+              - 1935
+              - 8888
+          ports:
+              - 5000:5000
+              - 1935:1935
+              - 8888:8888
+          volumes:
+              - ./server/:/srv/app/admin-server
+              - /srv/app/admin-server/node_modules
+          depends_on:
+              - mongo    
+          command: npm run start
+  client:
+        build: ./client
+        expose:
+            - 3000   
+        ports:
+            - 80:3000
+        volumes:
+            - ./client/src:/srv/app/admin-client/src
+            - ./client/public:/srv/app/admin-client/public
+            - /srv/app/admin-client/node_modules
+        stdin_open: true
+        command: npm run start          
+  mongo:
+          image: mongo
+          ports:
+              - "27017:27017"        

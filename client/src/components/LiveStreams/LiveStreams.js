@@ -6,6 +6,14 @@ import config from "../../config/default";
 
 export default function LiveStreams(props) {
   const [liveStreams, setLiveStreams] = useState([]);
+  const environment = process.env.NODE_ENV;
+  let baseUrl;
+  if (environment === "development") {
+    baseUrl = "127.0.0.1";
+  } else {
+    //if it's in production
+    baseUrl = config.productionUrl;
+  }
 
   useEffect(() => {
     getLiveStreams();
@@ -13,7 +21,7 @@ export default function LiveStreams(props) {
 
   function getLiveStreams() {
     axios
-      .get("http://127.0.0.1:" + config.rtmp_server.http.port + "/api/streams")
+      .get(`http://${baseUrl}:` + config.rtmp_server.http.port + "/api/streams")
       .then((res) => {
         let streams = res.data;
         if (typeof streams["live"] !== "undefined") {
@@ -68,7 +76,7 @@ export default function LiveStreams(props) {
       <h4>Live Streams</h4>
       <hr className="my-4" />
 
-      <div className="streams row">{streams}</div>
+      <div className="streams row flex flex-row">{streams}</div>
     </div>
   );
 }
