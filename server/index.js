@@ -6,6 +6,7 @@ const express = require("express"),
   { v4: uuidv4 } = require("uuid"),
   ffmpeg = require("fluent-ffmpeg"),
   app = express(),
+  app2 = express(),
   fs = require("fs"),
   config = require("config"),
   db = config.get("mongodbURL"),
@@ -31,13 +32,15 @@ const mongoURI = process.env.MONGODB_URI || db;
 
 /* Setup broadcast live */
 
+//Serve "static" folder on Server 2
+app2.use("/static", express.static(path.join(__dirname, "./static")));
 //create https server
 const server = require("https").createServer(
   {
     key: fs.readFileSync("certificates/abels-key.pem"),
     cert: fs.readFileSync("certificates/abels-cert.pem"),
   },
-  app
+  app2
 );
 //make socket io use this server
 var io = require("socket.io")(server);
@@ -176,7 +179,7 @@ io.on("error", function (e) {
 // console.log('http and websocket listening on *:8888');
 //});
 
-//listen on port 4443
+//listen on port 444
 server.listen(444, function () {
   console.log("https and websocket listening on *:444");
 });
