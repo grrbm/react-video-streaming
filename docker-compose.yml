@@ -8,10 +8,12 @@ services:
               - 5000
               - 1935
               - 8888
+              - 444
           ports:
               - 5000:5000
               - 1935:1935
               - 8888:8888
+              - 444:444
           volumes:
               - ./server/:/srv/app/admin-server
               - /srv/app/admin-server/node_modules
