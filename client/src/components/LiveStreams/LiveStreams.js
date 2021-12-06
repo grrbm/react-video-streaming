@@ -8,6 +8,7 @@ export default function LiveStreams(props) {
   const [liveStreams, setLiveStreams] = useState([]);
   const environment = process.env.NODE_ENV;
   let baseUrl;
+  console.log("THIS IS THE ENVIRONMENT: " + environment);
   if (environment === "development") {
     baseUrl = "127.0.0.1";
   } else {
