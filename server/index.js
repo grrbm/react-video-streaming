@@ -341,8 +341,10 @@ app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/media"));
 //Serve "videos" folder
 app.use("/video", express.static("videos"));
-//Server "thumbnails" folder
+//Serve "thumbnails" folder
 app.use("/thumbnails", express.static("thumbnails"));
+//Server "static" folder
+app.use("/static", express.static(path.join(__dirname, "./static")));
 
 app.listen(port, () => console.log("Server Started..."));
 node_media_server.run();
