@@ -20,17 +20,19 @@ const LiveBroadcast = ({ location }) => {
     option_height = useRef(),
     button_start = useRef(),
     button_server = useRef();
-  var height = option_height.current.value,
-    width = option_width.current.value,
-    url = (option_url.current.value =
-      "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
-  var mediaRecorder;
-  var socket;
-  var state = "stop";
-  var t;
 
+  var socket;
+  var mediaRecorder;
+  var state = "stop";
   useEffect(() => {
     flvsourceinitialize();
+    if (option_height.current) {
+      var height = option_height.current.value,
+        width = option_width.current.value,
+        url = (option_url.current.value =
+          "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
+      var t;
+    }
   }, []);
 
   function fail(str) {
@@ -63,14 +65,26 @@ const LiveBroadcast = ({ location }) => {
     var constraints = {
       audio: true,
       video: {
-        width: { min: width, ideal: width, max: width },
-        height: { min: height, ideal: height, max: height },
+        width: {
+          min: option_width.current.value,
+          ideal: option_width.current.value,
+          max: option_width.current.value,
+        },
+        height: {
+          min: option_height.current.value,
+          ideal: option_height.current.value,
+          max: option_height.current.value,
+        },
       },
     };
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then(function (stream) {
         video_show(stream); //only show locally, not remotely
+
+        /* Getting URL here locally */
+        var url = (option_url.current.value =
+          "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
 
         socket.emit("config_rtmpDestination", url);
         socket.emit("start", "start");
