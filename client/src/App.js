@@ -6,6 +6,7 @@ import { VideoPlayerAlt, Videos } from "./components/Video";
 import LiveStreamPlayer from "./components/LiveStreamPlayer";
 import Main from "./Pages/main";
 import Settings from "./Pages/Settings";
+import LiveBroadcast from "./Pages/LiveBroadcast";
 import "./app.css";
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
@@ -24,6 +25,7 @@ const App = ({ video }) => {
           {/* <Route path="/main" component={Main} exact /> */}
           <Route path="/upload" component={Videos} exact />
           <Route path="/settings" component={Settings} exact />
+          <Route path="/livebroadcast" component={LiveBroadcast} exact />
         </Switch>
       </div>
       <Footer />
