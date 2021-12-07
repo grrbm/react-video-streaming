@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./style/tailwind.css";
-import { VideoPlayerAlt, Videos } from "./components/Video";
+import { VideoPlayerAlt, UploadPage } from "./components/Video";
 import LiveStreamPlayer from "./components/LiveStreamPlayer";
 import Main from "./Pages/main";
 import Settings from "./Pages/Settings";
@@ -23,7 +23,7 @@ const App = ({ video }) => {
           <Route path="/stream/:username" component={LiveStreamPlayer} exact />
           <Route path="/" component={Main} exact />
           {/* <Route path="/main" component={Main} exact /> */}
-          <Route path="/upload" component={Videos} exact />
+          <Route path="/upload" component={UploadPage} exact />
           <Route path="/settings" component={Settings} exact />
           <Route path="/livebroadcast" component={LiveBroadcast} exact />
         </Switch>

@@ -54,6 +54,9 @@ export default function Settings(props) {
       }
     });
   }
+  const navigateToLiveBroadcast = () => {
+    history.push(`/livebroadcast`);
+  };
   return (
     <React.Fragment>
       <div className="container mt-5 text-white">
@@ -74,6 +77,9 @@ export default function Settings(props) {
             )}
             <button className="button mt-2" onClick={generateStreamKey}>
               Generate a new key
+            </button>
+            <button className="button mt-2" onClick={navigateToLiveBroadcast}>
+              Start Live Broadcast
             </button>
           </div>
         </div>

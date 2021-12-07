@@ -1,7 +1,8 @@
 import React from "react";
+import "./LiveBroadcast.scss";
 
 const LiveBroadcast = () => {
-  return <div>Live Broadcast Page</div>;
+  return <div className="mainDiv">Live Broadcast Page</div>;
 };
 
 export default LiveBroadcast;

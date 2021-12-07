@@ -3,6 +3,7 @@ import { fetchVideos } from "../../actions/appActions";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
 import Axios from "axios";
+import "./UploadPage.css";
 
 const ShowVideos = ({ root, name }) => {
   const [videoThumb, setVideoThumb] = useState();
@@ -40,13 +41,13 @@ const ShowVideos = ({ root, name }) => {
   );
 };
 
-const Videos = ({ fetchVideos, videos }) => {
+const UploadPage = ({ fetchVideos, videos }) => {
   useEffect(() => {
     fetchVideos();
   }, []);
 
   return (
-    <div>
+    <div className="mainDiv">
       <NavBar />
       <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-4">
         {videos.map((video) => (
@@ -61,4 +62,4 @@ const mapStateToProp = ({ app }) => ({
   videos: app.videos1,
 });
 
-export default connect(mapStateToProp, { fetchVideos })(Videos);
+export default connect(mapStateToProp, { fetchVideos })(UploadPage);

@@ -1,0 +1,5 @@
+.mainDiv {
+  color: white;
+  background: linear-gradient(180deg, #1d1c1c 0%, #121212 100%);
+  min-height: 900px;
+}
