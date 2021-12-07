@@ -9,7 +9,7 @@ const { io } = require("socket.io-client");
 const SERVER = "http://127.0.0.1:5000";
 const LiveBroadcast = ({ location }) => {
   var flvPlayer;
-  var flvsource = document.getElementById("flvsource");
+  var flvsource = useRef();
 
   const output_console = useRef(),
     output_message = useRef(),
@@ -45,7 +45,7 @@ const LiveBroadcast = ({ location }) => {
       var videoElement = document.getElementById("videoElement");
       flvPlayer = window.flvjs.createPlayer({
         type: "flv",
-        url: flvsource.value,
+        url: flvsource.current.value,
       });
       flvPlayer.attachMediaElement(videoElement);
       flvPlayer.load();
@@ -56,7 +56,7 @@ const LiveBroadcast = ({ location }) => {
         playPromise.catch(() => {
           media.play();
         });
-        output_message.innerHTML = "change flvsource successful!";
+        output_message.current.innerHTML = "change flvsource successful!";
       }
     }
   }
@@ -165,6 +165,7 @@ const LiveBroadcast = ({ location }) => {
       <input
         type="text"
         id="flvsource"
+        ref={flvsource}
         value="https://165.232.159.222:444/live/test0.flv"
       />
       <br />
