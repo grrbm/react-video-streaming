@@ -24,14 +24,18 @@ const LiveBroadcast = ({ location }) => {
   var socket;
   var mediaRecorder;
   var state = "stop";
+  var t;
   useEffect(() => {
     flvsourceinitialize();
+    if (button_start.current) {
+      button_start.current.disabled = true;
+    }
     if (option_height.current) {
-      var height = option_height.current.value,
-        width = option_width.current.value,
-        url = (option_url.current.value =
-          "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
-      var t;
+      // var height = option_height.current.value,
+      //   width = option_width.current.value,
+      //   url = (option_url.current.value =
+      //     "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
+      // var t;
     }
   }, []);
 
@@ -41,23 +45,27 @@ const LiveBroadcast = ({ location }) => {
   }
 
   function flvsourceinitialize() {
-    if (window.flvjs.isSupported()) {
-      var videoElement = document.getElementById("videoElement");
-      flvPlayer = window.flvjs.createPlayer({
-        type: "flv",
-        url: flvsource.current.value,
-      });
-      flvPlayer.attachMediaElement(videoElement);
-      flvPlayer.load();
-      flvPlayer.play();
-      var media = document.getElementById("videoElement");
-      const playPromise = media.play();
-      if (playPromise !== null) {
-        playPromise.catch(() => {
-          media.play();
+    try {
+      if (window.flvjs.isSupported()) {
+        var videoElement = document.getElementById("videoElement");
+        flvPlayer = window.flvjs.createPlayer({
+          type: "flv",
+          url: flvsource.current.value,
         });
-        output_message.current.innerHTML = "change flvsource successful!";
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        flvPlayer.play();
+        var media = document.getElementById("videoElement");
+        const playPromise = media.play();
+        if (playPromise !== null) {
+          playPromise.catch(() => {
+            media.play();
+          });
+          output_message.current.innerHTML = "change flvsource successful!";
+        }
       }
+    } catch (error) {
+      console.log("There as an error initializing flv: " + error);
     }
   }
 
@@ -139,9 +147,6 @@ const LiveBroadcast = ({ location }) => {
   }
   return (
     <div className="mainDiv">
-      <Helmet>
-        <script src="/clientstatic/flv.min.js"></script>
-      </Helmet>
       <h1>MediaRecorder to RTMP Demo</h1>
       <label for="option_width">Size:</label>
       <input
