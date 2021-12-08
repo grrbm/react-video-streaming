@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { useScript } from "../../Hooks/useScript";
-import Script from "react-inline-script";
-import { Helmet } from "react-helmet";
+import Axios from "axios";
 import config from "../../config/default";
 import "./LiveBroadcast.scss";
 const { io } = require("socket.io-client");
+const fs = require("fs");
 
 const LiveBroadcast = ({ location }) => {
   var flvPlayer;
@@ -75,7 +74,7 @@ const LiveBroadcast = ({ location }) => {
       console.log("There as an error initializing flv: " + error);
     }
   }
-  function connect_server() {
+  async function connect_server() {
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.mozGetUserMedia ||
@@ -87,8 +86,11 @@ const LiveBroadcast = ({ location }) => {
     if (!MediaRecorder) {
       fail("No MediaRecorder available.");
     }
-
-    socket = io.connect(socketio_address.current.value /*, { secure: true }*/);
+    const result = await Axios.get("/certificate");
+    socket = io.connect(socketio_address.current.value, {
+      //secure: true
+      ca: result.data.cert,
+    });
     //output_message.innerHTML=socket;
     socket.on("connect_error", function (error) {
       output_message.current.innerHTML = "Connection Failed: " + error;
@@ -264,8 +266,8 @@ const LiveBroadcast = ({ location }) => {
         ref={socketio_address}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + ":8887"
-            : "http://localhost:8887"
+            ? config.productionUrl + ":444"
+            : "https://localhost:444"
         }
       />
       <br />
@@ -276,8 +278,8 @@ const LiveBroadcast = ({ location }) => {
         ref={flvsource}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + ":8887/live/test0.flv"
-            : "http://localhost:8887/live/test0.flv"
+            ? config.productionUrl + ":444/live/test0.flv"
+            : "https://localhost:444/live/test0.flv"
         }
       />
       <br />

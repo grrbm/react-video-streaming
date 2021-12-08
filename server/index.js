@@ -36,18 +36,18 @@ const mongoURI = process.env.MONGODB_URI || db;
 app2.use(cors());
 //Serve "static" folder on Server 2
 app2.use("/static", express.static(path.join(__dirname, "./static")));
+
 //create http server
-var http = require("http").Server(app2);
+//var http = require("http").Server(app2);
 
 //create https server
-// const server = require("https").createServer(
-//   {
-//     key: fs.readFileSync("certificates/abels-key.pem"),
-//     cert: fs.readFileSync("certificates/abels-cert.pem"),
-//   },
-//   app2
-// );
-//make socket io use this server
+const server = require("https").createServer(
+  {
+    key: fs.readFileSync("certificates/abels-key.pem"),
+    cert: fs.readFileSync("certificates/abels-cert.pem"),
+  },
+  app2
+);
 console.log("THIS IS NODE_ENV: " + process.env.NODE_ENV);
 let originUrl;
 if (process.env.NODE_ENV === "production") {
@@ -55,7 +55,8 @@ if (process.env.NODE_ENV === "production") {
 } else {
   originUrl = "http://localhost:3000";
 }
-var io = require("socket.io")(http, {
+//make socket io use this server
+var io = require("socket.io")(server, {
   cors: {
     origin: originUrl,
     methods: ["GET", "POST"],
@@ -194,14 +195,14 @@ io.on("error", function (e) {
 });
 
 //listen on port 8887
-http.listen(8887, function () {
-  console.log("http and websocket listening on *:8887");
-});
+// http.listen(8887, function () {
+//   console.log("http and websocket listening on *:8887");
+// });
 
 //listen on port 444
-// server.listen(444, function () {
-//   console.log("https and websocket listening on *:444");
-// });
+server.listen(444, function () {
+  console.log("https and websocket listening on *:444");
+});
 
 //catch process exceptions
 process.on("uncaughtException", function (err) {
@@ -235,6 +236,7 @@ app.use(passport.session());
 
 /** Add imported routes **/
 app.use("/streams", require("./routes/streams"));
+app.use("/certificate", require("./routes/certificate"));
 
 app.get("/video/all", async (req, res) => {
   try {
