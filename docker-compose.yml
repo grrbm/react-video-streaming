@@ -9,6 +9,8 @@ services:
               - 1935
               - 8888
               - 444
+          environment:
+              - NODE_ENV=production
           ports:
               - 5000:5000
               - 1935:1935
