@@ -26,7 +26,9 @@ const LiveBroadcast = ({ location }) => {
   var state = "stop";
   var t;
   useEffect(() => {
-    flvsourceinitialize();
+    if (flvsource.current) {
+      flvsourceinitialize();
+    }
     if (button_start.current) {
       button_start.current.disabled = true;
     }
@@ -56,6 +58,12 @@ const LiveBroadcast = ({ location }) => {
         flvPlayer.load();
         flvPlayer.play();
         var media = document.getElementById("videoElement");
+        //This onerror function only works on CHROME
+        media.onerror = function () {
+          console.log(
+            "Error " + media.error.code + "; details: " + media.error.message
+          );
+        };
         const playPromise = media.play();
         if (playPromise !== null) {
           playPromise.catch(() => {
@@ -163,15 +171,15 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="socket.io_address"
         ref={socketio_address}
-        value="https://165.232.159.222:444"
+        value="https://localhost:444"
       />
       <br />
-      <label for="flv_url">flv_soruce Destination:</label>
+      <label for="flv_url">flv_source Destination:</label>
       <input
         type="text"
         id="flvsource"
         ref={flvsource}
-        value="https://165.232.159.222:444/live/test0.flv"
+        value="http://localhost:8888/live/test0.flv"
       />
       <br />
       <label for="option_url">RTMP Destination:</label>
@@ -179,7 +187,7 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="option_url"
         ref={option_url}
-        value="rtmp://165.232.159.222/live/5ikZe6zL4"
+        value="rtmp://localhost/live/5ikZe6zL4"
       />
       <label for="checkbox_Reconection">Reconnection</label>
       <input type="checkbox" id="checkbox_Reconection" checked="true" />
