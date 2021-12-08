@@ -48,9 +48,16 @@ var http = require("http").Server(app2);
 //   app2
 // );
 //make socket io use this server
+console.log("THIS IS NODE_ENV: " + process.env.NODE_ENV);
+let originUrl;
+if (process.env.NODE_ENV === "production") {
+  originUrl = productionUrl;
+} else {
+  originUrl = "http://localhost:3000";
+}
 var io = require("socket.io")(http, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: originUrl,
     methods: ["GET", "POST"],
   },
 });
