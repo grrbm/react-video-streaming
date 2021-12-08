@@ -281,7 +281,7 @@ const LiveBroadcast = ({ location }) => {
       <label for="checkbox_Reconection">Reconnection</label>
       <input type="checkbox" id="checkbox_Reconection" checked="true" />
       <br />
-      <button id="button_server" ref={button_start} onClick={connect_server}>
+      <button id="button_server" ref={button_server} onClick={connect_server}>
         Connect_server
       </button>
       <button id="button_start" ref={button_start} onClick={requestMedia}>
