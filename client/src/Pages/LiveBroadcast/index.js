@@ -125,8 +125,8 @@ const LiveBroadcast = ({ location }) => {
     socket.on("ffmpeg_stderr", function (m) {
       show_output("FFMPEG:" + m);
     });
-    socket.on("disconnect", function () {
-      show_output("ERROR: server disconnected!");
+    socket.on("disconnect", function (reason) {
+      show_output("ERROR: server disconnected! Reason: " + reason);
       mediaRecorder.stop();
       state = "stop";
       button_start.current.disabled = true;
@@ -221,7 +221,7 @@ const LiveBroadcast = ({ location }) => {
       });
   }
   function video_show(stream) {
-    if ("srcObject" in output_video) {
+    if ("srcObject" in output_video.current) {
       output_video.current.srcObject = stream;
     } else {
       output_video.current.src = window.URL.createObjectURL(stream);
