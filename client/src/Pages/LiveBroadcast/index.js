@@ -189,6 +189,7 @@ const LiveBroadcast = ({ location }) => {
         /* Getting URL here locally */
         var url = (option_url.current.value =
           "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
+        console.log("This is the RTMP url: " + url);
 
         socket.emit("config_rtmpDestination", url);
         socket.emit("start", "start");
@@ -238,8 +239,8 @@ const LiveBroadcast = ({ location }) => {
     );
   }
   function show_output(str) {
-    output_console.value += "\n" + str;
-    output_console.scrollTop = output_console.scrollHeight;
+    output_console.current.value += "\n" + str;
+    output_console.current.scrollTop = output_console.scrollHeight;
   }
   return (
     <div className="mainDiv">
