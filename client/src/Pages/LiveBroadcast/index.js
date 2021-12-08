@@ -88,7 +88,7 @@ const LiveBroadcast = ({ location }) => {
       fail("No MediaRecorder available.");
     }
 
-    socket = io.connect(socketio_address.value /*, { secure: true }*/);
+    socket = io.connect(socketio_address.current.value /*, { secure: true }*/);
     //output_message.innerHTML=socket;
     socket.on("connect_error", function (error) {
       output_message.current.innerHTML = "Connection Failed: " + error;
