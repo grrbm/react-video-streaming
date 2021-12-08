@@ -13,7 +13,7 @@ export default function LiveStreamPlayer(props) {
   const environment = process.env.NODE_ENV;
   let baseUrl;
   if (environment === "development") {
-    baseUrl = "127.0.0.1";
+    baseUrl = "http://127.0.0.1";
   } else {
     //if it's in production
     baseUrl = config.productionUrl;
@@ -33,7 +33,7 @@ export default function LiveStreamPlayer(props) {
           sources: [
             {
               src:
-                `http://${baseUrl}:` +
+                `${baseUrl}:` +
                 config.rtmp_server.http.port +
                 "/live/" +
                 res.data.stream_key +

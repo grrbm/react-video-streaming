@@ -10,7 +10,7 @@ export default function LiveStreams(props) {
   let baseUrl;
   console.log("THIS IS THE ENVIRONMENT: " + environment);
   if (environment === "development") {
-    baseUrl = "127.0.0.1";
+    baseUrl = "http://127.0.0.1";
   } else {
     //if it's in production
     baseUrl = config.productionUrl;
@@ -22,7 +22,7 @@ export default function LiveStreams(props) {
 
   function getLiveStreams() {
     axios
-      .get(`http://${baseUrl}:` + config.rtmp_server.http.port + "/api/streams")
+      .get(`${baseUrl}:` + config.rtmp_server.http.port + "/api/streams")
       .then((res) => {
         let streams = res.data;
         if (typeof streams["live"] !== "undefined") {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useScript } from "../../Hooks/useScript";
 import Script from "react-inline-script";
 import { Helmet } from "react-helmet";
-//import socketClient from "socket.io-client";
+import config from "../../config/default";
 import "./LiveBroadcast.scss";
 const { io } = require("socket.io-client");
 
@@ -262,7 +262,11 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="socket.io_address"
         ref={socketio_address}
-        value="http://localhost:8887"
+        value={
+          process.env.NODE_ENV === "production"
+            ? config.productionUrl + ":8887"
+            : "http://localhost:8887"
+        }
       />
       <br />
       <label for="flv_url">flv_source Destination:</label>
@@ -270,7 +274,11 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="flvsource"
         ref={flvsource}
-        value="http://localhost:8887/live/test0.flv"
+        value={
+          process.env.NODE_ENV === "production"
+            ? config.productionUrl + ":8887/live/test0.flv"
+            : "http://localhost:8887/live/test0.flv"
+        }
       />
       <br />
       <label for="option_url">RTMP Destination:</label>
@@ -278,7 +286,7 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="option_url"
         ref={option_url}
-        value="rtmp://localhost/live/5ikZe6zL4"
+        value={`rmtp://${window.location.hostname}/live/5ikZe6zL4`}
       />
       <label for="checkbox_Reconection">Reconnection</label>
       <input type="checkbox" id="checkbox_Reconection" checked="true" />
