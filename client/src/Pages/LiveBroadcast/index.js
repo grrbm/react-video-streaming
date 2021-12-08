@@ -210,14 +210,14 @@ const LiveBroadcast = ({ location }) => {
       .catch(function (err) {
         console.log("The following error occured: " + err);
         show_output("Local getUserMedia ERROR:" + err);
-        output_message.innerHTML =
-          "Local video source size is not soupport or No camera ?" +
-          output_video.videoWidth +
+        output_message.current.innerHTML =
+          "Local video source size is not supported or No camera ?" +
+          output_video.current.videoWidth +
           "x" +
-          output_video.videoHeight;
+          output_video.current.videoHeight;
         state = "stop";
-        button_start.disabled = true;
-        button_server.disabled = false;
+        button_start.current.disabled = true;
+        button_server.current.disabled = false;
       });
   }
   function video_show(stream) {
