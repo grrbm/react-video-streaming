@@ -51,7 +51,7 @@ var http = require("http").Server(app2);
 console.log("THIS IS NODE_ENV: " + process.env.NODE_ENV);
 let originUrl;
 if (process.env.NODE_ENV === "production") {
-  originUrl = productionUrl;
+  originUrl = config.productionUrl;
 } else {
   originUrl = "http://localhost:3000";
 }
