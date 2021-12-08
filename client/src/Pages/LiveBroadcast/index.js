@@ -42,7 +42,7 @@ const LiveBroadcast = ({ location }) => {
 
   function fail(str) {
     alert(str + "\nPlease download the latest version of Firefox!");
-    location.replace("http://mozilla.org/firefox");
+    //location.replace("http://mozilla.org/firefox");
   }
 
   function flvsourceinitialize() {
