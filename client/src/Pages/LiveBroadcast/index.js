@@ -76,6 +76,95 @@ const LiveBroadcast = ({ location }) => {
       console.log("There as an error initializing flv: " + error);
     }
   }
+  function connect_server() {
+    navigator.getUserMedia =
+      navigator.getUserMedia ||
+      navigator.mozGetUserMedia ||
+      navigator.msGetUserMedia ||
+      navigator.webkitGetUserMedia;
+    if (!navigator.getUserMedia) {
+      fail("No getUserMedia() available.");
+    }
+    if (!MediaRecorder) {
+      fail("No MediaRecorder available.");
+    }
+
+    socket = io.connect(socketio_address.value, { secure: true });
+    //output_message.innerHTML=socket;
+    socket.on("connect_error", function () {
+      output_message.current.innerHTML = "Connection Failed";
+    });
+    //({
+    // option 1
+    // ca: fs.readFileSync("https://localhost:443",'./abels-cert.pem'),
+    // option 2. WARNING: it leaves you vulnerable to MITM attacks!
+    // requestCert: false,
+    //  rejectUnauthorized: false
+    //});
+    //var socket = io.
+    //
+    socket.on("message", function (m) {
+      console.log("recv server message", m);
+      show_output("SERVER:" + m);
+    });
+    socket.on("fatal", function (m) {
+      show_output("ERROR: unexpected:" + m);
+      //alert('Error:'+m);
+      mediaRecorder.stop();
+      state = "stop";
+      button_start.current.disabled = true;
+      button_server.current.disabled = false;
+      //document.getElementById('button_start').disabled=true;
+      var oo = document.getElementById("checkbox_Reconection");
+      if (oo.checked) {
+        timedCount();
+        output_message.current.innerHTML = "server is reload!";
+        //如果該checkbox有勾選應作的動作...
+      }
+      //should reload?
+    });
+    socket.on("ffmpeg_stderr", function (m) {
+      show_output("FFMPEG:" + m);
+    });
+    socket.on("disconnect", function () {
+      show_output("ERROR: server disconnected!");
+      mediaRecorder.stop();
+      state = "stop";
+      button_start.current.disabled = true;
+      button_server.current.disabled = false;
+      //	document.getElementById('button_start').disabled=true;
+      var oo = document.getElementById("checkbox_Reconection");
+      if (oo.checked) {
+        timedCount();
+
+        output_message.current.innerHTML = "server is reload!";
+        //如果該checkbox有勾選應作的動作...
+      }
+    });
+    state = "ready";
+    button_start.current.disabled = false;
+    button_server.current.disabled = true;
+    output_message.current.innerHTML = "connect server successful";
+  }
+  function timedCount() {
+    var oo = document.getElementById("checkbox_Reconection");
+    if (oo.checked) {
+      if (state == "ready") {
+        requestMedia();
+        button_start.current.disabled = false;
+        button_server.current.disabled = true;
+      } else {
+        t = setTimeout("timedCount()", 1000);
+        connect_server();
+        output_message.current.innerHTML = "try connect server ...";
+        button_start.current.disabled = true;
+        button_server.current.disabled = false;
+      }
+    } else {
+      button_start.current.disabled = true;
+      button_server.current.disabled = false;
+    }
+  }
 
   function requestMedia() {
     var constraints = {
@@ -192,7 +281,9 @@ const LiveBroadcast = ({ location }) => {
       <label for="checkbox_Reconection">Reconnection</label>
       <input type="checkbox" id="checkbox_Reconection" checked="true" />
       <br />
-      <button id="button_server">Connect_server</button>
+      <button id="button_server" ref={button_start} onClick={connect_server}>
+        Connect_server
+      </button>
       <button id="button_start" ref={button_start} onClick={requestMedia}>
         Start streaming
       </button>
