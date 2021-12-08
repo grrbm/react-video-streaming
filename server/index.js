@@ -32,18 +32,23 @@ const mongoURI = process.env.MONGODB_URI || db;
 
 /* Setup broadcast live */
 
+//set CORS in server 2
+app2.use(cors());
 //Serve "static" folder on Server 2
 app2.use("/static", express.static(path.join(__dirname, "./static")));
+//create http server
+var http = require("http").Server(app2);
+
 //create https server
-const server = require("https").createServer(
-  {
-    key: fs.readFileSync("certificates/abels-key.pem"),
-    cert: fs.readFileSync("certificates/abels-cert.pem"),
-  },
-  app2
-);
+// const server = require("https").createServer(
+//   {
+//     key: fs.readFileSync("certificates/abels-key.pem"),
+//     cert: fs.readFileSync("certificates/abels-cert.pem"),
+//   },
+//   app2
+// );
 //make socket io use this server
-var io = require("socket.io")(server);
+var io = require("socket.io")(http);
 //spawn ffmpeg
 spawn("ffmpeg", ["-h"]).on("error", function (m) {
   console.error(
@@ -175,14 +180,15 @@ io.on("error", function (e) {
   console.log("socket.io error:" + e);
 });
 
-//http.listen(8888, function(){
-// console.log('http and websocket listening on *:8888');
-//});
+//listen on port 8887
+http.listen(8887, function () {
+  console.log("http and websocket listening on *:8887");
+});
 
 //listen on port 444
-server.listen(444, function () {
-  console.log("https and websocket listening on *:444");
-});
+// server.listen(444, function () {
+//   console.log("https and websocket listening on *:444");
+// });
 
 //catch process exceptions
 process.on("uncaughtException", function (err) {

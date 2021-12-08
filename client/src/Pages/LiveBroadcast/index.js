@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet";
 import "./LiveBroadcast.scss";
 const { io } = require("socket.io-client");
 
-const SERVER = "http://127.0.0.1:5000";
 const LiveBroadcast = ({ location }) => {
   var flvPlayer;
   var flvsource = useRef();
@@ -27,7 +26,7 @@ const LiveBroadcast = ({ location }) => {
   var t;
   useEffect(() => {
     if (flvsource.current) {
-      flvsourceinitialize();
+      //flvsourceinitialize();
     }
     if (button_start.current) {
       button_start.current.disabled = true;
@@ -89,10 +88,10 @@ const LiveBroadcast = ({ location }) => {
       fail("No MediaRecorder available.");
     }
 
-    socket = io.connect(socketio_address.value, { secure: true });
+    socket = io.connect(socketio_address.value /*, { secure: true }*/);
     //output_message.innerHTML=socket;
-    socket.on("connect_error", function () {
-      output_message.current.innerHTML = "Connection Failed";
+    socket.on("connect_error", function (error) {
+      output_message.current.innerHTML = "Connection Failed: " + error;
     });
     //({
     // option 1
@@ -260,7 +259,7 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="socket.io_address"
         ref={socketio_address}
-        value="https://localhost:444"
+        value="http://localhost:8887"
       />
       <br />
       <label for="flv_url">flv_source Destination:</label>
@@ -268,7 +267,7 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="flvsource"
         ref={flvsource}
-        value="http://localhost:8888/live/test0.flv"
+        value="http://localhost:8887/live/test0.flv"
       />
       <br />
       <label for="option_url">RTMP Destination:</label>
