@@ -48,7 +48,12 @@ var http = require("http").Server(app2);
 //   app2
 // );
 //make socket io use this server
-var io = require("socket.io")(http);
+var io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
 //spawn ffmpeg
 spawn("ffmpeg", ["-h"]).on("error", function (m) {
   console.error(
@@ -161,7 +166,8 @@ io.on("connection", function (socket) {
     }
     feedStream(m);
   });
-  socket.on("disconnect", function () {
+  socket.on("disconnect", function (reason) {
+    console.log("Server disconnected. Reason: " + reason);
     feedStream = false;
     if (ffmpeg_process)
       try {
