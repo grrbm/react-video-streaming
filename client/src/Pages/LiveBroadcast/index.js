@@ -109,7 +109,9 @@ const LiveBroadcast = ({ location }) => {
     socket.on("fatal", function (m) {
       show_output("ERROR: unexpected:" + m);
       //alert('Error:'+m);
-      mediaRecorder.stop();
+      if (mediaRecorder) {
+        mediaRecorder.stop();
+      }
       state = "stop";
       button_start.current.disabled = true;
       button_server.current.disabled = false;
@@ -188,7 +190,7 @@ const LiveBroadcast = ({ location }) => {
 
         /* Getting URL here locally */
         var url = (option_url.current.value =
-          "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
+          "rtmp://" + window.location.hostname + ":1935/live/5ikZe6zL4");
         console.log("This is the RTMP url: " + url);
 
         socket.emit("config_rtmpDestination", url);
