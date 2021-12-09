@@ -88,11 +88,7 @@ const LiveBroadcast = ({ location }) => {
     }
     const result = await Axios.get("/certificate");
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    socket = io.connect(socketio_address.current.value, {
-      rejectUnauthorized: false,
-      secure: true,
-      //ca: result.data.cert,
-    });
+    socket = io.connect(socketio_address.current.value);
     //({
     // option 1
     // ca: fs.readFileSync("https://localhost:443",'./abels-cert.pem'),
@@ -270,7 +266,7 @@ const LiveBroadcast = ({ location }) => {
         value={
           process.env.NODE_ENV === "production"
             ? config.productionUrl + `:${config.frontendPort}`
-            : `https://localhost:${config.frontendPort}`
+            : `${config.localUrl}:${config.frontendPort}`
         }
       />
       <br />
@@ -282,7 +278,7 @@ const LiveBroadcast = ({ location }) => {
         value={
           process.env.NODE_ENV === "production"
             ? config.productionUrl + `:${config.frontendPort}/live/test0.flv`
-            : `https://localhost:${config.frontendPort}/live/test0.flv`
+            : `${config.localUrl}:${config.frontendPort}/live/test0.flv`
         }
       />
       <br />
