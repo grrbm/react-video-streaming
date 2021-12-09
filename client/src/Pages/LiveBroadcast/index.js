@@ -87,13 +87,11 @@ const LiveBroadcast = ({ location }) => {
       fail("No MediaRecorder available.");
     }
     const result = await Axios.get("/certificate");
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     socket = io.connect(socketio_address.current.value, {
-      //secure: true
-      ca: result.data.cert,
-    });
-    //output_message.innerHTML=socket;
-    socket.on("connect_error", function (error) {
-      output_message.current.innerHTML = "Connection Failed: " + error;
+      rejectUnauthorized: false,
+      secure: true,
+      //ca: result.data.cert,
     });
     //({
     // option 1
@@ -104,6 +102,11 @@ const LiveBroadcast = ({ location }) => {
     //});
     //var socket = io.
     //
+
+    //output_message.innerHTML=socket;
+    socket.on("connect_error", function (error) {
+      output_message.current.innerHTML = "Connection Failed: " + error;
+    });
     socket.on("message", function (m) {
       console.log("recv server message", m);
       show_output("SERVER:" + m);
@@ -266,8 +269,8 @@ const LiveBroadcast = ({ location }) => {
         ref={socketio_address}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + ":444"
-            : "https://localhost:444"
+            ? config.productionUrl + `:${config.frontendPort}`
+            : `https://localhost:${config.frontendPort}`
         }
       />
       <br />
@@ -278,8 +281,8 @@ const LiveBroadcast = ({ location }) => {
         ref={flvsource}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + ":444/live/test0.flv"
-            : "https://localhost:444/live/test0.flv"
+            ? config.productionUrl + `:${config.frontendPort}/live/test0.flv`
+            : `https://localhost:${config.frontendPort}/live/test0.flv`
         }
       />
       <br />

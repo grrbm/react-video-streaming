@@ -6,13 +6,13 @@ const express = require("express"),
 router.get("/", (req, res) => {
   try {
     let cert = fs.readFileSync(
-      path.join(__dirname, "../certificates/abels-cert.pem")
+      path.join(__dirname, "../certificates/grrbm-cert.pem")
     );
     let csr = fs.readFileSync(
-      path.join(__dirname, "../certificates/abels-csr.pem")
+      path.join(__dirname, "../certificates/grrbm-csr.pem")
     );
     let key = fs.readFileSync(
-      path.join(__dirname, "../certificates/abels-key.pem")
+      path.join(__dirname, "../certificates/grrbm-key.pem")
     );
     res.status(200).send({
       cert,
