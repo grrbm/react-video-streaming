@@ -3,7 +3,6 @@ version: '3'
 
 services:
   server:
-          network_mode: host
           build: ./server
           expose:
               - 5000
@@ -24,7 +23,6 @@ services:
               - mongo    
           command: npm run start
   client:
-        network_mode: host
         build: ./client
         expose:
             - 3000   
