@@ -9,6 +9,8 @@ services:
               - 1935
               - 8888
               - 444
+          networks:
+              - local_net
           environment:
               - NODE_ENV=production
           ports:
@@ -25,7 +27,9 @@ services:
   client:
         build: ./client
         expose:
-            - 3000   
+            - 3000 
+        networks:
+            - local_net              
         environment:
             - NODE_ENV=production
         ports:
