@@ -29,7 +29,7 @@ services:
         environment:
             - NODE_ENV=production
         ports:
-            - 3000:3000
+            - 8080:3000
         volumes:
             - ./client/src:/srv/app/admin-client/src
             - ./client/public:/srv/app/admin-client/public
