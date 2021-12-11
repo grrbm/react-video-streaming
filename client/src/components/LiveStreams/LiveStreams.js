@@ -22,10 +22,7 @@ export default function LiveStreams(props) {
 
   function getLiveStreams() {
     const fullUrl =
-      window.location.protocol +
-      window.location.hostname +
-      config.rtmp_server.http.port +
-      "/api/streams";
+      `${baseUrl}:` + config.rtmp_server.http.port + "/api/streams";
     axios
       .get(fullUrl)
       .then((res) => {

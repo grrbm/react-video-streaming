@@ -91,7 +91,7 @@ const LiveBroadcast = ({ location }) => {
     // const fullUrl =
     //   window.location.protocol + window.location.hostname + config.frontendPort;
     const fullUrl = socketio_address.current.value;
-    socket = io.connect(fullUrl, { secure: true });
+    socket = io.connect(fullUrl, { secure: true, ca: result.data.fullchain });
     //({
     // option 1
     // ca: fs.readFileSync("https://localhost:443",'./abels-cert.pem'),
