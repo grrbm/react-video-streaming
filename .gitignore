@@ -6,3 +6,4 @@ client/build
 server/videos/*
 !server/videos/.gitkeep 
 .vscode
+.env
