@@ -3,7 +3,7 @@ const config = {
   secret_token: "1b671a64-40d5-491e-99b0-da01ff1f3341",
   productionUrl: "https://loud-now.cyou",
   localUrl: "http://localhost",
-  frontendPort: 8887,
+  socketioPort: 444,
   server: {
     secret: "ASOlojaga812imsxaofdApldgosfmcv891kKSkdf",
     port: 3333,

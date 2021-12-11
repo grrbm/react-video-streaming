@@ -89,7 +89,7 @@ const LiveBroadcast = ({ location }) => {
     const result = await Axios.get("/certificate");
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     // const fullUrl =
-    //   window.location.protocol + window.location.hostname + config.frontendPort;
+    //   window.location.protocol + window.location.hostname + config.socketioPort;
     const fullUrl = socketio_address.current.value;
     socket = io.connect(fullUrl, { secure: true, ca: result.data.fullchain });
     //({
@@ -268,8 +268,8 @@ const LiveBroadcast = ({ location }) => {
         ref={socketio_address}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + `:${config.frontendPort}`
-            : `${config.localUrl}:${config.frontendPort}`
+            ? config.productionUrl + `:${config.socketioPort}`
+            : `${config.localUrl}:${config.socketioPort}`
         }
       />
       <br />
@@ -280,8 +280,8 @@ const LiveBroadcast = ({ location }) => {
         ref={flvsource}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + `:${config.frontendPort}/live/test0.flv`
-            : `${config.localUrl}:${config.frontendPort}/live/test0.flv`
+            ? config.productionUrl + `:${config.socketioPort}/live/test0.flv`
+            : `${config.localUrl}:${config.socketioPort}/live/test0.flv`
         }
       />
       <br />

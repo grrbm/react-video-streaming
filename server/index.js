@@ -199,9 +199,9 @@ io.on("error", function (e) {
 //   console.log("http and websocket listening on *:8887");
 // });
 
-//listen on port 444
-server.listen(444, function () {
-  console.log("https and websocket listening on *:444");
+//listen on port {config.socketioPort}
+server.listen(config.socketioPort, function () {
+  console.log(`https and websocket listening on *:${config.socketioPort}`);
 });
 
 //catch process exceptions
