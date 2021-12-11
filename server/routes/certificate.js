@@ -6,18 +6,22 @@ const express = require("express"),
 router.get("/", (req, res) => {
   try {
     let cert = fs.readFileSync(
-      path.join(__dirname, "../certificates/grrbm-cert.pem")
+      path.join(__dirname, "../certificates/cert.pem")
     );
-    let csr = fs.readFileSync(
-      path.join(__dirname, "../certificates/grrbm-csr.pem")
+    let chain = fs.readFileSync(
+      path.join(__dirname, "../certificates/chain.pem")
     );
-    let key = fs.readFileSync(
-      path.join(__dirname, "../certificates/grrbm-key.pem")
+    let fullchain = fs.readFileSync(
+      path.join(__dirname, "../certificates/fullchain.pem")
+    );
+    let privkey = fs.readFileSync(
+      path.join(__dirname, "../certificates/privkey.pem")
     );
     res.status(200).send({
       cert,
-      csr,
-      key,
+      chain,
+      fullchain,
+      privkey,
     });
   } catch (error) {
     console.log("Error fetching certiificate. " + error);
