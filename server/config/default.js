@@ -1,7 +1,7 @@
 const config = {
   mongodbURL: "mongodb://localhost:27017/ReactVideoStreaming",
   secret_token: "1b671a64-40d5-491e-99b0-da01ff1f3341",
-  productionUrl: "https://165.232.159.222",
+  productionUrl: "https://loud-now.cyou",
   socketioPort: 444,
   server: {
     secret: "ASOlojaga812imsxaofdApldgosfmcv891kKSkdf",
