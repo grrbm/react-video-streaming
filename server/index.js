@@ -51,10 +51,11 @@ const server = require("https").createServer(
 console.log("THIS IS NODE_ENV: " + process.env.NODE_ENV);
 let originUrl;
 if (process.env.NODE_ENV === "production") {
-  originUrl = config.productionUrl;
+  originUrl = config.get("productionUrl");
 } else {
   originUrl = "http://localhost:3000";
 }
+console.log("THIS IS THE SOCKET IO CORS URL: " + originUrl);
 //make socket io use this server
 var io = require("socket.io")(server, {
   cors: {
