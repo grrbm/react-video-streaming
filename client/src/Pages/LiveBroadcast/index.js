@@ -205,7 +205,9 @@ const LiveBroadcast = ({ location }) => {
         mediaRecorder.start(0);
 
         mediaRecorder.onstop = function (e) {
-          stream.stop();
+          if (stream) {
+            stream.stop();
+          }
         };
         //document.getElementById('button_start').disabled=false;
 
