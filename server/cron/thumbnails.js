@@ -15,11 +15,7 @@ if (environment === "development") {
 const job = new CronJob(
   "*/5 * * * * *",
   function () {
-    const fullUrl =
-      window.location.protocol +
-      window.location.hostname +
-      port +
-      "/api/streams";
+    const fullUrl = `${baseUrl}:` + port + "/api/streams";
     request.get(fullUrl, function (error, response, body) {
       if (error) {
         console.log("There was an error fetching thumbnail: " + error);
