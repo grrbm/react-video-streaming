@@ -88,7 +88,10 @@ const LiveBroadcast = ({ location }) => {
     }
     const result = await Axios.get("/certificate");
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    socket = io.connect(socketio_address.current.value);
+    const fullUrl =
+      window.location.protocol + window.location.hostname + config.frontendPort;
+    //const fullUrl = socketio_address.current.value
+    socket = io.connect(fullUrl, { secure: true });
     //({
     // option 1
     // ca: fs.readFileSync("https://localhost:443",'./abels-cert.pem'),
