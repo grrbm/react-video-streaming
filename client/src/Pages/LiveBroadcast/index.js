@@ -133,7 +133,9 @@ const LiveBroadcast = ({ location }) => {
     });
     socket.on("disconnect", function (reason) {
       show_output("ERROR: server disconnected! Reason: " + reason);
-      mediaRecorder.stop();
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
       state = "stop";
       button_start.current.disabled = true;
       button_server.current.disabled = false;
