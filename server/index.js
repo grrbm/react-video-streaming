@@ -205,14 +205,16 @@ io.on("error", function (e) {
 //   console.log("http and websocket listening on *:8887");
 // });
 
+let currentSocketIoPort =
+  process.env.NODE_ENV === "production"
+    ? config.get("prodSocketioPort")
+    : config.get("localSocketioPort");
+
+let protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 //listen on port {config.socketioPort}
-server.listen(config.socketioPort, function () {
+server.listen(currentSocketIoPort, function () {
   console.log(
-    `https and websocket listening on *:${
-      process.env.NODE_ENV === "production"
-        ? config.get("prodSocketioPort")
-        : config.get("localSocketioPort")
-    }`
+    `${protocol} and websocket listening on *:${currentSocketIoPort}`
   );
 });
 
