@@ -34,10 +34,12 @@ router.get("/listAllStreams", async (req, res) => {
   try {
     let fullUrl = `${baseUrl}:` + port + "/api/streams";
     fullUrl = fullUrl.replace(/https/, "http");
-    const result = axios.get(fullUrl);
+    const result = await axios.get(fullUrl);
     res.status(200).send(result.data);
   } catch (error) {
-    res.status(500).send("Error getting list of streams available.");
+    res
+      .status(500)
+      .send("Error getting list of streams available. Error: " + error);
   }
 });
 
