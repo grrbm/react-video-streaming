@@ -345,7 +345,7 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="option_url"
         ref={option_url}
-        value={`rmtp://${window.location.hostname}/live/${streamKey}`}
+        value={`rtmp://${window.location.hostname}/live/${streamKey}`}
       />
       <label for="checkbox_Reconection">Reconnection</label>
       <input type="checkbox" id="checkbox_Reconection" checked="true" />
