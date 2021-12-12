@@ -8,7 +8,7 @@ const environment = process.env.NODE_ENV;
 let baseUrl;
 if (environment === "production") {
   //if it's in production
-  baseUrl = config.productionUrl;
+  baseUrl = "http://localhost";
 } else {
   baseUrl = "http://127.0.0.1";
 }
