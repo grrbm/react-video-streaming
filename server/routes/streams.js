@@ -1,7 +1,9 @@
 const express = require("express"),
   router = express.Router(),
   User = require("../database/Schema").User,
-  axios = require("axios");
+  axios = require("axios"),
+  config = require("../config/default"),
+  port = config.rtmp_server.http.port;
 
 const environment = process.env.NODE_ENV;
 let baseUrl;
@@ -37,9 +39,9 @@ router.get("/listAllStreams", async (req, res) => {
     const result = await axios.get(fullUrl);
     res.status(200).send(result.data);
   } catch (error) {
-    res
-      .status(500)
-      .send("Error getting list of streams available. Error: " + error);
+    const errorMsg = "Error getting list of streams available. Error: " + error;
+    console.log(errorMsg);
+    res.status(500).send(errorMsg);
   }
 });
 
