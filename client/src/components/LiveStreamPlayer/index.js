@@ -32,12 +32,7 @@ export default function LiveStreamPlayer(props) {
           controls: true,
           sources: [
             {
-              src:
-                `${baseUrl}:` +
-                config.rtmp_server.http.port +
-                "/live/" +
-                res.data.stream_key +
-                "/index.m3u8",
+              src: `/streams/watchStream/${res.data.stream_key}`,
               type: "application/x-mpegURL",
             },
           ],
