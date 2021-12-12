@@ -13,7 +13,7 @@ export default function LiveStreams(props) {
     baseUrl = "http://127.0.0.1";
   } else {
     //if it's in production
-    baseUrl = "http://localhost";
+    baseUrl = "//loud-now.cyou";
   }
 
   useEffect(() => {
