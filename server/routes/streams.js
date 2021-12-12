@@ -45,4 +45,18 @@ router.get("/listAllStreams", async (req, res) => {
   }
 });
 
+router.get("/watchStream/:streamKey", async (req, res) => {
+  const streamKey = req.params.streamKey;
+  try {
+    let fullUrl = `${baseUrl}:` + port + "/live/" + streamKey + "/index.m3u8";
+    fullUrl = fullUrl.replace(/https/, "http");
+    const result = await axios.get(fullUrl);
+    res.status(200).send(result.data);
+  } catch (error) {
+    const errorMsg = "Error trying to get a watchable stream. Error: " + error;
+    console.log(errorMsg);
+    res.status(500).send(errorMsg);
+  }
+});
+
 module.exports = router;
