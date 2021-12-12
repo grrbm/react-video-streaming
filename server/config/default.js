@@ -27,6 +27,7 @@ const config = {
       mediaroot: "./media",
       key: "./certificates/privkey.pem",
       cert: "./certificates/fullchain.pem",
+      allow_origin: "*",
     },
     trans: {
       ffmpeg:
