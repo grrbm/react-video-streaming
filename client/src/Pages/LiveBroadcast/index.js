@@ -94,10 +94,7 @@ const LiveBroadcast = ({ location }) => {
     if (process.env.NODE_ENV === "production") {
       socket = io.connect(fullUrl, { secure: true, ca: result.data.fullchain });
     } else {
-      socket = io.connect(fullUrl, {
-        rejectUnauthorized: false,
-        requestCert: false,
-      });
+      socket = io.connect(fullUrl);
     }
 
     //({
