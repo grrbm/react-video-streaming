@@ -148,7 +148,7 @@ io.on("connection", function (socket) {
       socket._rtmpDestination,
     ];
 
-    console.log(socket._rtmpDestination);
+    console.log("RTMP DESTINATION: " + socket._rtmpDestination);
     ffmpeg_process = spawn("ffmpeg", ops);
     feedStream = function (data) {
       ffmpeg_process.stdin.write(data);

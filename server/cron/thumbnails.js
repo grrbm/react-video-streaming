@@ -1,16 +1,18 @@
 const CronJob = require("cron").CronJob,
   request = require("request"),
   helpers = require("../helpers/helpers"),
-  config = require("../config/default"),
-  port = config.rtmp_server.http.port;
+  config = require("../config/default");
 
 const environment = process.env.NODE_ENV;
 let baseUrl;
+let port;
 if (environment === "production") {
   //if it's in production
-  baseUrl = "http://localhost";
+  baseUrl = "https://localhost";
+  port = config.rtmp_server.https.port;
 } else {
   baseUrl = "http://127.0.0.1";
+  port = config.rtmp_server.http.port;
 }
 const job = new CronJob(
   "*/5 * * * * *",
