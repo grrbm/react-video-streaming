@@ -324,8 +324,8 @@ mongoose
     useFindAndModify: false,
     useCreateIndex: true,
   })
-  .then(() => console.log("Connected to database"))
-  .catch((err) => console.log(err));
+  .then(() => console.log("Connected to database. URI: " + mongoURI))
+  .catch((err) => console.log("Could not connect to MongoDB. Error: " + err));
 
 /*   GridFS Stream Configuration */
 let gfs;
