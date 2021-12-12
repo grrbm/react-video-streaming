@@ -16,7 +16,7 @@ export default function LiveStreamPlayer(props) {
     baseUrl = "http://127.0.0.1";
   } else {
     //if it's in production
-    baseUrl = "http://localhost:141414";
+    baseUrl = "http://localhost:44141";
   }
   useEffect(() => {
     axios

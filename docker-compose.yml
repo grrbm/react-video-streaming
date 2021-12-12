@@ -26,12 +26,12 @@ services:
         build: ./client
         expose:
             - 3000
-            - 141414
+            - 44141
         environment:
             - NODE_ENV=production
         ports:
             - 3000:3000
-            - 141414:8888
+            - 44141:8888
         volumes:
             - ./client/src:/srv/app/admin-client/src
             - ./client/public:/srv/app/admin-client/public
