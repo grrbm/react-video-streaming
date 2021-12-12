@@ -39,21 +39,26 @@ app2.use("/static", express.static(path.join(__dirname, "./static")));
 
 //create http server
 //var http = require("http").Server(app2);
-
+let server;
 //create https server
-const server = require("https").createServer(
-  {
-    key: fs.readFileSync("certificates/privkey.pem"),
-    cert: fs.readFileSync("certificates/fullchain.pem"),
-  },
-  app2
-);
+if (process.env.NODE_ENV === "production") {
+  server = require("https").createServer(
+    {
+      key: fs.readFileSync("certificates/privkey.pem"),
+      cert: fs.readFileSync("certificates/fullchain.pem"),
+    },
+    app2
+  );
+} else {
+  server = require("http").createServer(app2);
+}
+
 console.log("THIS IS NODE_ENV: " + process.env.NODE_ENV);
 let originUrl;
 if (process.env.NODE_ENV === "production") {
   originUrl = config.get("productionUrl");
 } else {
-  originUrl = "http://localhost:3000";
+  originUrl = config.get("localUrl");
 }
 console.log("THIS IS THE SOCKET IO CORS URL: " + originUrl);
 //make socket io use this server
@@ -202,7 +207,13 @@ io.on("error", function (e) {
 
 //listen on port {config.socketioPort}
 server.listen(config.socketioPort, function () {
-  console.log(`https and websocket listening on *:${config.socketioPort}`);
+  console.log(
+    `https and websocket listening on *:${
+      process.env.NODE_ENV === "production"
+        ? config.get("prodSocketioPort")
+        : config.get("localSocketioPort")
+    }`
+  );
 });
 
 //catch process exceptions

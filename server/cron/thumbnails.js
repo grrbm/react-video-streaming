@@ -6,11 +6,11 @@ const CronJob = require("cron").CronJob,
 
 const environment = process.env.NODE_ENV;
 let baseUrl;
-if (environment === "development") {
-  baseUrl = "http://127.0.0.1";
-} else {
+if (environment === "production") {
   //if it's in production
   baseUrl = config.productionUrl;
+} else {
+  baseUrl = "http://127.0.0.1";
 }
 const job = new CronJob(
   "*/5 * * * * *",

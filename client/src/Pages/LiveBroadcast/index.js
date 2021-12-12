@@ -91,7 +91,15 @@ const LiveBroadcast = ({ location }) => {
     // const fullUrl =
     //   window.location.protocol + window.location.hostname + config.socketioPort;
     const fullUrl = socketio_address.current.value;
-    socket = io.connect(fullUrl, { secure: true, ca: result.data.fullchain });
+    if (process.env.NODE_ENV === "production") {
+      socket = io.connect(fullUrl, { secure: true, ca: result.data.fullchain });
+    } else {
+      socket = io.connect(fullUrl, {
+        rejectUnauthorized: false,
+        requestCert: false,
+      });
+    }
+
     //({
     // option 1
     // ca: fs.readFileSync("https://localhost:443",'./abels-cert.pem'),
@@ -104,7 +112,9 @@ const LiveBroadcast = ({ location }) => {
 
     //output_message.innerHTML=socket;
     socket.on("connect_error", function (error) {
-      output_message.current.innerHTML = "Connection Failed: " + error;
+      console.log("Connection Failed: " + error.code + " : " + error.message);
+      output_message.current.innerHTML =
+        "Connection Failed: " + error.code + " : " + error.message;
     });
     socket.on("message", function (m) {
       console.log("recv server message", m);
@@ -272,8 +282,8 @@ const LiveBroadcast = ({ location }) => {
         ref={socketio_address}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + `:${config.socketioPort}`
-            : `${config.localUrl}:${config.socketioPort}`
+            ? config.productionUrl + `:${config.prodSocketioPort}`
+            : `${config.localUrl}:${config.localSocketioPort}`
         }
       />
       <br />
@@ -284,8 +294,9 @@ const LiveBroadcast = ({ location }) => {
         ref={flvsource}
         value={
           process.env.NODE_ENV === "production"
-            ? config.productionUrl + `:${config.socketioPort}/live/test0.flv`
-            : `${config.localUrl}:${config.socketioPort}/live/test0.flv`
+            ? config.productionUrl +
+              `:${config.prodSocketioPort}/live/test0.flv`
+            : `${config.localUrl}:${config.localSocketioPort}/live/test0.flv`
         }
       />
       <br />

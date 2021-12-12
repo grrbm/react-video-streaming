@@ -17,11 +17,15 @@ router.get("/", (req, res) => {
     let privkey = fs.readFileSync(
       path.join(__dirname, "../certificates/privkey.pem")
     );
+    let abelscert = fs.readFileSync(
+      path.join(__dirname, "../certificates/abels/abels-cert.pem")
+    );
     res.status(200).send({
       cert,
       chain,
       fullchain,
       privkey,
+      abelscert,
     });
   } catch (error) {
     console.log("Error fetching certiificate. " + error);
