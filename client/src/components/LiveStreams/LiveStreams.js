@@ -22,7 +22,7 @@ export default function LiveStreams(props) {
 
   function getLiveStreams() {
     axios
-      .get("/listAllStreams")
+      .get("/streams/listAllStreams")
       .then((res) => {
         let streams = res.data;
         if (typeof streams["live"] !== "undefined") {
