@@ -65,7 +65,7 @@ const LiveBroadcast = ({ location }) => {
       // var height = option_height.current.value,
       //   width = option_width.current.value,
       //   url = (option_url.current.value =
-      //     "rtmp://" + location.host.split(":")[0] + ":1935/live/5ikZe6zL4");
+      //     "rtmp://" + location.host.split(":")[0] + ":1935/live/${streamKey}");
       // var t;
     }
   }, []);
@@ -244,7 +244,7 @@ const LiveBroadcast = ({ location }) => {
 
         /* Getting URL here locally */
         var url = (option_url.current.value =
-          "rtmp://" + window.location.hostname + ":1935/live/5ikZe6zL4");
+          "rtmp://" + window.location.hostname + `:1935/live/${streamKey}`);
         console.log("This is the RTMP url: " + url);
 
         socket.emit("config_rtmpDestination", url);
@@ -345,7 +345,7 @@ const LiveBroadcast = ({ location }) => {
         type="text"
         id="option_url"
         ref={option_url}
-        value={`rmtp://${window.location.hostname}/live/5ikZe6zL4`}
+        value={`rmtp://${window.location.hostname}/live/${streamKey}`}
       />
       <label for="checkbox_Reconection">Reconnection</label>
       <input type="checkbox" id="checkbox_Reconection" checked="true" />
