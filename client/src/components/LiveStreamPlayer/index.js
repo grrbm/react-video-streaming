@@ -16,7 +16,7 @@ export default function LiveStreamPlayer(props) {
     baseUrl = "http://127.0.0.1";
   } else {
     //if it's in production
-    baseUrl = "http://localhost:44141";
+    baseUrl = config.productionUrl;
   }
   useEffect(() => {
     axios
@@ -33,7 +33,11 @@ export default function LiveStreamPlayer(props) {
           sources: [
             {
               src:
-                `${baseUrl}` + "/live/" + res.data.stream_key + "/index.m3u8",
+                `${baseUrl}:` +
+                config.rtmp_server.http.port +
+                "/live/" +
+                res.data.stream_key +
+                "/index.m3u8",
               type: "application/x-mpegURL",
             },
           ],
