@@ -571,6 +571,7 @@ const anotherCfg = {
     mediaroot: "./media",
     key: "./certificates/privkey.pem",
     cert: "./certificates/fullchain.pem",
+    allow_origin: "*",
   },
 };
 node_media_server.run(anotherCfg);
