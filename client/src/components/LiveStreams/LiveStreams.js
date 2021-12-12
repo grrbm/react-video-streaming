@@ -21,10 +21,8 @@ export default function LiveStreams(props) {
   }, []);
 
   function getLiveStreams() {
-    const fullUrl =
-      `${baseUrl}:` + config.rtmp_server.http.port + "/api/streams";
     axios
-      .get(fullUrl)
+      .get("/listAllStreams")
       .then((res) => {
         let streams = res.data;
         if (typeof streams["live"] !== "undefined") {
@@ -33,7 +31,6 @@ export default function LiveStreams(props) {
       })
       .catch((error) => {
         console.log("Error getting live streams");
-        console.log("This is the full URL: " + fullUrl);
       });
   }
 

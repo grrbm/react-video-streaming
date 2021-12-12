@@ -30,7 +30,7 @@ router.get("/info", (req, res) => {
   }
 });
 
-router.get("/streams/list", async (req, res) => {
+router.get("/listAllStreams", async (req, res) => {
   try {
     let fullUrl = `${baseUrl}:` + port + "/api/streams";
     fullUrl = fullUrl.replace(/https/, "http");
