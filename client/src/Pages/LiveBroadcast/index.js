@@ -120,7 +120,7 @@ const LiveBroadcast = ({ location }) => {
     socket.on("fatal", function (m) {
       show_output("ERROR: unexpected:" + m);
       //alert('Error:'+m);
-      if (mediaRecorder) {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
       }
       state = "stop";
@@ -168,7 +168,7 @@ const LiveBroadcast = ({ location }) => {
         button_start.current.disabled = false;
         button_server.current.disabled = true;
       } else {
-        t = setTimeout("timedCount()", 1000);
+        t = setTimeout(timedCount, 1000);
         connect_server();
         output_message.current.innerHTML = "try connect server ...";
         button_start.current.disabled = true;
