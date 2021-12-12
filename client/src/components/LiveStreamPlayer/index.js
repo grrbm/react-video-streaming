@@ -33,7 +33,7 @@ export default function LiveStreamPlayer(props) {
           sources: [
             {
               src:
-                `${baseUrl}:` + "/live/" + res.data.stream_key + "/index.m3u8",
+                `${baseUrl}` + "/live/" + res.data.stream_key + "/index.m3u8",
               type: "application/x-mpegURL",
             },
           ],
