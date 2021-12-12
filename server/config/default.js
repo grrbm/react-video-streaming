@@ -22,6 +22,12 @@ const config = {
       mediaroot: "./media",
       allow_origin: "*",
     },
+    https: {
+      port: 8443,
+      mediaroot: "./media",
+      key: "./certificates/privkey.pem",
+      cert: "./certificates/fullchain.pem",
+    },
     trans: {
       ffmpeg:
         process.env.FFMPEG_PATH || "C:/ProgramData/chocolatey/bin/ffmpeg.exe",

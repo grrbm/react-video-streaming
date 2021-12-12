@@ -8,6 +8,7 @@ services:
               - 5000
               - 1935
               - 8888
+              - 8443
               - 444
           environment:
               - NODE_ENV=production
@@ -15,6 +16,7 @@ services:
               - 5000:5000
               - 1935:1935
               - 8888:8888
+              - 8443:8443
               - 444:444
           volumes:
               - ./server/:/srv/app/admin-server

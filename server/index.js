@@ -547,5 +547,25 @@ app.use("/thumbnails", express.static("thumbnails"));
 app.use("/static", express.static(path.join(__dirname, "./static")));
 
 app.listen(port, () => console.log("Server Started..."));
-node_media_server.run();
+const anotherCfg = {
+  rtmp: {
+    port: 1935,
+    chunk_size: 60000,
+    gop_cache: true,
+    ping: 60,
+    ping_timeout: 30,
+  },
+  http: {
+    port: 8888,
+    mediaroot: "./media",
+    allow_origin: "*",
+  },
+  https: {
+    port: 8443,
+    mediaroot: "./media",
+    key: "./certificates/privkey.pem",
+    cert: "./certificates/fullchain.pem",
+  },
+};
+node_media_server.run(anotherCfg);
 thumbnail_generator.start();

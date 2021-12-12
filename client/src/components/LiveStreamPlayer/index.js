@@ -33,8 +33,8 @@ export default function LiveStreamPlayer(props) {
           sources: [
             {
               src:
-                `${baseUrl.replace(/https/, "http")}:` +
-                config.rtmp_server.http.port +
+                `${baseUrl}:` +
+                config.rtmp_server.https.port +
                 "/live/" +
                 res.data.stream_key +
                 "/index.m3u8",
