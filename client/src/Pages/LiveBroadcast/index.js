@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
 import config from "../../config/default";
 import "./LiveBroadcast.scss";
@@ -6,6 +6,37 @@ const { io } = require("socket.io-client");
 const fs = require("fs");
 
 const LiveBroadcast = ({ location }) => {
+  const [loggedUser, setLoggedUser] = useState();
+  const [streamKey, setStreamKey] = useState("");
+
+  useEffect(() => {
+    if (loggedUser) {
+      getStreamKey();
+    }
+  }, [loggedUser]);
+
+  useEffect(() => {
+    const getLoggedUser = async () => {
+      try {
+        const result = await Axios.get("/loggedUser");
+        setLoggedUser(result.data);
+      } catch (error) {
+        console.log("Could not get logged user. " + error);
+      }
+    };
+    getLoggedUser();
+  }, []);
+
+  function getStreamKey() {
+    Axios.get("/settings/stream_key")
+      .then((res) => {
+        setStreamKey(res.data.stream_key);
+      })
+      .catch((error) => {
+        console.log("There was an error getting the stream key. " + error);
+      });
+  }
+
   var flvPlayer;
   var flvsource = useRef();
 
@@ -181,6 +212,16 @@ const LiveBroadcast = ({ location }) => {
   }
 
   function requestMedia() {
+    if (!loggedUser) {
+      output_message.current.innerHTML = "User is not logged in";
+      console.log("User is not logged in");
+      return;
+    }
+    if (!streamKey) {
+      output_message.current.innerHTML = "User doesn't have a streaming key";
+      console.log("User doesn't have a streaming key");
+      return;
+    }
     var constraints = {
       audio: true,
       video: {
@@ -262,6 +303,8 @@ const LiveBroadcast = ({ location }) => {
   return (
     <div className="mainDiv">
       <h1>MediaRecorder to RTMP Demo</h1>
+      <h4>Streaming Key:</h4>
+      <h5>{streamKey ? streamKey : "No stream key found."}</h5>
       <label for="option_width">Size:</label>
       <input
         type="text"
