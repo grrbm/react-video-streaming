@@ -13,16 +13,21 @@ nms.on("prePublish", async (id, StreamPath, args) => {
   );
 
   User.findOne({ stream_key: stream_key }, (err, user) => {
-    if (!err) {
-      if (!user) {
-        console.log(
-          "Error: Could not find a user with streamkey " + stream_key
-        );
-        let session = nms.getSession(id);
-        session.reject();
-      } else {
-        helpers.generateStreamThumbnail(stream_key);
-      }
+    if (err) {
+      console.log(
+        "Error: Could not find a user with streamkey " +
+          stream_key +
+          ". Details: " +
+          err
+      );
+      return;
+    }
+    if (!user) {
+      console.log("Error: Could not find a user with streamkey " + stream_key);
+      let session = nms.getSession(id);
+      session.reject();
+    } else {
+      helpers.generateStreamThumbnail(stream_key);
     }
   });
 });
