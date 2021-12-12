@@ -24,6 +24,7 @@ const job = new CronJob(
         return;
       }
       let streams = JSON.parse(body);
+      console.log("FETCHED THE CURRENT STREAMS: " + streams);
       if (typeof (streams["live"] !== undefined)) {
         let live_streams = streams["live"];
         for (let stream in live_streams) {
