@@ -1,8 +1,10 @@
 import React, { useRef } from "react";
 import Axios from "axios";
+import { useHistory } from "react-router-dom";
 import "./RegisterModal.css";
 
 const RegisterModal = ({ setModalActive }) => {
+  const history = useHistory();
   const emailRef = useRef();
   const passwordRef = useRef();
   const handleRegister = async (e) => {
@@ -10,6 +12,25 @@ const RegisterModal = ({ setModalActive }) => {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     });
+    if (res.status === 200) {
+      await performLogin(e);
+    }
+  };
+  const performLogin = async (e) => {
+    try {
+      const res = await Axios.post("/login", {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
+      if (res.status === 200) {
+        handleCloseModal(e);
+        history.push("/");
+        window.location.reload(true);
+      }
+    } catch (error) {
+      console.log("Error with login. " + error);
+    }
+    console.log("performed login");
   };
   const handleCloseModal = (e) => {
     console.log("handling close modal");
