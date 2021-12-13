@@ -48,6 +48,7 @@ const Navbar = () => {
   const handleCloseHamburgerDropdown = () => {
     setSelectedCategory(null);
     setHamburgerDropdownOpen(false);
+    setIsOpen(false);
   };
   const navigateToHome = () => {
     history.push("/");
@@ -392,6 +393,8 @@ const Navbar = () => {
             }
             onClick={() => {
               setSelectedCategory("Subscribe");
+              handleRegister();
+              handleCloseHamburgerDropdown();
             }}
           >
             {Language.SUBSCRIBE[language]}
