@@ -2,7 +2,8 @@ const express = require("express"),
   router = express.Router(),
   passport = require("passport"),
   User = require("../database/Schema").User,
-  bcrypt = require("bcryptjs");
+  bcrypt = require("bcryptjs"),
+  shortid = require("shortid");
 
 router.post("/", (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
@@ -10,10 +11,10 @@ router.post("/", (req, res) => {
     if (doc) res.status(401).send("User Already Exists");
     if (!doc) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
       const newUser = new User({
         email: req.body.email,
         password: hashedPassword,
+        stream_key: shortid.generate(),
       });
       await newUser.save();
       res.status(200).send("User Created");
