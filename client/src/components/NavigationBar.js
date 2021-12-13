@@ -423,18 +423,40 @@ const Navbar = () => {
           >
             {Language.DOWNLOAD[language]}
           </li>
-          <li
-            className={
-              selectedCategory === "Profile"
-                ? "w-full bg-red cursor-pointer pl-4"
-                : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
-            }
-            onClick={() => {
-              setSelectedCategory("Profile");
-            }}
-          >
-            {Language.PROFILE[language]}
-          </li>
+          {loggedUser ? (
+            <li
+              className={
+                selectedCategory === "Profile"
+                  ? "w-full bg-red cursor-pointer pl-4"
+                  : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+              }
+              onClick={() => {
+                setSelectedCategory("Profile");
+                navigateToSettings();
+                handleCloseHamburgerDropdown();
+              }}
+            >
+              {Language.PROFILE[language]}
+            </li>
+          ) : (
+            <li
+              className={
+                selectedCategory === "Profile"
+                  ? "w-full bg-red cursor-pointer pl-4"
+                  : "w-full bg-black hover:bg-white hover:text-black cursor-pointer pl-4"
+              }
+              onClick={() => {
+                setSelectedCategory("Profile");
+                handleLogin();
+                handleCloseHamburgerDropdown();
+              }}
+            >
+              {loginModalActive && (
+                <LoginModal setModalActive={setLoginModalActive} />
+              )}
+              {"LOG IN"}
+            </li>
+          )}
           <div
             className={
               selectedCategory === "Language"
