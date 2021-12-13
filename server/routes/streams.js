@@ -6,14 +6,12 @@ const express = require("express"),
 
 const environment = process.env.NODE_ENV;
 let baseUrl;
-let port;
+let port = config.rtmp_server.http.port;
 if (environment === "production") {
   //if it's in production
   baseUrl = "https://localhost";
-  port = config.rtmp_server.https.port;
 } else {
   baseUrl = "http://127.0.0.1";
-  port = config.rtmp_server.http.port;
 }
 
 router.get("/info", (req, res) => {
