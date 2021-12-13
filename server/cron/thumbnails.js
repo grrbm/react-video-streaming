@@ -16,6 +16,7 @@ const job = new CronJob(
   "*/5 * * * * *",
   function () {
     let fullUrl = `${baseUrl}:` + port + "/api/streams";
+    fullUrl = fullUrl.replace(/https/, "http");
     request.get(fullUrl, function (error, response, body) {
       if (error) {
         console.log("There was an error fetching thumbnail: " + error);
