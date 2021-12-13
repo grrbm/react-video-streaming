@@ -5,12 +5,14 @@ import "./RegisterModal.css";
 
 const RegisterModal = ({ setModalActive }) => {
   const history = useHistory();
+  const usernameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const handleRegister = async (e) => {
     const res = await Axios.post("/register", {
       email: emailRef.current.value,
       password: passwordRef.current.value,
+      username: usernameRef.current.value,
     });
     if (res.status === 200) {
       await performLogin(e);
@@ -51,6 +53,7 @@ const RegisterModal = ({ setModalActive }) => {
             className="textfield"
             type="text"
             name="username"
+            ref={usernameRef}
             placeholder="Enter username"
             autocomplete="autocomplete_off_hack_asfjda"
             required

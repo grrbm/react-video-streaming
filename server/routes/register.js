@@ -15,6 +15,7 @@ router.post("/", (req, res) => {
         email: req.body.email,
         password: hashedPassword,
         stream_key: shortid.generate(),
+        username: req.body.username,
       });
       await newUser.save();
       res.status(200).send("User Created");

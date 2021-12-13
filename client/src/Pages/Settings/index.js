@@ -60,8 +60,13 @@ export default function Settings(props) {
   return (
     <React.Fragment>
       <div className="container mt-5 text-white">
-        <h4>Streaming Key</h4>
-        <hr className="my-4" />
+        <h4>Logged user:</h4>
+        <div className="row">
+          <h5>
+            {loggedUser ? loggedUser.email : "Could not get logged user."}
+          </h5>
+        </div>
+        <h4>Streaming Key:</h4>
 
         <div className="col-xs-12 col-sm-12 col-md-8 col-lg-6">
           <div className="row">
@@ -104,6 +109,9 @@ export default function Settings(props) {
               select Custom from service dropdown. Enter
               <b>rtmp://127.0.0.1:1935/live</b> in server input field. Also, add
               your stream key. Click apply to save.
+              <br />
+              You can also stream from this page by opening it on Chrome on your
+              phone (or PC) and clicking Start Live Broadcast.
             </p>
           </div>
         </div>
