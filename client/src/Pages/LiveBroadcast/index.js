@@ -195,7 +195,8 @@ const LiveBroadcast = ({ location }) => {
       //	document.getElementById('button_start').disabled=true;
       var oo = document.getElementById("checkbox_Reconection");
       if (oo.checked) {
-        timedCount();
+        //timedCount();
+        connect_server();
 
         output_message.current.innerHTML = "server is reload!";
         //如果該checkbox有勾選應作的動作...
@@ -321,7 +322,7 @@ const LiveBroadcast = ({ location }) => {
   function show_output(str) {
     output_console.current.value += "\n" + str;
     //get only the last 500 characters
-    output_console.current.value = output_console.current.value.slice(-500);
+    output_console.current.value = output_console.current.value.slice(-10000);
     output_console.current.scrollTop = output_console.current.scrollHeight;
   }
   return (
