@@ -53,7 +53,7 @@ const LiveBroadcast = ({ location }) => {
     button_start = useRef(),
     button_server = useRef();
 
-  var mediaRecorder;
+  var mediaRecorder = useRef();
   //var state = "stop";
   var t;
   useEffect(() => {
@@ -153,8 +153,16 @@ const LiveBroadcast = ({ location }) => {
 
     socket.current.on("connect", function (m) {
       console.log("Got back connect event from backend. " + m);
-      show_output("Got back connect event from backend. " + m);
-      setState("ready");
+      /* Getting URL here locally */
+      var url = (option_url.current.value =
+        "rtmp://" + window.location.hostname + `:1935/live/${streamKey}`);
+      console.log("This is the RTMP url: " + url);
+
+      socket.current.emit("config_rtmpDestination", url);
+      show_output(
+        "Got back connect event from backend. Emitting config_rtmpDestination." +
+          m
+      );
     });
     socket.current.on("connect_error", function (error) {
       console.log("Connection Failed: " + error.code + " : " + error.message);
@@ -167,12 +175,13 @@ const LiveBroadcast = ({ location }) => {
     });
     socket.current.on("finishedSettingRtmp", function (m) {
       show_output("finishedSettingRtmp event caught successfully.");
+      setState("ready");
     });
     socket.current.on("fatal", function (m) {
-      show_output("ERROR: unexpected:" + m);
+      show_output("FATAL: unexpected:" + m);
       //alert('Error:'+m);
-      if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
+      if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
+        mediaRecorder.current.stop();
       }
       setState("stop");
       //state = "stop";
@@ -185,8 +194,8 @@ const LiveBroadcast = ({ location }) => {
     });
     socket.current.on("disconnect", function (reason) {
       show_output("ERROR: server disconnected! Reason: " + reason);
-      if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
+      if (mediaRecorder.current && mediaRecorder.current.state !== "inactive") {
+        mediaRecorder.current.stop();
       }
       setState("stop");
       //state = "stop";
@@ -196,9 +205,8 @@ const LiveBroadcast = ({ location }) => {
       var oo = document.getElementById("checkbox_Reconection");
       if (oo.checked) {
         //timedCount();
-        connect_server();
 
-        output_message.current.innerHTML = "server is reload!";
+        output_message.current.innerHTML = "server needs reload!";
         //如果該checkbox有勾選應作的動作...
       }
     });
@@ -212,7 +220,8 @@ const LiveBroadcast = ({ location }) => {
     var oo = document.getElementById("checkbox_Reconection");
     if (oo.checked) {
       if (state == "ready") {
-        requestMedia();
+        //don't need to request media anymore. useEffect takes care of this
+        //requestMedia();
         button_start.current.disabled = false;
         button_server.current.disabled = true;
       } else {
@@ -261,24 +270,18 @@ const LiveBroadcast = ({ location }) => {
         .then(function (stream) {
           video_show(stream); //only show locally, not remotely
 
-          /* Getting URL here locally */
-          var url = (option_url.current.value =
-            "rtmp://" + window.location.hostname + `:1935/live/${streamKey}`);
-          console.log("This is the RTMP url: " + url);
-
-          socket.current.emit("config_rtmpDestination", url);
           socket.current.emit("start", "start");
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start(0);
+          mediaRecorder.current = new MediaRecorder(stream);
+          mediaRecorder.current.start(0);
 
-          mediaRecorder.onstop = function (e) {
+          mediaRecorder.current.onstop = function (e) {
             if (stream) {
               stream.getVideoTracks()[0].stop();
             }
           };
           //document.getElementById('button_start').disabled=false;
 
-          mediaRecorder.ondataavailable = function (e) {
+          mediaRecorder.current.ondataavailable = function (e) {
             socket.current.emit("binarystream", e.data);
             setState("start");
             resolve("Stream has started.");
