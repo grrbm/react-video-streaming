@@ -8,6 +8,9 @@ const fs = require("fs");
 const LiveBroadcast = ({ location }) => {
   const [loggedUser, setLoggedUser] = useState();
   const [streamKey, setStreamKey] = useState("");
+  const [state, setState] = useState("stop");
+  const [streamInitialized, setStreamInitialized] = useState(false);
+  const socket = useRef();
 
   useEffect(() => {
     if (loggedUser) {
@@ -50,9 +53,8 @@ const LiveBroadcast = ({ location }) => {
     button_start = useRef(),
     button_server = useRef();
 
-  var socket;
   var mediaRecorder;
-  var state = "stop";
+  //var state = "stop";
   var t;
   useEffect(() => {
     if (flvsource.current) {
@@ -69,6 +71,23 @@ const LiveBroadcast = ({ location }) => {
       // var t;
     }
   }, []);
+  async function asyncRequestMedia() {
+    const res = await requestMedia();
+    return res;
+  }
+  useEffect(() => {
+    if (state === "ready") {
+      asyncRequestMedia();
+    }
+    // if (state === "stop") {
+    //   var oo = document.getElementById("checkbox_Reconection");
+    //   if (oo.checked) {
+    //     timedCount();
+    //     output_message.current.innerHTML = "server is reload!";
+    //     //如果該checkbox有勾選應作的動作...
+    //   }
+    // }
+  }, [state]);
 
   function fail(str) {
     alert(str + "\nPlease download the latest version of Firefox!");
@@ -123,58 +142,47 @@ const LiveBroadcast = ({ location }) => {
     //   window.location.protocol + window.location.hostname + config.socketioPort;
     const fullUrl = socketio_address.current.value;
     if (process.env.NODE_ENV === "production") {
-      socket = io.connect(fullUrl, { secure: true, ca: result.data.fullchain });
+      socket.current = io.connect(fullUrl, {
+        secure: true,
+        ca: result.data.fullchain,
+      });
     } else {
-      socket = io.connect(fullUrl);
+      console.log("connecting to fullUrl: " + fullUrl);
+      socket.current = io.connect(fullUrl);
     }
 
-    //({
-    // option 1
-    // ca: fs.readFileSync("https://localhost:443",'./abels-cert.pem'),
-    // option 2. WARNING: it leaves you vulnerable to MITM attacks!
-    // requestCert: false,
-    //  rejectUnauthorized: false
-    //});
-    //var socket = io.
-    //
-
     //output_message.innerHTML=socket;
-    socket.on("connect_error", function (error) {
+    socket.current.on("connect_error", function (error) {
       console.log("Connection Failed: " + error.code + " : " + error.message);
       output_message.current.innerHTML =
         "Connection Failed: " + error.code + " : " + error.message;
     });
-    socket.on("message", function (m) {
+    socket.current.on("message", function (m) {
       console.log("recv server message", m);
       show_output("SERVER:" + m);
     });
-    socket.on("fatal", function (m) {
+    socket.current.on("fatal", function (m) {
       show_output("ERROR: unexpected:" + m);
       //alert('Error:'+m);
       if (mediaRecorder && mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
       }
-      state = "stop";
+      setState("stop");
+      //state = "stop";
       button_start.current.disabled = true;
       button_server.current.disabled = false;
-      //document.getElementById('button_start').disabled=true;
-      var oo = document.getElementById("checkbox_Reconection");
-      if (oo.checked) {
-        timedCount();
-        output_message.current.innerHTML = "server is reload!";
-        //如果該checkbox有勾選應作的動作...
-      }
       //should reload?
     });
-    socket.on("ffmpeg_stderr", function (m) {
+    socket.current.on("ffmpeg_stderr", function (m) {
       show_output("FFMPEG:" + m);
     });
-    socket.on("disconnect", function (reason) {
+    socket.current.on("disconnect", function (reason) {
       show_output("ERROR: server disconnected! Reason: " + reason);
       if (mediaRecorder && mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
       }
-      state = "stop";
+      setState("stop");
+      //state = "stop";
       button_start.current.disabled = true;
       button_server.current.disabled = false;
       //	document.getElementById('button_start').disabled=true;
@@ -186,7 +194,11 @@ const LiveBroadcast = ({ location }) => {
         //如果該checkbox有勾選應作的動作...
       }
     });
-    state = "ready";
+    setTimeout(() => {
+      setState("ready");
+    }, 5000);
+
+    //state = "ready";
     button_start.current.disabled = false;
     button_server.current.disabled = true;
     output_message.current.innerHTML = "connect server successful";
@@ -212,71 +224,77 @@ const LiveBroadcast = ({ location }) => {
   }
 
   function requestMedia() {
-    if (!loggedUser) {
-      output_message.current.innerHTML = "User is not logged in";
-      console.log("User is not logged in");
-      return;
-    }
-    if (!streamKey) {
-      output_message.current.innerHTML = "User doesn't have a streaming key";
-      console.log("User doesn't have a streaming key");
-      return;
-    }
-    var constraints = {
-      audio: true,
-      video: {
-        width: {
-          min: option_width.current.value,
-          ideal: option_width.current.value,
-          max: option_width.current.value,
+    /*this wrapper is needed so external variables (eg. socket)
+    can be used inside the promise.*/
+    return new Promise((resolve, reject) => {
+      if (!loggedUser) {
+        output_message.current.innerHTML = "User is not logged in";
+        reject("User is not logged in");
+      }
+      if (!streamKey) {
+        output_message.current.innerHTML = "User doesn't have a streaming key";
+        console.log("User doesn't have a streaming key");
+        reject("User doesn't have a streaming key");
+      }
+      var constraints = {
+        audio: true,
+        video: {
+          width: {
+            min: option_width.current.value,
+            ideal: option_width.current.value,
+            max: option_width.current.value,
+          },
+          height: {
+            min: option_height.current.value,
+            ideal: option_height.current.value,
+            max: option_height.current.value,
+          },
         },
-        height: {
-          min: option_height.current.value,
-          ideal: option_height.current.value,
-          max: option_height.current.value,
-        },
-      },
-    };
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(function (stream) {
-        video_show(stream); //only show locally, not remotely
+      };
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(function (stream) {
+          video_show(stream); //only show locally, not remotely
 
-        /* Getting URL here locally */
-        var url = (option_url.current.value =
-          "rtmp://" + window.location.hostname + `:1935/live/${streamKey}`);
-        console.log("This is the RTMP url: " + url);
+          /* Getting URL here locally */
+          var url = (option_url.current.value =
+            "rtmp://" + window.location.hostname + `:1935/live/${streamKey}`);
+          console.log("This is the RTMP url: " + url);
 
-        socket.emit("config_rtmpDestination", url);
-        socket.emit("start", "start");
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start(0);
+          socket.current.emit("config_rtmpDestination", url);
+          socket.current.emit("start", "start");
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start(0);
 
-        mediaRecorder.onstop = function (e) {
-          if (stream) {
-            stream.getVideoTracks()[0].stop();
-          }
-        };
-        //document.getElementById('button_start').disabled=false;
+          mediaRecorder.onstop = function (e) {
+            if (stream) {
+              stream.getVideoTracks()[0].stop();
+            }
+          };
+          //document.getElementById('button_start').disabled=false;
 
-        mediaRecorder.ondataavailable = function (e) {
-          socket.emit("binarystream", e.data);
-          state = "start";
-          //chunks.push(e.data);
-        };
-      })
-      .catch(function (err) {
-        console.log("The following error occured: " + err);
-        show_output("Local getUserMedia ERROR:" + err);
-        output_message.current.innerHTML =
-          "Local video source size is not supported or No camera ?" +
-          output_video.current.videoWidth +
-          "x" +
-          output_video.current.videoHeight;
-        state = "stop";
-        button_start.current.disabled = true;
-        button_server.current.disabled = false;
-      });
+          mediaRecorder.ondataavailable = function (e) {
+            socket.current.emit("binarystream", e.data);
+            setState("start");
+            resolve("Stream has started.");
+            //state = "start";
+            //chunks.push(e.data);
+          };
+        })
+        .catch(function (err) {
+          console.log("The following error occured: " + err);
+          show_output("Local getUserMedia ERROR:" + err);
+          output_message.current.innerHTML =
+            "Local video source size is not supported or No camera ?" +
+            output_video.current.videoWidth +
+            "x" +
+            output_video.current.videoHeight;
+          setState("stop");
+          reject("Local video source size is not supported or No camera ?");
+          button_start.current.disabled = true;
+          button_server.current.disabled = false;
+        });
+    });
   }
   function video_show(stream) {
     if ("srcObject" in output_video.current) {
@@ -355,10 +373,12 @@ const LiveBroadcast = ({ location }) => {
       <button id="button_server" ref={button_server} onClick={connect_server}>
         Connect_server
       </button>
+      {/*
       <button id="button_start" ref={button_start} onClick={requestMedia}>
         Start streaming
       </button>
-      <button id="button_setflvsource">Set flvsource</button>
+      */}
+      {/*<button id="button_setflvsource">Set flvsource</button>*/}
       <hr />
       <div>
         <p id="output_message" ref={output_message}></p>

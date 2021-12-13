@@ -12,11 +12,14 @@ export default function LiveStreamPlayer(props) {
 
   const environment = process.env.NODE_ENV;
   let baseUrl;
+  let port;
   if (environment === "development") {
     baseUrl = "http://127.0.0.1";
+    port = config.rtmp_server.http.port;
   } else {
     //if it's in production
     baseUrl = config.productionUrl;
+    port = config.rtmp_server.https.port;
   }
   useEffect(() => {
     axios
@@ -34,7 +37,7 @@ export default function LiveStreamPlayer(props) {
             {
               src:
                 `${baseUrl}:` +
-                config.rtmp_server.https.port +
+                port +
                 "/live/" +
                 res.data.stream_key +
                 "/index.m3u8",
