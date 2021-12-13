@@ -298,7 +298,9 @@ const LiveBroadcast = ({ location }) => {
   }
   function show_output(str) {
     output_console.current.value += "\n" + str;
-    output_console.current.scrollTop = output_console.scrollHeight;
+    //get only the last 500 characters
+    output_console.current.value = output_console.current.value.slice(-500);
+    output_console.current.scrollTop = output_console.current.scrollHeight;
   }
   return (
     <div className="mainDiv">
