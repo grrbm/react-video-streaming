@@ -151,7 +151,11 @@ const LiveBroadcast = ({ location }) => {
       socket.current = io.connect(fullUrl);
     }
 
-    //output_message.innerHTML=socket;
+    socket.current.on("connect", function (m) {
+      console.log("Got back connect event from backend. " + m);
+      show_output("Got back connect event from backend. " + m);
+      setState("ready");
+    });
     socket.current.on("connect_error", function (error) {
       console.log("Connection Failed: " + error.code + " : " + error.message);
       output_message.current.innerHTML =
@@ -160,6 +164,9 @@ const LiveBroadcast = ({ location }) => {
     socket.current.on("message", function (m) {
       console.log("recv server message", m);
       show_output("SERVER:" + m);
+    });
+    socket.current.on("finishedSettingRtmp", function (m) {
+      show_output("finishedSettingRtmp event caught successfully.");
     });
     socket.current.on("fatal", function (m) {
       show_output("ERROR: unexpected:" + m);
@@ -194,9 +201,6 @@ const LiveBroadcast = ({ location }) => {
         //如果該checkbox有勾選應作的動作...
       }
     });
-    setTimeout(() => {
-      setState("ready");
-    }, 5000);
 
     //state = "ready";
     button_start.current.disabled = false;
@@ -373,11 +377,14 @@ const LiveBroadcast = ({ location }) => {
       <button id="button_server" ref={button_server} onClick={connect_server}>
         Connect_server
       </button>
-      {/*
-      <button id="button_start" ref={button_start} onClick={requestMedia}>
+      <button
+        style={{ display: "none" }}
+        id="button_start"
+        ref={button_start}
+        onClick={requestMedia}
+      >
         Start streaming
       </button>
-      */}
       {/*<button id="button_setflvsource">Set flvsource</button>*/}
       <hr />
       <div>

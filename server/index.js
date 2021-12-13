@@ -97,6 +97,7 @@ io.on("connection", function (socket) {
     socket._rtmpDestination = m;
     console.log("rtmp destination set to:" + m);
     socket.emit("message", "rtmp destination set to:" + m);
+    socket.emit("finishedSettingRtmp", m);
   });
   //socket._vcodec='libvpx';//from firefox default encoder
   socket.on("config_vcodec", function (m) {
