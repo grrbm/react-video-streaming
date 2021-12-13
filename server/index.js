@@ -93,16 +93,20 @@ io.on("connection", function (socket) {
       socket.emit("fatal", "rtmp address rejected.");
       return;
     }
+    m = m.replace(/loud-now.cyou/, "localhost");
     socket._rtmpDestination = m;
+    console.log("rtmp destination set to:" + m);
     socket.emit("message", "rtmp destination set to:" + m);
   });
   //socket._vcodec='libvpx';//from firefox default encoder
   socket.on("config_vcodec", function (m) {
     if (typeof m != "string") {
+      console.log("Fatal: input codec setup error.");
       socket.emit("fatal", "input codec setup error.");
       return;
     }
     if (!/^[0-9a-z]{2,}$/.test(m)) {
+      console.log("Fatal: input codec contains illegal character?.");
       socket.emit("fatal", "input codec contains illegal character?.");
       return;
     } //for safety
@@ -111,10 +115,12 @@ io.on("connection", function (socket) {
 
   socket.on("start", function (m) {
     if (ffmpeg_process || feedStream) {
+      console.log("fatal: stream already started.");
       socket.emit("fatal", "stream already started.");
       return;
     }
     if (!socket._rtmpDestination) {
+      console.log("fatal: no destination given.");
       socket.emit("fatal", "no destination given.");
       return;
     }
@@ -156,6 +162,7 @@ io.on("connection", function (socket) {
     };
 
     ffmpeg_process.stderr.on("data", function (d) {
+      console.log("ffmpeg_stderr: " + "" + d);
       socket.emit("ffmpeg_stderr", "" + d);
     });
     ffmpeg_process.on("error", function (e) {
