@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
 import config from "../../config/default";
-import "./LiveBroadcast.scss";
+import broadcastStyles from "./LiveBroadcast.module.scss";
 const { io } = require("socket.io-client");
 const fs = require("fs");
 
@@ -329,7 +329,7 @@ const LiveBroadcast = ({ location }) => {
     output_console.current.scrollTop = output_console.current.scrollHeight;
   }
   return (
-    <div className="mainDiv">
+    <div className={broadcastStyles.mainDiv}>
       <h1>MediaRecorder to RTMP Demo</h1>
       <h4>Streaming Key:</h4>
       <h5>{streamKey ? streamKey : "No stream key found."}</h5>
