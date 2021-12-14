@@ -60,8 +60,8 @@ export default function Settings(props) {
     history.push(`/livebroadcast`);
   };
   return (
-    <React.Fragment>
-      <div className="container mt-5 text-white">
+    <div className="mainDiv">
+      <div className="container pt-5 text-white">
         <h4>Logged user:</h4>
         <div className="row">
           <h5>
@@ -127,6 +127,6 @@ export default function Settings(props) {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 }
