@@ -61,7 +61,55 @@ export default function Settings(props) {
   };
   return (
     <div className="mainDiv">
-      <div className="container pt-5 text-white">
+      <div className="container mx-auto pt-5 text-white">
+        <div
+          className={clsx(
+            settingStyle.modalContainer,
+            "flex text-center text-justify mx-auto w-96 h-96 sm:w-3/5 sm:h-3/5 max-w-6xl"
+          )}
+        >
+          {/*<div className={settingStyle.titleCloseBtn}>
+          <button onClick={handleCloseModal}> X </button>
+        </div>*/}
+          <div className={clsx(settingStyle.title, "w-full p-4 poppins-bold")}>
+            <div>My Account</div>
+          </div>
+          <div className={settingStyle.body}>
+            <input
+              className={clsx(
+                settingStyle.textfield,
+                "poppins-regular text-sm w-5/6 mt-8"
+              )}
+              type="email"
+              name="email"
+              placeholder="E-mail"
+              autocomplete="autocomplete_off_hack_138r!n"
+              required
+            />
+            <input
+              className={clsx(
+                settingStyle.textfield,
+                "poppins-regular text-sm w-5/6 mt-3"
+              )}
+              type="password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              autocomplete="autocomplete_off_hack_xfr4!k"
+              required
+            />
+            <p className={"poppins-regular text-sm mt-12"}>
+              Not registered yet ?{" "}
+              <span className={settingStyle.highlighted_text}>
+                subscribe now
+              </span>
+            </p>
+            <button className="mb-12 poppins-medium text-lg mt-12 w-5/6 mr-0 ml-0">
+              End Session
+            </button>
+          </div>
+        </div>
+
         <h4>Logged user:</h4>
         <div className="row">
           <h5>
