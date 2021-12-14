@@ -43,7 +43,7 @@ const LoginModal = ({ setModalActive }) => {
       <div
         className={clsx(
           loginStyles.modalContainer,
-          "flex text-center text-justify w-96 h-96 sm:w-3/5 sm:h-3/5"
+          "flex text-center text-justify w-96 h-96 sm:w-3/5 sm:h-3/5 max-w-lg"
         )}
       >
         {/*<div className={loginStyles.titleCloseBtn}>
@@ -54,7 +54,10 @@ const LoginModal = ({ setModalActive }) => {
         </div>
         <div className={loginStyles.body}>
           <input
-            className={clsx(loginStyles.textfield, "poppins-regular")}
+            className={clsx(
+              loginStyles.textfield,
+              "poppins-regular text-sm w-5/6 mt-8"
+            )}
             type="email"
             name="email"
             ref={emailRef}
@@ -63,7 +66,10 @@ const LoginModal = ({ setModalActive }) => {
             required
           />
           <input
-            className={clsx(loginStyles.textfield, "poppins-regular")}
+            className={clsx(
+              loginStyles.textfield,
+              "poppins-regular text-sm w-5/6 mt-3"
+            )}
             type="password"
             name="password"
             ref={passwordRef}
@@ -72,11 +78,14 @@ const LoginModal = ({ setModalActive }) => {
             autocomplete="autocomplete_off_hack_xfr4!k"
             required
           />
-          <p className={"poppins-regular"}>
+          <p className={"poppins-regular text-sm"}>
             Not registered yet ?{" "}
             <span className={loginStyles.highlighted_text}>subscribe now</span>
           </p>
-          <button className="mb-12 poppins-medium" onClick={handleLogin}>
+          <button
+            className="mb-12 poppins-medium text-lg"
+            onClick={handleLogin}
+          >
             Login
           </button>
         </div>
