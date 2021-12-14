@@ -27,12 +27,14 @@ const LoginModal = ({ setModalActive }) => {
     console.log("performed login");
   };
   const handleCloseModal = (e) => {
-    console.log("handling close modal");
-    if (e) {
-      console.log("stopping propagation");
-      e.stopPropagation();
+    console.log("handling close modal " + e.target);
+    if (e.target.className.includes("modalBackground")) {
+      if (e) {
+        console.log("stopping propagation");
+        e.stopPropagation();
+      }
+      setModalActive(false);
     }
-    setModalActive(false);
   };
   return (
     <div

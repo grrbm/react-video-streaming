@@ -36,9 +36,12 @@ const RegisterModal = ({ setModalActive }) => {
     console.log("performed login");
   };
   const handleCloseModal = (e) => {
-    console.log("handling close modal");
-    e.stopPropagation();
-    setModalActive(false);
+    console.log("handling close modal " + e.target);
+    if (e.target.className.includes("modalBackground")) {
+      console.log("handling close modal");
+      e.stopPropagation();
+      setModalActive(false);
+    }
   };
   return (
     <div
@@ -46,6 +49,7 @@ const RegisterModal = ({ setModalActive }) => {
         registerStyles.modalBackground,
         "fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full"
       )}
+      onClick={handleCloseModal}
     >
       <div
         className={clsx(
