@@ -48,16 +48,7 @@
   text-align: center;
 }
 
-.modalContainer .footer {
-  flex: 20%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .modalContainer button {
-  width: 150px;
-  height: 45px;
   border: none;
   background-color: #eb1515;
   color: white;
@@ -87,6 +78,7 @@ input:-webkit-autofill:active {
   border-width: 0px;
   border: none;
   padding: 20px;
+  border-radius: 6px;
   //background-color: #242424 !important;
 }
 input::placeholder,/* Chrome, Firefox, Opera, Safari 10.1+ */

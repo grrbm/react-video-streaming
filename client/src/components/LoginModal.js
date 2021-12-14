@@ -78,12 +78,12 @@ const LoginModal = ({ setModalActive }) => {
             autocomplete="autocomplete_off_hack_xfr4!k"
             required
           />
-          <p className={"poppins-regular text-sm"}>
+          <p className={"poppins-regular text-sm mt-12"}>
             Not registered yet ?{" "}
             <span className={loginStyles.highlighted_text}>subscribe now</span>
           </p>
           <button
-            className="mb-12 poppins-medium text-lg"
+            className="mb-12 poppins-medium text-lg mt-12 w-5/6 mr-0 ml-0"
             onClick={handleLogin}
           >
             Login
