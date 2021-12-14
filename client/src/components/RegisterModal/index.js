@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
-import "./RegisterModal.css";
+import registerStyles from "./RegisterModal.module.scss";
+import clsx from "clsx";
 
 const RegisterModal = ({ setModalActive }) => {
   const history = useHistory();
@@ -40,17 +41,27 @@ const RegisterModal = ({ setModalActive }) => {
     setModalActive(false);
   };
   return (
-    <div className="modalBackground fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full">
-      <div className="modalContainer flex text-center text-justify">
-        <div className="titleCloseBtn">
+    <div
+      className={clsx(
+        registerStyles.modalBackground,
+        "fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full"
+      )}
+    >
+      <div
+        className={clsx(
+          registerStyles.modalContainer,
+          "flex text-center text-justify"
+        )}
+      >
+        <div className={registerStyles.titleCloseBtn}>
           <button onClick={handleCloseModal}> X </button>
         </div>
-        <div className="title w-full">
+        <div className={clsx(registerStyles.title, "w-full")}>
           <h1>Register</h1>
         </div>
-        <div className="body">
+        <div className={registerStyles.body}>
           <input
-            className="textfield"
+            className={registerStyles.textfield}
             type="text"
             name="username"
             ref={usernameRef}
@@ -59,7 +70,7 @@ const RegisterModal = ({ setModalActive }) => {
             required
           />
           <input
-            className="textfield"
+            className={registerStyles.textfield}
             type="email"
             name="email"
             ref={emailRef}
@@ -69,7 +80,7 @@ const RegisterModal = ({ setModalActive }) => {
             required
           />
           <input
-            className="textfield"
+            className={registerStyles.textfield}
             type="password"
             name="password"
             ref={passwordRef}
@@ -80,7 +91,7 @@ const RegisterModal = ({ setModalActive }) => {
           <br />
           <button onClick={handleRegister}>Register</button>
         </div>
-        <div className="footer">This is footer</div>
+        <div className={registerStyles.footer}>This is footer</div>
       </div>
     </div>
   );
