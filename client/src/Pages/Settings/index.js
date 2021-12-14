@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import "./Settings.scss";
+import clsx from "clsx";
+import settingStyle from "./Settings.module.scss";
+
 export default function Settings(props) {
   const history = useHistory();
   const [loggedUser, setLoggedUser] = useState();
@@ -74,16 +76,25 @@ export default function Settings(props) {
           </div>
           <div className="row">
             {loggedUser ? (
-              <button className="button mt-2" onClick={handleLogout}>
+              <button
+                className={clsx(settingStyle.button, "mt-2")}
+                onClick={handleLogout}
+              >
                 Log Out
               </button>
             ) : (
               ""
             )}
-            <button className="button mt-2" onClick={generateStreamKey}>
+            <button
+              className={clsx(settingStyle.button, "mt-2")}
+              onClick={generateStreamKey}
+            >
               Generate a new key
             </button>
-            <button className="button mt-2" onClick={navigateToLiveBroadcast}>
+            <button
+              className={clsx(settingStyle.button, "mt-2")}
+              onClick={navigateToLiveBroadcast}
+            >
               Start Live Broadcast
             </button>
           </div>
