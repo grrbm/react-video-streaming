@@ -29,6 +29,7 @@ const LoginModal = ({ setModalActive }) => {
   const handleCloseModal = (e) => {
     console.log("handling close modal");
     if (e) {
+      console.log("stopping propagation");
       e.stopPropagation();
     }
     setModalActive(false);
@@ -39,6 +40,7 @@ const LoginModal = ({ setModalActive }) => {
         loginStyles.modalBackground,
         "fixed top-0 right-0 bottom-0 left-0 z-10 w-full h-full"
       )}
+      onClick={handleCloseModal}
     >
       <div
         className={clsx(

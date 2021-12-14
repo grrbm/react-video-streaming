@@ -50,18 +50,21 @@ const RegisterModal = ({ setModalActive }) => {
       <div
         className={clsx(
           registerStyles.modalContainer,
-          "flex text-center text-justify"
+          "flex text-center text-justify w-96 h-96 sm:w-3/5 sm:h-3/5 max-w-lg"
         )}
       >
-        <div className={registerStyles.titleCloseBtn}>
+        {/*<div className={registerStyles.titleCloseBtn}>
           <button onClick={handleCloseModal}> X </button>
-        </div>
-        <div className={clsx(registerStyles.title, "w-full")}>
-          <h1>Register</h1>
+        </div>*/}
+        <div className={clsx(registerStyles.title, "w-full p-4 poppins-bold")}>
+          <div>Register</div>
         </div>
         <div className={registerStyles.body}>
           <input
-            className={registerStyles.textfield}
+            className={clsx(
+              registerStyles.textfield,
+              "poppins-regular text-sm w-5/6 mt-8"
+            )}
             type="text"
             name="username"
             ref={usernameRef}
@@ -70,28 +73,38 @@ const RegisterModal = ({ setModalActive }) => {
             required
           />
           <input
-            className={registerStyles.textfield}
+            className={clsx(
+              registerStyles.textfield,
+              "poppins-regular text-sm w-5/6 mt-3"
+            )}
             type="email"
             name="email"
             ref={emailRef}
             placeholder="E-mail"
-            placeholder="Enter email"
-            autocomplete="autocomplete_off_hack_541gds"
+            autocomplete="autocomplete_off_hack_138r!n"
             required
           />
           <input
-            className={registerStyles.textfield}
+            className={clsx(
+              registerStyles.textfield,
+              "poppins-regular text-sm w-5/6 mt-3"
+            )}
             type="password"
             name="password"
             ref={passwordRef}
+            type="password"
             placeholder="Password"
-            autocomplete="autocomplete_off_hack_fdsa53s"
+            autocomplete="autocomplete_off_hack_xfr4!k"
             required
           />
           <br />
-          <button onClick={handleRegister}>Register</button>
+          <button
+            className="mb-12 poppins-medium text-lg mt-12 w-5/6 mr-0 ml-0"
+            onClick={handleRegister}
+          >
+            Register
+          </button>
         </div>
-        <div className={registerStyles.footer}>This is footer</div>
       </div>
     </div>
   );

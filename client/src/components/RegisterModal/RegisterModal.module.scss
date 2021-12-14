@@ -11,14 +11,13 @@
 }
 
 .modalContainer {
-  width: 500px;
-  height: 500px;
-  border-radius: 12px;
+  border-radius: 0;
   background-color: #121212;
   color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   display: flex;
   flex-direction: column;
+  min-width: 300px;
 }
 
 .modalContainer .title {
@@ -58,9 +57,6 @@
 }
 
 .modalContainer button {
-  width: 150px;
-  height: 45px;
-  margin: 10px;
   border: none;
   background-color: #eb1515;
   color: white;
@@ -76,6 +72,31 @@
   color: #eb1515;
 }
 
+/* Change the white to any color */
+input,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  //-webkit-box-shadow: 0 0 0 30px #242424 inset !important;
+  background-color: #242424;
+  color: white;
+  border-width: 0px;
+  border: none;
+  padding: 20px;
+  border-radius: 6px;
+  //background-color: #242424 !important;
+}
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0 50px #242424 inset;
+  color: white;
+}
+input::placeholder,/* Chrome, Firefox, Opera, Safari 10.1+ */
+:-ms-input-placeholder, /* Firefox */
+::-ms-input-placeholder {
+}
+
 .textfield {
-  color: black;
+  //color: black;
 }
