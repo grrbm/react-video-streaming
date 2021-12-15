@@ -83,6 +83,7 @@ input:-webkit-autofill:active {
 input:-webkit-autofill {
   background-color: transparent !important;
   -webkit-box-shadow: 0 0 0 50px #242424 inset;
+  -webkit-text-fill-color: white !important;
   color: white;
 }
 input::placeholder,/* Chrome, Firefox, Opera, Safari 10.1+ */
