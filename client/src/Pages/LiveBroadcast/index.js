@@ -405,8 +405,8 @@ const LiveBroadcast = ({ location }) => {
         Start streaming
       </button>
       {/*<button id="button_setflvsource">Set flvsource</button>*/}
-      <div className="video_part container mx-auto flex flex-col items-center justify-items-center">
-        <p id="output_message" ref={output_message}></p>
+      <div className={clsx(broadcastStyles.video_part,"container mx-auto flex flex-col items-center justify-items-center")}>
+        <p style={{display:"none"}} id="output_message" ref={output_message}></p>
 
         <video id="output_video" ref={output_video} autoplay="true"></video>
         <video style={{display: "none"}}id="videoElement" preload="none"></video>
