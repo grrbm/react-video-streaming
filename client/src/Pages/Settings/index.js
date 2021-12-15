@@ -60,7 +60,7 @@ export default function Settings(props) {
     history.push(`/livebroadcast`);
   };
   return (
-    <div className="mainDiv">
+    <div className="mainDiv poppins-medium">
       <div className="container mx-auto pt-5 text-white">
         <div
           className={clsx(
@@ -68,110 +68,64 @@ export default function Settings(props) {
             "flex text-center text-justify mx-auto w-96 h-96 sm:w-3/5 sm:h-3/5 max-w-6xl"
           )}
         >
-          {/*<div className={settingStyle.titleCloseBtn}>
-          <button onClick={handleCloseModal}> X </button>
-        </div>*/}
           <div className={clsx(settingStyle.title, "w-full p-4 poppins-bold")}>
             <div>My Account</div>
           </div>
-          <div className={settingStyle.body}>
-            <input
-              className={clsx(
-                settingStyle.textfield,
-                "poppins-regular text-sm w-5/6 mt-8"
-              )}
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              autocomplete="autocomplete_off_hack_138r!n"
-              required
-            />
-            <input
-              className={clsx(
-                settingStyle.textfield,
-                "poppins-regular text-sm w-5/6 mt-3"
-              )}
-              type="password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              autocomplete="autocomplete_off_hack_xfr4!k"
-              required
-            />
-            <p className={"poppins-regular text-sm mt-12"}>
-              Not registered yet ?{" "}
-              <span className={settingStyle.highlighted_text}>
-                subscribe now
-              </span>
-            </p>
-            <button className="mb-12 poppins-medium text-lg mt-12 w-5/6 mr-0 ml-0">
+          <div
+            className={clsx(
+              settingStyle.body,
+              "flex flex-row flex-start flex-wrap mt-12"
+            )}
+          >
+            <div className="inputElement flex flex-col items-start">
+              <label>Name</label>
+              <input type="text" id="name" value="Guilherme" disabled />
+            </div>
+
+            <div className="inputElement flex flex-col items-start">
+              <label for="option_width">Last Name</label>
+              <input type="text" id="option_width" value="Marques" disabled />
+            </div>
+            <div className="inputElement flex flex-col items-start">
+              <label for="option_width">Email</label>
+              <input
+                type="text"
+                id="option_width"
+                value={loggedUser ? loggedUser.email : "-"}
+                disabled
+              />
+            </div>
+            <div className="inputElement flex flex-col items-start">
+              <label for="option_width">Streaming Key</label>
+              <input
+                type="text"
+                id="option_width"
+                value={streamKey ? streamKey : "-"}
+                disabled
+              />
+            </div>
+          </div>
+          <div className="footer container mx-auto flex flex-col items-center justify-items-center">
+            <div className="mt-4">
+              <button
+                className={clsx(settingStyle.altButton, "mt-2")}
+                onClick={generateStreamKey}
+              >
+                Generate a new key
+              </button>
+              <button
+                className={clsx(settingStyle.altButton, "mt-2")}
+                onClick={navigateToLiveBroadcast}
+              >
+                Start Live Broadcast
+              </button>
+            </div>            
+            <button 
+              className="mb-12 poppins-medium text-lg mt-4 w-5/6 mr-0 ml-0"
+              onClick={handleLogout}
+            >
               End Session
             </button>
-          </div>
-        </div>
-
-        <h4>Logged user:</h4>
-        <div className="row">
-          <h5>
-            {loggedUser ? loggedUser.email : "Could not get logged user."}
-          </h5>
-        </div>
-        <h4>Streaming Key:</h4>
-
-        <div className="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-          <div className="row">
-            <h5>{streamKey ? streamKey : "No stream key found."}</h5>
-          </div>
-          <div className="row">
-            {loggedUser ? (
-              <button
-                className={clsx(settingStyle.button, "mt-2")}
-                onClick={handleLogout}
-              >
-                Log Out
-              </button>
-            ) : (
-              ""
-            )}
-            <button
-              className={clsx(settingStyle.button, "mt-2")}
-              onClick={generateStreamKey}
-            >
-              Generate a new key
-            </button>
-            <button
-              className={clsx(settingStyle.button, "mt-2")}
-              onClick={navigateToLiveBroadcast}
-            >
-              Start Live Broadcast
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mt-5 text-white">
-        <h4>How to Stream</h4>
-        <hr className="my-4" />
-
-        <div className="col-12">
-          <div className="row">
-            <p>
-              You can use{" "}
-              <a target="_blank" href="https://obsproject.com/">
-                OBS
-              </a>{" "}
-              or
-              <a target="_blank" href="https://www.xsplit.com/">
-                XSplit
-              </a>{" "}
-              to Live stream. If you're using OBS, go to Settings > Stream and
-              select Custom from service dropdown. Enter
-              <b>rtmp://127.0.0.1:1935/live</b> in server input field. Also, add
-              your stream key. Click apply to save.
-              <br />
-              You can also stream from this page by opening it on Chrome on your
-              phone (or PC) and clicking Start Live Broadcast.
-            </p>
           </div>
         </div>
       </div>

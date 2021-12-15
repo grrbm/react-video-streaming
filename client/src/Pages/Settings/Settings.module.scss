@@ -1,17 +1,6 @@
 .mainDiv {
   min-height: 900px;
 }
-.button {
-  background-color: #4caf50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  margin: 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
 
 .modalContainer {
   border-radius: 0;
@@ -30,13 +19,13 @@
 }
 
 .modalContainer .body {
-  flex: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.7rem;
-  text-align: center;
+  // flex: 50%;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  // font-size: 1.7rem;
+  // text-align: center;
 }
 
 .modalContainer button {
@@ -46,7 +35,58 @@
   font-size: 20px;
   cursor: pointer;
 }
+.modalContainer .altButton {
+  background-color: transparent; /* Green */
+  border: 1px solid white;
+  border-radius: 6px;
+  color: white;
+  padding: 15px 32px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
 
 .highlighted_text {
   color: #eb1515;
+}
+
+/* Change the white to any color */
+input,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  //-webkit-box-shadow: 0 0 0 30px #242424 inset !important;
+  background-color: #242424;
+  color: white;
+  border-width: 0px;
+  border: none;
+  padding: 20px;
+  border-radius: 6px;
+  //background-color: #242424 !important;
+}
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0 50px #242424 inset;
+  color: white;
+}
+input::placeholder,/* Chrome, Firefox, Opera, Safari 10.1+ */
+:-ms-input-placeholder, /* Firefox */
+::-ms-input-placeholder {
+}
+input:disabled {
+  background-color: #121212;
+}
+
+.textfield {
+  //color: black;
+}
+
+label {
+  float: left;
+  text-align: left;
+  padding-left: 20px;
+  color: gray;
 }
