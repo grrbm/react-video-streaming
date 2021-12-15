@@ -447,6 +447,9 @@ const LiveBroadcast = ({ location }) => {
             ></video>
           </div>
           <textarea
+            style={{
+              display: process.env.NODE_ENV === "production" ? "none" : "flex",
+            }}
             readonly="true"
             id="output_console"
             ref={output_console}
