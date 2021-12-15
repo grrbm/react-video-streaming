@@ -349,7 +349,9 @@ const LiveBroadcast = ({ location }) => {
         >
           <h1>Live Stream</h1>
           <h4>Streaming Key:</h4>
-          <h5>{streamKey ? streamKey : "No stream key found."}</h5>
+          <h5>
+            {streamKey ? streamKey : "No stream key found. Please log in."}
+          </h5>
           {/* <label for="option_width">Size:</label> */}
           <input
             style={{ display: "none" }}
