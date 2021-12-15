@@ -7,6 +7,16 @@
   min-height: 900px;
 }
 
+.modalContainer {
+  border-radius: 0;
+  background-color: #121212;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
 input {
   color: black;
   border-color: black;
@@ -20,19 +30,17 @@ textarea {
 }
 
 button {
-  background-color: midnightblue;
+  border: none;
+  background-color: #eb1515;
   color: white;
-  margin-right: 20px;
+  font-size: 12px;
   padding: 10px;
-  border-color: black;
-  border-width: 2px;
-  border-style: solid;
+  cursor: pointer;
 }
 
 button:disabled {
   background-color: gray;
   color: darkslategray;
-  margin-right: 20px;
   padding: 10px;
   border-color: black;
   border-width: 2px;

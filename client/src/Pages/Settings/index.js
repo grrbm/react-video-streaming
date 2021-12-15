@@ -123,7 +123,7 @@ export default function Settings(props) {
             <button 
               className="mb-12 poppins-medium text-lg mt-4 w-5/6 mr-0 ml-0"
               onClick={handleLogout}
-            >
+              >
               End Session
             </button>
           </div>
