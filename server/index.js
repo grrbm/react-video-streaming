@@ -79,7 +79,8 @@ spawn("ffmpeg", ["-h"]).on("error", function (m) {
 //on connection event:
 io.on("connection", function (socket) {
   socket.emit("message", "Hello from mediarecorder-to-rtmp server!");
-  socket.emit("message", "Please set rtmp destination before start streaming.");
+  socket.emit("message", "Waiting for rtmp destination to be set.");
+  //socket.emit("message", "Please set rtmp destination before start streaming.");
 
   var ffmpeg_process,
     feedStream = false;
@@ -571,7 +572,7 @@ const anotherCfg = {
     chunk_size: 60000,
     gop_cache: true,
     ping: 60,
-    ping_timeout: 30,
+    ping_timeout: 3000,
   },
   http: {
     port: 8888,
