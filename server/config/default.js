@@ -14,7 +14,7 @@ const config = {
       port: 1935,
       chunk_size: 60000,
       gop_cache: true,
-      ping: 60,
+      ping: 6000,
       ping_timeout: 3000,
     },
     http: {
