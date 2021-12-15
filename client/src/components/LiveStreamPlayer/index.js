@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import videojs from "video.js";
 import axios from "axios";
 import config from "../../config/default";
-import playerStyles from "./LiveStreamPlayer.module.scss";
+import clsx from "clsx";
+import "./LiveStreamPlayer.css";
+import livePlayerStyles from "./LiveStreamPlayer.module.scss";
 
 export default function LiveStreamPlayer(props) {
   const [stream, setStream] = useState(false);
@@ -72,10 +74,10 @@ export default function LiveStreamPlayer(props) {
   }, []);
 
   return (
-    <div className="row">
-      <div className="xs:grid-cols-12 sm:grid-cols-12 md:grid-cols-10 lg:grid-cols-8 mx-auto mt-5">
+    <div className={clsx(livePlayerStyles.mainDiv, "row")}>
+      <div className="xs:grid-cols-12 sm:grid-cols-12 md:grid-cols-10 lg:grid-cols-8 mx-auto pt-5 max-w-6xl">
         {stream ? (
-          <div data-vjs-player>
+          <div data-vjs-player className="">
             <video
               ref={(node) => (videoNode.current = node)}
               className="video-js vjs-big-play-centered"
