@@ -78,14 +78,19 @@ export default function Settings(props) {
             )}
           >
             <div className="inputElement flex flex-col items-start">
-              <label>Name</label>
-              <input type="text" id="name" value="Guilherme" disabled />
+              <label>Username</label>
+              <input
+                type="text"
+                id="name"
+                value={loggedUser ? loggedUser.username : "-"}
+                disabled
+              />
             </div>
 
-            <div className="inputElement flex flex-col items-start">
+            {/* <div className="inputElement flex flex-col items-start">
               <label for="option_width">Last Name</label>
               <input type="text" id="option_width" value="Marques" disabled />
-            </div>
+            </div> */}
             <div className="inputElement flex flex-col items-start">
               <label for="option_width">Email</label>
               <input
@@ -119,11 +124,11 @@ export default function Settings(props) {
               >
                 Start Live Broadcast
               </button>
-            </div>            
-            <button 
+            </div>
+            <button
               className="mb-12 poppins-medium text-lg mt-4 w-5/6 mr-0 ml-0"
               onClick={handleLogout}
-              >
+            >
               End Session
             </button>
           </div>
