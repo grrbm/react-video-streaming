@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
 import config from "../../config/default";
 import broadcastStyles from "./LiveBroadcast.module.scss";
-import clsx from "clsx"
+import clsx from "clsx";
 const { io } = require("socket.io-client");
 const fs = require("fs");
 
@@ -126,6 +126,10 @@ const LiveBroadcast = ({ location }) => {
     }
   }
   async function connect_server() {
+    if (!streamKey) {
+      console.log("You gotta login first.");
+      return;
+    }
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.mozGetUserMedia ||
@@ -191,7 +195,7 @@ const LiveBroadcast = ({ location }) => {
       //should reload?
     });
     socket.current.on("ffmpeg_stderr", function (m) {
-      show_output("FFMPEG:" + m);
+      show_output("FFMPEG ERROR:" + m);
     });
     socket.current.on("disconnect", function (reason) {
       show_output("ERROR: server disconnected! Reason: " + reason);
@@ -330,7 +334,12 @@ const LiveBroadcast = ({ location }) => {
     output_console.current.scrollTop = output_console.current.scrollHeight;
   }
   return (
-    <div className={clsx(broadcastStyles.mainDiv,"container mx-auto poppins-medium")}>
+    <div
+      className={clsx(
+        broadcastStyles.mainDiv,
+        "container mx-auto poppins-medium"
+      )}
+    >
       <div className="container mx-auto pt-5 text-white">
         <div
           className={clsx(
@@ -338,89 +347,114 @@ const LiveBroadcast = ({ location }) => {
             "flex text-center text-justify mx-auto w-96 h-96 sm:w-3/5 sm:h-3/5 max-w-6xl"
           )}
         >
-        
-      {/* <h1>MediaRecorder to RTMP Demo</h1>
-      <h4>Streaming Key:</h4>
-      <h5>{streamKey ? streamKey : "No stream key found."}</h5>
-      <label for="option_width">Size:</label> */}
-      <input
-        style={{display:"none"}}
-        type="text"
-        id="option_width"
-        ref={option_width}
-        value="640"
-      />
-      {/* &times; */}
-      <input style={{display:"none"}} type="text" id="option_height" ref={option_height} value="480" />
-      {/* <br />
+          <h1>Live Stream</h1>
+          <h4>Streaming Key:</h4>
+          <h5>{streamKey ? streamKey : "No stream key found."}</h5>
+          {/* <label for="option_width">Size:</label> */}
+          <input
+            style={{ display: "none" }}
+            type="text"
+            id="option_width"
+            ref={option_width}
+            value="640"
+          />
+          {/* &times; */}
+          <input
+            style={{ display: "none" }}
+            type="text"
+            id="option_height"
+            ref={option_height}
+            value="480"
+          />
+          {/* <br />
       <label for="socket.io_url">Socket.io Destination:</label> */}
-      <input
-        style={{display:"none"}}
-        type="text"
-        id="socket.io_address"
-        ref={socketio_address}
-        value={
-          process.env.NODE_ENV === "production"
-            ? config.productionUrl + `:${config.prodSocketioPort}`
-            : `${config.localUrl}:${config.localSocketioPort}`
-        }
-      />
-      {/* <br /> */}
-      {/* <label for="flv_url">flv_source Destination:</label> */}
-      <input
-        style={{display:"none"}}
-        type="text"
-        id="flvsource"
-        ref={flvsource}
-        value={
-          process.env.NODE_ENV === "production"
-            ? config.productionUrl +
-              `:${config.prodSocketioPort}/live/test0.flv`
-            : `${config.localUrl}:${config.localSocketioPort}/live/test0.flv`
-        }
-      />
-      {/* <br />
+          <input
+            style={{ display: "none" }}
+            type="text"
+            id="socket.io_address"
+            ref={socketio_address}
+            value={
+              process.env.NODE_ENV === "production"
+                ? config.productionUrl + `:${config.prodSocketioPort}`
+                : `${config.localUrl}:${config.localSocketioPort}`
+            }
+          />
+          {/* <br /> */}
+          {/* <label for="flv_url">flv_source Destination:</label> */}
+          <input
+            style={{ display: "none" }}
+            type="text"
+            id="flvsource"
+            ref={flvsource}
+            value={
+              process.env.NODE_ENV === "production"
+                ? config.productionUrl +
+                  `:${config.prodSocketioPort}/live/test0.flv`
+                : `${config.localUrl}:${config.localSocketioPort}/live/test0.flv`
+            }
+          />
+          {/* <br />
       <label for="option_url">RTMP Destination:</label> */}
-      <input
-        style={{display:"none"}}
-        type="text"
-        id="option_url"
-        ref={option_url}
-        value={`rtmp://${window.location.hostname}/live/${streamKey}`}
-      />
-      {/* <label for="checkbox_Reconection">Reconnection</label>
-      <input type="checkbox" id="checkbox_Reconection" checked="true" />
-      <br /> */}
-      <button 
-        className={clsx(broadcastStyles.button,"mx-0")}
-        id="button_server" ref={button_server} onClick={connect_server}>
-        Start Stream
-      </button>
-      <button
-        style={{ display: "none" }}
-        id="button_start"
-        ref={button_start}
-        onClick={requestMedia}
-      >
-        Start streaming
-      </button>
-      {/*<button id="button_setflvsource">Set flvsource</button>*/}
-      <div className={clsx(broadcastStyles.video_part,"container mx-auto flex flex-col items-center justify-items-center")}>
-        <p style={{display:"none"}} id="output_message" ref={output_message}></p>
+          <input
+            style={{ display: "none" }}
+            type="text"
+            id="option_url"
+            ref={option_url}
+            value={`rtmp://${window.location.hostname}/live/${streamKey}`}
+          />
+          {/* <label for="checkbox_Reconection">Reconnection</label> */}
+          <input
+            style={{ display: "none" }}
+            type="checkbox"
+            id="checkbox_Reconection"
+            checked="true"
+          />
+          {/* <br /> */}
+          <button
+            className={clsx(broadcastStyles.button, "mx-0")}
+            id="button_server"
+            ref={button_server}
+            onClick={connect_server}
+          >
+            Start Stream
+          </button>
+          <button
+            style={{ display: "none" }}
+            id="button_start"
+            ref={button_start}
+            onClick={requestMedia}
+          >
+            Start streaming
+          </button>
+          {/*<button id="button_setflvsource">Set flvsource</button>*/}
+          <div
+            className={clsx(
+              broadcastStyles.video_part,
+              "container mx-auto flex flex-col items-center justify-items-center"
+            )}
+          >
+            <p
+              style={{ display: "none" }}
+              id="output_message"
+              ref={output_message}
+            ></p>
 
-        <video id="output_video" ref={output_video} autoplay="true"></video>
-        <video style={{display: "none"}}id="videoElement" preload="none"></video>
-      </div>
-      <textarea
-        readonly="true"
-        id="output_console"
-        ref={output_console}
-        cols="91"
-        rows="5"
-      ></textarea>
+            <video id="output_video" ref={output_video} autoplay="true"></video>
+            <video
+              style={{ display: "none" }}
+              id="videoElement"
+              preload="none"
+            ></video>
+          </div>
+          <textarea
+            readonly="true"
+            id="output_console"
+            ref={output_console}
+            cols="91"
+            rows="20"
+          ></textarea>
         </div>
       </div>
-      
     </div>
   );
 };

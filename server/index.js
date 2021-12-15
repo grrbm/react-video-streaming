@@ -152,6 +152,8 @@ io.on("connection", function (socket) {
       "1000",
       "-f",
       "flv",
+      "-flvflags",
+      "no_duration_filesize",
       socket._rtmpDestination,
     ];
 
@@ -175,6 +177,7 @@ io.on("connection", function (socket) {
     ffmpeg_process.on("exit", function (e) {
       console.log("child process exit" + e);
       socket.emit("fatal", "ffmpeg exit!" + e);
+      feedStream = false;
       socket.disconnect();
     });
   });
@@ -201,6 +204,7 @@ io.on("connection", function (socket) {
       try {
         ffmpeg_process.stdin.end();
         ffmpeg_process.kill("SIGINT");
+        console.log("FFMPEG process killed successfully");
       } catch (e) {
         console.warn("killing ffmoeg process attempt failed...");
       }
